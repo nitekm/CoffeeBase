@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/coffeeCardView"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:layout_margin="8dp">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp">
+
+
+    <ImageView
+            android:layout_width="170dp"
+            android:layout_height="150dp"
+            android:id="@+id/imgCoffee"
+            android:src="@mipmap/ic_launcher"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Coffee Name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imgCoffee"
+            android:layout_marginTop="5dp"
+            android:id="@+id/coffeeNameTxt"/>
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
