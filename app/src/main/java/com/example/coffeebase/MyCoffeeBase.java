@@ -1,12 +1,22 @@
 package com.example.coffeebase;
 
+import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.util.List;
 
 public class MyCoffeeBase extends AppCompatActivity {
 
+    private TextView txtView;
+    private CoffeeBaseApi coffeeBaseApi;
     private CoffeeRecViewAdapter adapter;
     private RecyclerView coffeeRecView;
 
@@ -19,5 +29,43 @@ public class MyCoffeeBase extends AppCompatActivity {
         coffeeRecView = findViewById(R.id.coffeeRecView);
         //coffeeRecView.setLayoutManager(new LinearLayoutManager(this));
         coffeeRecView.setAdapter(adapter);
+
+        txtView = findViewById(R.id.textView);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https:/192.168.1.67:8081/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        getCoffees();
+
+
     }
+
+    public void getCoffees() {
+        Call<List<Coffee>> call = coffeeBaseApi.getCoffees();
+        call.enqueue(new Callback<List<Coffee>>() {
+            @Override
+            public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
+                if (!response.isSuccessful()) {
+                    txtView.setText("Code" + response.code());
+                    return;
+                }
+                List<Coffee> coffees = response.body();
+                for (Coffee coffee:coffees) {
+                    String content = "";
+                    content += "id" + coffee.getId() + "\n";
+                    content += "name" + coffee.getName() + "\n";
+                    content += "origin" + coffee.getOrigin() + "\n";
+
+                    txtView.append(content);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Coffee>> call, Throwable t) {
+                txtView.setText(t.getMessage());
+            }
+        });
+    }
+
 }

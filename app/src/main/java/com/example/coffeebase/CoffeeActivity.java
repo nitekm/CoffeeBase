@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CoffeeActivity extends AppCompatActivity {
 
-    CoffeeBaseApi coffeeBaseApi;
     private ImageView imgCoffee;
     private TextView coffeeNameTxt, originTxt, txtCoffeeName, txtOrigin;
     private Button addToFavButton;
@@ -21,13 +20,6 @@ public class CoffeeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coffee);
 
         initViews();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("192.168.1.67:8081/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
-
     }
 
     public void initViews() {
