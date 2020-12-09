@@ -1,22 +1,25 @@
 package com.example.coffeebase;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Coffee {
 
-    private String id;
+    @SerializedName("id")
+    @Expose
+    private Integer id;
+    @SerializedName("name")
+    @Expose
     private String name;
+    @SerializedName("origin")
+    @Expose
     private String origin;
 
-    public Coffee(String id, String name, String origin) {
-        this.id = id;
-        this.name = name;
-        this.origin = origin;
-    }
-
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,14 +37,5 @@ public class Coffee {
 
     public void setOrigin(String origin) {
         this.origin = origin;
-    }
-
-    @Override
-    public String toString() {
-        return "Coffee{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", origin='" + origin + '\'' +
-                '}';
     }
 }

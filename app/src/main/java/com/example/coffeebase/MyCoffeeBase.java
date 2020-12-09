@@ -3,6 +3,7 @@ package com.example.coffeebase;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class MyCoffeeBase extends AppCompatActivity {
 
+    private GridLayoutManager gridLayoutManager;
     private TextView txtView;
     private CoffeeBaseApi coffeeBaseApi;
     private CoffeeRecViewAdapter adapter;
@@ -27,12 +29,13 @@ public class MyCoffeeBase extends AppCompatActivity {
 
         adapter = new CoffeeRecViewAdapter(this);
         coffeeRecView = findViewById(R.id.coffeeRecView);
-        //coffeeRecView.setLayoutManager(new LinearLayoutManager(this));
+        //gridLayoutManager = new GridLayoutManager(this, 2);
+        //coffeeRecView.setLayoutManager(gridLayoutManager);
         coffeeRecView.setAdapter(adapter);
 
         txtView = findViewById(R.id.textView);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https:/192.168.1.67:8081/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -47,15 +50,15 @@ public class MyCoffeeBase extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
                 if (!response.isSuccessful()) {
-                    txtView.setText("Code" + response.code());
+                    txtView.setText("Code " + response.code());
                     return;
                 }
                 List<Coffee> coffees = response.body();
                 for (Coffee coffee:coffees) {
                     String content = "";
-                    content += "id" + coffee.getId() + "\n";
-                    content += "name" + coffee.getName() + "\n";
-                    content += "origin" + coffee.getOrigin() + "\n";
+                    content += "id " + coffee.getId() + "\n";
+                    content += "name " + coffee.getName() + "\n";
+                    content += "origin " + coffee.getOrigin() + "\n";
 
                     txtView.append(content);
                 }
@@ -66,6 +69,10 @@ public class MyCoffeeBase extends AppCompatActivity {
                 txtView.setText(t.getMessage());
             }
         });
+    }
+
+    public void addCoffee() {
+
     }
 
 }
