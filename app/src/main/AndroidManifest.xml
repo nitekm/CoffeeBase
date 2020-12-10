@@ -3,23 +3,28 @@
           package="com.example.coffeebase">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/coffeebean"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
             android:networkSecurityConfig="@xml/network_security_config"
-            android:usesCleartextTraffic="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".Favourites"
-                  android:label="Favourites">
+            android:roundIcon="@mipmap/coffeebean"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            android:usesCleartextTraffic="true">
+        <activity android:name=".AddCoffee">
+        </activity>
+        <activity
+                android:name=".Favourites"
+                android:label="Favourites">
         </activity>
         <activity android:name=".CoffeeActivity">
         </activity>
-        <activity android:name=".MyCoffeeBase"
-                  android:label="My Coffee Base">
+        <activity
+                android:name=".MyCoffeeBase"
+                android:label="My Coffee Base">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

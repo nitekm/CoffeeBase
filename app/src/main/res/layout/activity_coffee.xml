@@ -20,8 +20,9 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline5" android:layout_marginTop="20dp"
             app:layout_constraintHorizontal_bias="0.502" android:textSize="18sp"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline4" app:layout_constraintGuide_begin="333dp"
-                                                android:orientation="horizontal"/>
+                                                android:id="@+id/guideline4"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_begin="334dp"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline5" app:layout_constraintGuide_begin="205dp"
                                                 android:orientation="vertical"/>
@@ -32,28 +33,29 @@
             android:textSize="18sp"
             app:layout_constraintTop_toTopOf="@+id/coffeeNameTxt"
             app:layout_constraintBottom_toBottomOf="@+id/coffeeNameTxt" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="72dp" app:layout_constraintVertical_bias="0.0"/>
-    <TextView
-            android:text="Origin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/originTxt"
-            app:layout_constraintTop_toBottomOf="@+id/coffeeNameTxt"
-            android:layout_marginTop="30dp" app:layout_constraintStart_toStartOf="parent"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+            android:layout_marginEnd="112dp" app:layout_constraintVertical_bias="0.0"/>
+    <TextView android:text="Origin"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content" android:id="@+id/originTxt"
+              app:layout_constraintTop_toBottomOf="@+id/coffeeNameTxt"
+              android:layout_marginTop="30dp" app:layout_constraintStart_toStartOf="parent"
+              android:textSize="18sp"
+              app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/txtOrigin"
             android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/originTxt"
-            android:layout_marginStart="136dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.065" app:layout_constraintTop_toTopOf="@+id/originTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/originTxt"/>
+            app:layout_constraintTop_toTopOf="@+id/originTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/originTxt"
+            app:layout_constraintStart_toEndOf="@+id/originTxt" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.476" app:layout_constraintVertical_bias="0.0"/>
     <Button
             android:text="Add to Favourites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/addToFavouritesBtn"
+            android:layout_width="210dp"
+            android:layout_height="70dp" android:id="@+id/addToFavouritesBtn"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintBottom_toBottomOf="parent"
+            android:textSize="18sp" app:layout_constraintHorizontal_bias="0.527"
+            app:layout_constraintVertical_bias="0.651"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

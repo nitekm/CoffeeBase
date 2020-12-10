@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".AddCoffee">
+
+
+    <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@mipmap/coffeebean"
+            android:id="@+id/imgAddCoffee"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="50dp"/>
+    <TextView
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/coffeeAddNameTxt"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:layout_marginTop="20dp"
+            app:layout_constraintHorizontal_bias="0.502"
+            android:textSize="18sp" android:gravity="center"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline4"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_begin="334dp"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline5" app:layout_constraintGuide_begin="205dp"
+                                                android:orientation="vertical"/>
+    <EditText
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:id="@+id/txtAddCoffeeName"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@+id/coffeeAddNameTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/coffeeAddNameTxt"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="48dp"
+            app:layout_constraintVertical_bias="0.0" android:hint="coffee name*"/>
+    <TextView
+            android:text="Origin"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/originAddTxt"
+            app:layout_constraintTop_toBottomOf="@+id/coffeeAddNameTxt"
+            android:layout_marginTop="30dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:gravity="center"/>
+    <EditText
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:id="@+id/txtAddOrigin"
+            android:textSize="18sp"
+            android:hint="origin*"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.129"
+            app:layout_constraintTop_toTopOf="@+id/originAddTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="0.428"/>
+    <Button
+            android:text="Add to CoffeeBase"
+            android:layout_width="210dp"
+            android:layout_height="70dp"
+            android:id="@+id/addToCoffeeBaseBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:layout_constraintBottom_toBottomOf="parent" android:textSize="18sp"
+            app:layout_constraintHorizontal_bias="0.497" app:layout_constraintVertical_bias="0.715"/>
+    <Button
+            android:text="choose photo"
+            android:layout_width="200dp"
+            android:layout_height="41dp" android:id="@+id/pickImageBtn"
+            app:layout_constraintEnd_toEndOf="@+id/imgAddCoffee"
+            app:layout_constraintStart_toStartOf="@+id/imgAddCoffee"
+            app:layout_constraintTop_toBottomOf="@+id/imgAddCoffee" android:layout_marginTop="10dp"/>
+    <EditText
+            android:layout_width="118dp"
+            android:layout_height="52dp"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/idTxt"
+            app:layout_constraintStart_toStartOf="parent" android:hint="ID*" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.508" app:layout_constraintVertical_bias="0.423"
+            android:gravity="center"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

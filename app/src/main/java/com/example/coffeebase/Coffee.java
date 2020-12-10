@@ -15,6 +15,13 @@ public class Coffee {
     @Expose
     private String origin;
 
+    public Coffee(int id, String name, String origin) {
+        this.id = id;
+        this.name = name;
+        this.origin = name;
+    }
+
+
     public Integer getId() {
         return id;
     }

@@ -36,7 +36,7 @@ public class CoffeeActivity extends AppCompatActivity {
             if (coffeeId != -1) {
                 getSingleCoffee(coffeeId);
 
-                addToFavourites(coffee);
+                //addToFavourites(coffee);
             }
         }
     }
@@ -77,6 +77,7 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
+    /*
     public void addToFavourites(Coffee coffee) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,4 +87,6 @@ public class CoffeeActivity extends AppCompatActivity {
             }
         });
     }
+
+     */
 }

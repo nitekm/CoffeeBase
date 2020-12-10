@@ -16,11 +16,7 @@ public interface CoffeeBaseApi {
     @GET("/coffees/{id}")
     Call<Coffee> getSingleCoffee(@Path("id") int id);
 
-    @GET("coffees/favourites")
-    Call<List<Coffee>> getFavouriteCoffees();
+    @POST("coffees")
+    Call<Coffee> addToCoffeeBase(@Body Coffee coffee);
 
-    @POST("/coffees/favourites")
-    Call<Coffee> addToFavourites(@Body Coffee coffee);
-
-    //@POST("coffees/")
 }

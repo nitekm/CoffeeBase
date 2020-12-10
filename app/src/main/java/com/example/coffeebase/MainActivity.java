@@ -20,11 +20,11 @@ public class MainActivity extends AppCompatActivity {
 
         initViews();
 
-        //TODO add functionality to add new coffee
         addNewCoffeeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Add new coffee", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, AddCoffee.class);
+                startActivity(intent);
             }
         });
         myCoffeeBaseBtn.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /*
         favouriteCoffeesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+         */
+
 
         aboutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
