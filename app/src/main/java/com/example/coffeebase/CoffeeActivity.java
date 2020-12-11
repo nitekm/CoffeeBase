@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +23,7 @@ public class CoffeeActivity extends AppCompatActivity {
     private TextView coffeeNameTxt, originTxt, txtCoffeeName, txtOrigin;
     private Button addToFavButton;
     private Coffee coffee;
+    private FloatingActionButton editActionBtn, deleteActionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,6 @@ public class CoffeeActivity extends AppCompatActivity {
             int coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
                 getSingleCoffee(coffeeId);
-
                 //addToFavourites(coffee);
             }
         }
@@ -48,6 +49,9 @@ public class CoffeeActivity extends AppCompatActivity {
         txtCoffeeName = findViewById(R.id.txtCoffeeName);
         txtOrigin = findViewById(R.id.txtOrigin);
         addToFavButton = findViewById(R.id.addToFavouritesBtn);
+        editActionBtn = findViewById(R.id.editActionBtn);
+        deleteActionBtn = findViewById(R.id.deleteActionBtn);
+
     }
 
     public void getSingleCoffee(int id) {
@@ -75,6 +79,10 @@ public class CoffeeActivity extends AppCompatActivity {
                 Toast.makeText(CoffeeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void deleteCoffee(int id) {
+
     }
 
     /*

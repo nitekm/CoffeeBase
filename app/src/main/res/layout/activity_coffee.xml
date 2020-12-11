@@ -9,23 +9,29 @@
 
     <ImageView
             android:layout_width="200dp"
-            android:layout_height="200dp" tools:srcCompat="@tools:sample/avatars" android:id="@+id/imgCoffee"
+            android:layout_height="200dp"
+            tools:srcCompat="@mipmap/coffeebean"
+            android:id="@+id/imgCoffee"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="50dp"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="25dp"/>
     <TextView
             android:text="Name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/coffeeNameTxt"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:layout_marginTop="20dp"
-            app:layout_constraintHorizontal_bias="0.502" android:textSize="18sp"/>
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="0.502"
+            android:textSize="18sp"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline4"
                                                 android:orientation="horizontal"
-                                                app:layout_constraintGuide_begin="334dp"/>
+                                                app:layout_constraintGuide_begin="300dp"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline5" app:layout_constraintGuide_begin="205dp"
-                                                android:orientation="vertical"/>
+                                                android:id="@+id/guideline5"
+                                                android:orientation="vertical"
+                                                app:layout_constraintGuide_begin="206dp"/>
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
@@ -38,7 +44,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content" android:id="@+id/originTxt"
               app:layout_constraintTop_toBottomOf="@+id/coffeeNameTxt"
-              android:layout_marginTop="30dp" app:layout_constraintStart_toStartOf="parent"
+              android:layout_marginTop="15dp" app:layout_constraintStart_toStartOf="parent"
               android:textSize="18sp"
               app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
     <TextView
@@ -57,5 +63,28 @@
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintBottom_toBottomOf="parent"
             android:textSize="18sp" app:layout_constraintHorizontal_bias="0.527"
-            app:layout_constraintVertical_bias="0.651"/>
+            app:layout_constraintVertical_bias="0.772"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_edit"
+            android:id="@+id/editActionBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="6dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:elevation="6dp"/>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/ic_delete"
+            android:id="@+id/deleteActionBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="6dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="6dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:elevation="6dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
