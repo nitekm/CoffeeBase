@@ -58,7 +58,6 @@ public class CoffeeActivity extends AppCompatActivity {
         txtCoffeeName = findViewById(R.id.txtCoffeeName);
         txtOrigin = findViewById(R.id.txtOrigin);
         addToFavButton = findViewById(R.id.addToFavouritesBtn);
-        editActionBtn = findViewById(R.id.editActionBtn);
         deleteActionBtn = findViewById(R.id.deleteActionBtn);
 
     }
