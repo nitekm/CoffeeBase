@@ -88,20 +88,22 @@ public class AddCoffee extends AppCompatActivity {
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
         Coffee coffee = new Coffee(id, name, origin);
-        Call<Coffee> call = coffeeBaseApi.addToCoffeeBase(coffee);
-        call.enqueue(new Callback<Coffee>() {
+        Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Coffee> call, Response<Coffee> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful()) {
                     Toast.makeText(AddCoffee.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Toast.makeText(AddCoffee.this, "Coffee added", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(AddCoffee.this, MyCoffeeBase.class);
+                startActivity(intent);
             }
 
             @Override
-            public void onFailure(Call<Coffee> call, Throwable t) {
-                Toast.makeText(AddCoffee.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(AddCoffee.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -1,11 +1,13 @@
 package com.example.coffeebase;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,12 +34,19 @@ public class CoffeeActivity extends AppCompatActivity {
 
         initViews();
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.67:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+
         Intent intent = getIntent();
         if(null != intent) {
             int coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
                 getSingleCoffee(coffeeId);
                 //addToFavourites(coffee);
+                deleteCoffee(coffeeId);
             }
         }
     }
@@ -55,11 +64,6 @@ public class CoffeeActivity extends AppCompatActivity {
     }
 
     public void getSingleCoffee(int id) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
         Call<Coffee> call = coffeeBaseApi.getSingleCoffee(id);
         call.enqueue(new Callback<Coffee>() {
@@ -76,13 +80,46 @@ public class CoffeeActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Coffee> call, Throwable t) {
-                Toast.makeText(CoffeeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CoffeeActivity.this,"Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void deleteCoffee(int id) {
+        deleteActionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CoffeeActivity.this);
+                builder.setTitle("Delete this coffee?");
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Call<Void> call = coffeeBaseApi.deleteCoffee(id);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (!response.isSuccessful()) {
+                                    Toast.makeText(CoffeeActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                                }
+                                Toast.makeText(CoffeeActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CoffeeActivity.this, MyCoffeeBase.class);
+                                startActivity(intent);
+                            }
 
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(CoffeeActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+                builder.create().show();
+            }
+        });
     }
 
     /*
@@ -97,4 +134,11 @@ public class CoffeeActivity extends AppCompatActivity {
     }
 
      */
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MyCoffeeBase.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
 }

@@ -1,10 +1,7 @@
 package com.example.coffeebase;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
+import retrofit2.http.*;
 
 import java.util.List;
 
@@ -17,6 +14,8 @@ public interface CoffeeBaseApi {
     Call<Coffee> getSingleCoffee(@Path("id") int id);
 
     @POST("coffees")
-    Call<Coffee> addToCoffeeBase(@Body Coffee coffee);
+    Call<Void> addToCoffeeBase(@Body Coffee coffee);
 
+    @DELETE("coffees/{id}")
+    Call<Void> deleteCoffee(@Path("id") int id);
 }

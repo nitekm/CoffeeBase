@@ -1,5 +1,6 @@
 package com.example.coffeebase;
 
+import android.content.Intent;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -62,5 +63,12 @@ public class MyCoffeeBase extends AppCompatActivity {
                 Toast.makeText(MyCoffeeBase.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
