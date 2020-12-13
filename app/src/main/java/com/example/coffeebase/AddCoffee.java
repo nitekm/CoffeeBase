@@ -36,12 +36,7 @@ public class AddCoffee extends AppCompatActivity {
         addToCoffeeBaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (txtAddCoffeeName.equals("") || txtAddOrigin.equals("") || idTxt.equals("")) {
-                 //   Toast.makeText(AddCoffee.this, "Fill all required fields", Toast.LENGTH_SHORT).show();
-                //}
-               // else {
                     addCoffee();
-                //}
             }
         });
 

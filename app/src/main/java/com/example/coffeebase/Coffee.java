@@ -18,7 +18,7 @@ public class Coffee {
     public Coffee(int id, String name, String origin) {
         this.id = id;
         this.name = name;
-        this.origin = name;
+        this.origin = origin;
     }
 
 

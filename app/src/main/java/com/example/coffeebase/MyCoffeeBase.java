@@ -31,7 +31,7 @@ public class MyCoffeeBase extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_coffee_base);
 
-        coffeeRecView = (RecyclerView) findViewById(R.id.coffeeRecView);
+        coffeeRecView = findViewById(R.id.coffeeRecView);
         gridLayoutManager = new GridLayoutManager(this, 2);
         coffeeRecView.setLayoutManager(gridLayoutManager);
 
@@ -60,7 +60,7 @@ public class MyCoffeeBase extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Coffee>> call, Throwable t) {
-                Toast.makeText(MyCoffeeBase.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MyCoffeeBase.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
