@@ -18,7 +18,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddCoffee extends AppCompatActivity {
 
-    private int id;
     private String name, origin;
     CoffeeBaseApi coffeeBaseApi;
     private Button pickImageBtn, addToCoffeeBaseBtn;
@@ -68,11 +67,9 @@ public class AddCoffee extends AppCompatActivity {
         originAddTxt = findViewById(R.id.originAddTxt);
         txtAddCoffeeName = findViewById(R.id.txtAddCoffeeName);
         txtAddOrigin = findViewById(R.id.txtAddOrigin);
-        idTxt = findViewById(R.id.idTxt);
     }
 
     public void addCoffee() {
-        id = Integer.parseInt(idTxt.getText().toString());
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
 
@@ -82,7 +79,7 @@ public class AddCoffee extends AppCompatActivity {
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
-        Coffee coffee = new Coffee(id, name, origin);
+        Coffee coffee = new Coffee(name, origin);
         Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
         call.enqueue(new Callback<Void>() {
             @Override

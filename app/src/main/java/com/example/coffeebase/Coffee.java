@@ -15,8 +15,7 @@ public class Coffee {
     @Expose
     private String origin;
 
-    public Coffee(int id, String name, String origin) {
-        this.id = id;
+    public Coffee(String name, String origin) {
         this.name = name;
         this.origin = origin;
     }

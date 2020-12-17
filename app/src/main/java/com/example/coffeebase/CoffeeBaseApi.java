@@ -18,4 +18,5 @@ public interface CoffeeBaseApi {
 
     @DELETE("coffees/{id}")
     Call<Void> deleteCoffee(@Path("id") int id);
+
 }

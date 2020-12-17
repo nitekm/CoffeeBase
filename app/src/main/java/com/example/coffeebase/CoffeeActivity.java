@@ -34,6 +34,7 @@ public class CoffeeActivity extends AppCompatActivity {
 
         initViews();
 
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.67:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -121,7 +122,7 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-    /*
+/*
     public void addToFavourites(Coffee coffee) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +133,9 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-     */
+ */
+
+
 
     @Override
     public void onBackPressed() {
