@@ -1,9 +1,12 @@
 package com.example.coffeebase;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
@@ -16,15 +19,19 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.File;
+
 public class AddCoffee extends AppCompatActivity {
 
-    private int id;
-    private String name, origin;
+    private String name, origin, roaster, imageUri;
+    private int rating;
     CoffeeBaseApi coffeeBaseApi;
     private Button pickImageBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
-    private TextView coffeeAddNameTxt, originAddTxt;
-    private EditText txtAddCoffeeName, txtAddOrigin, idTxt;
+    private TextView coffeeAddNameTxt, originAddTxt, roasterAddTxt;
+    private EditText txtAddCoffeeName, txtAddOrigin, txtAddRoaster;
+    private RadioGroup ratingRadioGroup;
+    private RadioButton radio1, radio2, radio3, radio4, radio5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,12 +43,7 @@ public class AddCoffee extends AppCompatActivity {
         addToCoffeeBaseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //if (txtAddCoffeeName.equals("") || txtAddOrigin.equals("") || idTxt.equals("")) {
-                 //   Toast.makeText(AddCoffee.this, "Fill all required fields", Toast.LENGTH_SHORT).show();
-                //}
-               // else {
                     addCoffee();
-                //}
             }
         });
 
@@ -71,15 +73,24 @@ public class AddCoffee extends AppCompatActivity {
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
         coffeeAddNameTxt = findViewById(R.id.coffeeAddNameTxt);
         originAddTxt = findViewById(R.id.originAddTxt);
+        roasterAddTxt = findViewById(R.id.roasterAddTxt);
+        ratingRadioGroup = findViewById(R.id.ratingRadio);
         txtAddCoffeeName = findViewById(R.id.txtAddCoffeeName);
         txtAddOrigin = findViewById(R.id.txtAddOrigin);
-        idTxt = findViewById(R.id.idTxt);
+        txtAddRoaster = findViewById(R.id.txtAddRoaster);
+        radio1 = findViewById(R.id.radio1);
+        radio2 = findViewById(R.id.radio2);
+        radio3 = findViewById(R.id.radio3);
+        radio4 = findViewById(R.id.radio4);
+        radio5 = findViewById(R.id.radio5);
+
     }
 
     public void addCoffee() {
-        id = Integer.parseInt(idTxt.getText().toString());
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
+        roaster = txtAddRoaster.getText().toString();
+        checkRating();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.67:8080/")
@@ -87,7 +98,7 @@ public class AddCoffee extends AppCompatActivity {
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
-        Coffee coffee = new Coffee(id, name, origin);
+        Coffee coffee = new Coffee(name, origin, roaster, rating, imageUri);
         Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -131,6 +142,17 @@ public class AddCoffee extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (resultCode == RESULT_OK && requestCode == 1000) {
             imgAddCoffee.setImageURI(data.getData());
+            Uri uri = data.getData();
+            File imgFile = new File(String.valueOf(uri));
+            imageUri = imgFile.toString();
         }
+    }
+
+    public void checkRating() {
+        if (radio1.isChecked()) rating = 1;
+        if (radio2.isChecked()) rating = 2;
+        if (radio3.isChecked()) rating = 3;
+        if (radio4.isChecked()) rating = 4;
+        if (radio5.isChecked()) rating = 5;
     }
 }
