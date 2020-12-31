@@ -14,12 +14,19 @@ public class Coffee {
     @SerializedName("origin")
     @Expose
     private String origin;
+    @SerializedName("roaster")
+    @Expose
+    private String roaster;
+    @SerializedName("rating")
+    @Expose
+    private String rating;
 
-    public Coffee(String name, String origin) {
+    public Coffee(String name, String origin, String roaster, String rating) {
         this.name = name;
         this.origin = origin;
+        this.roaster = roaster;
+        this.rating = rating;
     }
-
 
     public Integer getId() {
         return id;
@@ -43,5 +50,21 @@ public class Coffee {
 
     public void setOrigin(String origin) {
         this.origin = origin;
+    }
+
+    public String getRoaster() {
+        return roaster;
+    }
+
+    public void setRoaster(String roaster) {
+        this.roaster = roaster;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 }

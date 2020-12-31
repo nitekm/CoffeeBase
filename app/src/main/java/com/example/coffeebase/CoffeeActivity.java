@@ -22,10 +22,10 @@ public class CoffeeActivity extends AppCompatActivity {
     CoffeeBaseApi coffeeBaseApi;
     public static final String COFFEE_ID_KEY = "coffeeId";
     private ImageView imgCoffee;
-    private TextView coffeeNameTxt, originTxt, txtCoffeeName, txtOrigin;
+    private TextView txtCoffeeName, txtOrigin, txtRoaster, txtRating;
     private Button addToFavButton;
     private Coffee coffee;
-    private FloatingActionButton editActionBtn, deleteActionBtn;
+    private FloatingActionButton deleteActionBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class CoffeeActivity extends AppCompatActivity {
 
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl(" http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -54,10 +54,10 @@ public class CoffeeActivity extends AppCompatActivity {
 
     public void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
-        coffeeNameTxt = findViewById(R.id.coffeeNameTxt);
-        originTxt = findViewById(R.id.originTxt);
         txtCoffeeName = findViewById(R.id.txtCoffeeName);
         txtOrigin = findViewById(R.id.txtOrigin);
+        txtRoaster = findViewById(R.id.txtRoaster);
+        txtRating = findViewById(R.id.txtRating);
         addToFavButton = findViewById(R.id.addToFavouritesBtn);
         deleteActionBtn = findViewById(R.id.deleteActionBtn);
 
@@ -76,6 +76,8 @@ public class CoffeeActivity extends AppCompatActivity {
                 coffee = response.body();
                 txtCoffeeName.setText(coffee.getName());
                 txtOrigin.setText(coffee.getOrigin());
+                txtRoaster.setText(coffee.getRoaster());
+                txtRating.setText(coffee.getRating());
             }
 
             @Override

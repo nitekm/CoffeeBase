@@ -28,6 +28,38 @@
             android:layout_marginTop="10dp"
             app:layout_constraintHorizontal_bias="0.502"
             android:textSize="18sp" android:gravity="center"/>
+
+    <TextView
+            android:text="Roaster"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/roasterTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.537"
+            android:textSize="18sp" android:gravity="center" app:layout_constraintTop_toBottomOf="@+id/originAddTxt"
+            android:layout_marginTop="15dp"/>
+    <TextView
+            android:text="Rating"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/ratingTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:textSize="18sp" android:gravity="center" app:layout_constraintTop_toBottomOf="@+id/roasterTxt"
+            android:layout_marginTop="15dp"/>
+
+    <EditText
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:id="@+id/txtRoaster"
+            android:textSize="18sp"
+            android:hint="roaster"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/roasterTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/roasterTxt" app:layout_constraintVertical_bias="0.0"
+            android:gravity="left"/>
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline4"
                                                 android:orientation="horizontal"
@@ -35,17 +67,17 @@
     <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
                                                 android:id="@+id/guideline5"
                                                 android:orientation="vertical"
-                                                app:layout_constraintGuide_begin="206dp"/>
+                                                app:layout_constraintGuide_begin="139dp"/>
     <EditText
             android:layout_width="150dp"
             android:layout_height="40dp"
             android:id="@+id/txtAddCoffeeName"
             android:textSize="18sp"
-            android:hint="coffee name*" android:gravity="left"
+            android:hint="coffee name" android:gravity="left"
             app:layout_constraintTop_toTopOf="@+id/coffeeAddNameTxt"
             app:layout_constraintBottom_toBottomOf="@+id/coffeeAddNameTxt" app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/coffeeAddNameTxt" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.637"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"/>
     <TextView
             android:text="Origin"
             android:layout_width="wrap_content"
@@ -61,11 +93,11 @@
             android:layout_height="40dp"
             android:id="@+id/txtAddOrigin"
             android:textSize="18sp"
-            android:hint="origin*"
+            android:hint="origin"
             app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.129"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/originAddTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="0.428"
+            app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="1.0"
             android:gravity="left"/>
     <Button
             android:text="Add to CoffeeBase"
@@ -84,14 +116,42 @@
             app:layout_constraintEnd_toEndOf="@+id/imgAddCoffee"
             app:layout_constraintStart_toStartOf="@+id/imgAddCoffee"
             app:layout_constraintTop_toBottomOf="@+id/imgAddCoffee" android:layout_marginTop="10dp"/>
-    <EditText
-            android:layout_width="118dp"
-            android:layout_height="52dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:id="@+id/idTxt"
-            app:layout_constraintStart_toStartOf="parent" android:hint="ID*" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.508" app:layout_constraintVertical_bias="0.423"
-            android:gravity="center"/>
+    <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/ratingTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingTxt"
+            android:id="@+id/ratingRadioGroup"
+            android:orientation="horizontal">
+        <RadioButton
+                android:text="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r1"/>
+        <RadioButton
+                android:text="2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r2"/>
+        <RadioButton
+                android:text="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r3"/>
+        <RadioButton
+                android:text="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r4"/>
+        <RadioButton
+                android:text="5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/r5"/>
+    </RadioGroup>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,12 +18,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddCoffee extends AppCompatActivity {
 
-    private String name, origin;
+    private String name, origin, roaster, rating;
     CoffeeBaseApi coffeeBaseApi;
     private Button pickImageBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
-    private TextView coffeeAddNameTxt, originAddTxt;
-    private EditText txtAddCoffeeName, txtAddOrigin, idTxt;
+    private EditText txtAddCoffeeName, txtAddOrigin, txtRoaster;
+    private RadioGroup ratingRadioGroup;
+    private RadioButton r1, r2, r3, r4, r5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,23 +64,30 @@ public class AddCoffee extends AppCompatActivity {
         pickImageBtn = findViewById(R.id.pickImageBtn);
         addToCoffeeBaseBtn = findViewById(R.id.addToCoffeeBaseBtn);
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
-        coffeeAddNameTxt = findViewById(R.id.coffeeAddNameTxt);
-        originAddTxt = findViewById(R.id.originAddTxt);
+        ratingRadioGroup = findViewById(R.id.ratingRadioGroup);
+        r1 = findViewById(R.id.r1);
+        r2 = findViewById(R.id.r2);
+        r3 = findViewById(R.id.r3);
+        r4 = findViewById(R.id.r4);
+        r5 = findViewById(R.id.r5);
         txtAddCoffeeName = findViewById(R.id.txtAddCoffeeName);
         txtAddOrigin = findViewById(R.id.txtAddOrigin);
+        txtRoaster = findViewById(R.id.txtRoaster);
     }
 
     public void addCoffee() {
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
+        roaster = txtRoaster.getText().toString();
+        setRating();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
-        Coffee coffee = new Coffee(name, origin);
+        Coffee coffee = new Coffee(name, origin, roaster, rating);
         Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -99,6 +107,23 @@ public class AddCoffee extends AppCompatActivity {
             }
         });
     }
+
+    private void setRating() {
+        int id = ratingRadioGroup.getCheckedRadioButtonId();
+        switch (id) {
+            case R.id.r1: rating="1";
+                break;
+            case R.id.r2: rating="2";
+                break;
+            case R.id.r3: rating="3";
+                break;
+            case R.id.r4: rating="4";
+                break;
+            case R.id.r5: rating="5";
+                break;
+        }
+    }
+
 
     private void pickImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);

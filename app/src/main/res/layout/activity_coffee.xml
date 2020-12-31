@@ -47,6 +47,24 @@
               android:layout_marginTop="15dp" app:layout_constraintStart_toStartOf="parent"
               android:textSize="18sp"
               app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+    <TextView android:text="Roaster"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/roasterTxt"
+              app:layout_constraintTop_toBottomOf="@+id/originTxt"
+              android:layout_marginTop="15dp"
+              app:layout_constraintStart_toStartOf="parent"
+              android:textSize="18sp"
+              app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
+    <TextView android:text="Rating"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:id="@+id/ratingTxt"
+              app:layout_constraintTop_toBottomOf="@+id/roasterTxt"
+              android:layout_marginTop="15dp"
+              app:layout_constraintStart_toStartOf="parent"
+              android:textSize="18sp"
+              app:layout_constraintEnd_toStartOf="@+id/guideline5"/>
     <TextView
             android:text="TextView"
             android:layout_width="wrap_content"
@@ -55,6 +73,26 @@
             app:layout_constraintTop_toTopOf="@+id/originTxt"
             app:layout_constraintBottom_toBottomOf="@+id/originTxt"
             app:layout_constraintStart_toEndOf="@+id/originTxt" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.476" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRoaster"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@+id/roasterTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/roasterTxt"
+            app:layout_constraintStart_toEndOf="@+id/roasterTxt" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.476" app:layout_constraintVertical_bias="0.0"/>
+    <TextView
+            android:text="TextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtRating"
+            android:textSize="18sp"
+            app:layout_constraintTop_toTopOf="@+id/ratingTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingTxt"
+            app:layout_constraintStart_toEndOf="@+id/ratingTxt" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.476" app:layout_constraintVertical_bias="0.0"/>
     <Button
             android:text="Add to Favourites"
