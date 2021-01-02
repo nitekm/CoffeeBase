@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">CoffeeBase</string>
+    <string name="sort_options">Sort</string>
+
+    <string-array name="sort_options">
+        <item>Default</item>
+        <item>Highest rating</item>
+        <item>Lowest rating</item>
+        <item>A to Z</item>
+        <item>Z to A</item>
+    </string-array>
 </resources>

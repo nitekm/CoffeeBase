@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +79,9 @@ public class CoffeeActivity extends AppCompatActivity {
                 txtOrigin.setText(coffee.getOrigin());
                 txtRoaster.setText(coffee.getRoaster());
                 txtRating.setText(coffee.getRating());
+                Glide.with(CoffeeActivity.this)
+                        .asBitmap().load(coffee.getImageUrl())
+                        .into(imgCoffee);
             }
 
             @Override

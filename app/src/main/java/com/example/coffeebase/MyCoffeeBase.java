@@ -1,6 +1,8 @@
 package com.example.coffeebase;
 
 import android.content.Intent;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +26,7 @@ public class MyCoffeeBase extends AppCompatActivity {
     private CoffeeBaseApi coffeeBaseApi;
     private CoffeeRecViewAdapter adapter;
     private RecyclerView coffeeRecView;
+    private Spinner sortSpinner;
     private ArrayList<Coffee> coffees = new ArrayList<>();
 
     @Override
@@ -32,8 +35,14 @@ public class MyCoffeeBase extends AppCompatActivity {
         setContentView(R.layout.activity_my_coffee_base);
 
         coffeeRecView = findViewById(R.id.coffeeRecView);
+        sortSpinner = findViewById(R.id.sortSpinner);
         gridLayoutManager = new GridLayoutManager(this, 2);
         coffeeRecView.setLayoutManager(gridLayoutManager);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(adapter);
 
         getCoffees();
     }
