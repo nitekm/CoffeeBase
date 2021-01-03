@@ -19,4 +19,15 @@ public interface CoffeeBaseApi {
     @DELETE("coffees/{id}")
     Call<Void> deleteCoffee(@Path("id") int id);
 
+    @GET("coffees/sort/rating_asc")
+    Call<List<Coffee>> getSortedByRatingAsc();
+
+    @GET("coffees/sort/rating_desc")
+    Call<List<Coffee>> getSortedByRatingDesc();
+
+    @GET("coffees/sort/name_asc")
+    Call<List<Coffee>> getSortedByNameAsc();
+
+    @GET("coffees/sort/rating_desc")
+    Call<List<Coffee>> getSortedByNameDesc();
 }

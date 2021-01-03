@@ -4,8 +4,8 @@
 
     <string-array name="sort_options">
         <item>Default</item>
-        <item>Highest rating</item>
-        <item>Lowest rating</item>
+        <item>Rating asc</item>
+        <item>Rating desc</item>
         <item>A to Z</item>
         <item>Z to A</item>
     </string-array>
