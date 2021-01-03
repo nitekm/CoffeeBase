@@ -2,10 +2,6 @@ package com.example.coffeebase;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,14 +18,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.File;
-
 public class CoffeeActivity extends AppCompatActivity {
 
     CoffeeBaseApi coffeeBaseApi;
     public static final String COFFEE_ID_KEY = "coffeeId";
     private ImageView imgCoffee;
-    private TextView coffeeNameTxt, originTxt, roasterTxt, ratingTxt, txtCoffeeName, txtOrigin, txtRoaster, txtRating;
+    private TextView txtCoffeeName, txtOrigin, txtRoaster, txtRating;
     private Button addToFavButton;
     private Coffee coffee;
     private FloatingActionButton deleteActionBtn;
@@ -41,8 +35,9 @@ public class CoffeeActivity extends AppCompatActivity {
 
         initViews();
 
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl(" http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -60,10 +55,6 @@ public class CoffeeActivity extends AppCompatActivity {
 
     public void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
-        coffeeNameTxt = findViewById(R.id.coffeeNameTxt);
-        originTxt = findViewById(R.id.originTxt);
-        roasterTxt = findViewById(R.id.roasterTxt);
-        ratingTxt = findViewById(R.id.ratingTxt);
         txtCoffeeName = findViewById(R.id.txtCoffeeName);
         txtOrigin = findViewById(R.id.txtOrigin);
         txtRoaster = findViewById(R.id.txtRoaster);
@@ -87,8 +78,10 @@ public class CoffeeActivity extends AppCompatActivity {
                 txtCoffeeName.setText(coffee.getName());
                 txtOrigin.setText(coffee.getOrigin());
                 txtRoaster.setText(coffee.getRoaster());
-                txtRating.setText("" + coffee.getRating());
-                setImage();
+                txtRating.setText(coffee.getRating());
+                Glide.with(CoffeeActivity.this)
+                        .asBitmap().load(coffee.getImageUrl())
+                        .into(imgCoffee);
             }
 
             @Override
@@ -135,7 +128,7 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-    /*
+/*
     public void addToFavourites(Coffee coffee) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +139,9 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-     */
-    public void setImage() {
-        {
-            File file = new File(coffee.getImageUri());
-            if(file.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                imgCoffee.setImageBitmap(myBitmap);
-            }
-        }
-    }
+ */
+
+
 
     @Override
     public void onBackPressed() {

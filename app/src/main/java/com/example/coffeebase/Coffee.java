@@ -19,22 +19,25 @@ public class Coffee {
     private String roaster;
     @SerializedName("rating")
     @Expose
-    private int rating;
-    @SerializedName("imageUri")
+    private String rating;
+    @SerializedName("imageUrl")
     @Expose
-    private String imageUri;
+    private String imageUrl;
 
-    public Coffee(String name, String origin, String roaster, int rating, String imageUri) {
+    public Coffee(String name, String origin, String roaster, String rating, String imageUrl) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
         this.rating = rating;
-        this.imageUri = imageUri;
+        this.imageUrl = imageUrl;
     }
-
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -61,19 +64,19 @@ public class Coffee {
         this.roaster = roaster;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImageUri(String imageUri) {
-        this.imageUri = imageUri;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

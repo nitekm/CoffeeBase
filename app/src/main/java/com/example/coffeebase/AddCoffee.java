@@ -1,37 +1,25 @@
 package com.example.coffeebase;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Build;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.*;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.bumptech.glide.Glide;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.File;
-
 public class AddCoffee extends AppCompatActivity {
 
-    private String name, origin, roaster, imageUri;
-    private int rating;
+    private String name, origin, roaster, rating, imageUrl;
     CoffeeBaseApi coffeeBaseApi;
-    private Button pickImageBtn, addToCoffeeBaseBtn;
+    private Button loadImgBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
-    private TextView coffeeAddNameTxt, originAddTxt, roasterAddTxt;
-    private EditText txtAddCoffeeName, txtAddOrigin, txtAddRoaster;
+    private EditText txtAddCoffeeName, txtAddOrigin, txtRoaster, txtPicUrl;
     private RadioGroup ratingRadioGroup;
-    private RadioButton radio1, radio2, radio3, radio4, radio5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,58 +35,43 @@ public class AddCoffee extends AppCompatActivity {
             }
         });
 
-       pickImageBtn.setOnClickListener(new View.OnClickListener() {
+       loadImgBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                   if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                           == PackageManager.PERMISSION_DENIED) {
-                       String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
-                       requestPermissions(permissions, 1001);
-                   }
-                   else {
-                       pickImageFromGallery();
-                   }
-               }
-               else {
-                   pickImageFromGallery();
-               }
+               imageUrl = txtPicUrl.getText().toString();
+               Glide.with(AddCoffee.this)
+                       .asBitmap().load(imageUrl)
+                       .into(imgAddCoffee);
            }
        });
+
     }
 
     public void initViews() {
-        pickImageBtn = findViewById(R.id.pickImageBtn);
+        loadImgBtn = findViewById(R.id.loadImgBtn);
         addToCoffeeBaseBtn = findViewById(R.id.addToCoffeeBaseBtn);
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
-        coffeeAddNameTxt = findViewById(R.id.coffeeAddNameTxt);
-        originAddTxt = findViewById(R.id.originAddTxt);
-        roasterAddTxt = findViewById(R.id.roasterAddTxt);
-        ratingRadioGroup = findViewById(R.id.ratingRadio);
+        ratingRadioGroup = findViewById(R.id.ratingRadioGroup);
         txtAddCoffeeName = findViewById(R.id.txtAddCoffeeName);
         txtAddOrigin = findViewById(R.id.txtAddOrigin);
-        txtAddRoaster = findViewById(R.id.txtAddRoaster);
-        radio1 = findViewById(R.id.radio1);
-        radio2 = findViewById(R.id.radio2);
-        radio3 = findViewById(R.id.radio3);
-        radio4 = findViewById(R.id.radio4);
-        radio5 = findViewById(R.id.radio5);
+        txtRoaster = findViewById(R.id.txtRoaster);
+        txtPicUrl = findViewById(R.id.txtPicUrl);
 
     }
 
     public void addCoffee() {
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
-        roaster = txtAddRoaster.getText().toString();
-        checkRating();
+        roaster = txtRoaster.getText().toString();
+        setRating();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
-        Coffee coffee = new Coffee(name, origin, roaster, rating, imageUri);
+        Coffee coffee = new Coffee(name, origin, roaster, rating, imageUrl);
         Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -119,40 +92,19 @@ public class AddCoffee extends AppCompatActivity {
         });
     }
 
-    private void pickImageFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 1000);
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case 1001:{
-                if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    pickImageFromGallery();
-                }
-                else {
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-                }
-            }
+    private void setRating() {
+        int id = ratingRadioGroup.getCheckedRadioButtonId();
+        switch (id) {
+            case R.id.r1: rating="1";
+                break;
+            case R.id.r2: rating="2";
+                break;
+            case R.id.r3: rating="3";
+                break;
+            case R.id.r4: rating="4";
+                break;
+            case R.id.r5: rating="5";
+                break;
         }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode == RESULT_OK && requestCode == 1000) {
-            imgAddCoffee.setImageURI(data.getData());
-            Uri uri = data.getData();
-            File imgFile = new File(String.valueOf(uri));
-            imageUri = imgFile.toString();
-        }
-    }
-
-    public void checkRating() {
-        if (radio1.isChecked()) rating = 1;
-        if (radio2.isChecked()) rating = 2;
-        if (radio3.isChecked()) rating = 3;
-        if (radio4.isChecked()) rating = 4;
-        if (radio5.isChecked()) rating = 5;
     }
 }

@@ -8,17 +8,16 @@
         tools:context=".AddCoffee">
 
 
-    <TextView
-            android:text="Roaster"
-            android:layout_width="wrap_content"
+    <EditText
+            android:layout_width="150dp"
             android:layout_height="40dp"
-            android:id="@+id/roasterAddTxt"
-            app:layout_constraintTop_toBottomOf="@+id/originAddTxt"
-            android:layout_marginTop="15dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/txtAddCoffeeName"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            android:gravity="center"/>
+            android:hint="coffee name" android:gravity="left"
+            app:layout_constraintTop_toTopOf="@+id/coffeeAddNameTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/coffeeAddNameTxt" app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"/>
     <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -36,26 +35,59 @@
             app:layout_constraintTop_toTopOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintHorizontal_bias="0.502"
             android:textSize="18sp" android:gravity="center"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline4"
-                                                android:orientation="horizontal"
-                                                app:layout_constraintGuide_begin="301dp"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline5"
-                                                android:orientation="vertical"
-                                                app:layout_constraintGuide_begin="142dp"/>
+
+    <TextView
+            android:text="Roaster"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/roasterTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            app:layout_constraintHorizontal_bias="0.537"
+            android:textSize="18sp" android:gravity="center" app:layout_constraintTop_toBottomOf="@+id/originAddTxt"
+            android:layout_marginTop="15dp"/>
+    <TextView
+            android:text="Rating"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/ratingTxt"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline5"
+            android:textSize="18sp" android:gravity="center" app:layout_constraintTop_toBottomOf="@+id/roasterTxt"
+            android:layout_marginTop="15dp"/>
+
     <EditText
             android:layout_width="150dp"
             android:layout_height="40dp"
-            android:id="@+id/txtAddCoffeeName"
+            android:id="@+id/txtRoaster"
             android:textSize="18sp"
-            android:hint="coffee name" android:gravity="center"
-            app:layout_constraintTop_toTopOf="@+id/coffeeAddNameTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/coffeeAddNameTxt" app:layout_constraintVertical_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/coffeeAddNameTxt" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.377"/>
+            android:hint="roaster"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/roasterTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/roasterTxt" app:layout_constraintVertical_bias="0.0"
+            android:gravity="left"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline4"
+                                                android:orientation="horizontal"
+                                                app:layout_constraintGuide_begin="376dp"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline5"
+                                                android:orientation="vertical"
+                                                app:layout_constraintGuide_begin="139dp"/>
+    <EditText
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:id="@+id/txtPicUrl"
+            android:textSize="18sp"
+            android:hint="picture url" android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintBottom_toTopOf="@+id/loadImgBtn"
+            app:layout_constraintTop_toBottomOf="@+id/imgAddCoffee" app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintVertical_bias="0.673"/>
     <TextView
             android:text="Origin"
             android:layout_width="wrap_content"
@@ -65,8 +97,7 @@
             android:layout_marginTop="15dp"
             app:layout_constraintStart_toStartOf="parent"
             android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:gravity="center"
-    />
+            app:layout_constraintEnd_toStartOf="@+id/guideline5" android:gravity="center"/>
     <EditText
             android:layout_width="150dp"
             android:layout_height="40dp"
@@ -74,10 +105,10 @@
             android:textSize="18sp"
             android:hint="origin"
             app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.129"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/originAddTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="0.428"
-            android:gravity="center"/>
+            app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="1.0"
+            android:gravity="left"/>
     <Button
             android:text="Add to CoffeeBase"
             android:layout_width="210dp"
@@ -87,72 +118,50 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline4"
             app:layout_constraintBottom_toBottomOf="parent" android:textSize="18sp"
-            app:layout_constraintHorizontal_bias="0.477" app:layout_constraintVertical_bias="0.902"/>
+            app:layout_constraintVertical_bias="0.943"/>
     <Button
-            android:text="choose photo"
+            android:text="load image"
             android:layout_width="200dp"
-            android:layout_height="41dp" android:id="@+id/pickImageBtn"
+            android:layout_height="41dp" android:id="@+id/loadImgBtn"
             app:layout_constraintEnd_toEndOf="@+id/imgAddCoffee"
             app:layout_constraintStart_toStartOf="@+id/imgAddCoffee"
-            app:layout_constraintTop_toBottomOf="@+id/imgAddCoffee" android:layout_marginTop="10dp"/>
-    <EditText
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:id="@+id/txtAddRoaster"
-            android:textSize="18sp"
-            android:hint="roaster"
-            app:layout_constraintStart_toStartOf="@+id/guideline5"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.129"
-            app:layout_constraintTop_toTopOf="@+id/roasterAddTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/roasterAddTxt"
-            app:layout_constraintVertical_bias="0.428"
-            android:gravity="center"/>
+            app:layout_constraintTop_toBottomOf="@+id/imgAddCoffee" android:layout_marginTop="92dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
     <RadioGroup
-            android:layout_width="250dp"
-            android:layout_height="45dp"
-            android:id="@+id/ratingRadio"
-            app:layout_constraintTop_toTopOf="@+id/ratingAddTxt"
-            app:layout_constraintBottom_toBottomOf="@+id/ratingAddTxt" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ratingAddTxt" app:layout_constraintHorizontal_bias="0.136"
-            app:layout_constraintVertical_bias="0.53999996"
-            android:orientation="horizontal" android:gravity="center">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline5"
+            app:layout_constraintTop_toTopOf="@+id/ratingTxt"
+            app:layout_constraintBottom_toBottomOf="@+id/ratingTxt"
+            android:id="@+id/ratingRadioGroup"
+            android:orientation="horizontal">
         <RadioButton
                 android:text="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio1"/>
+                android:id="@+id/r1"/>
         <RadioButton
                 android:text="2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio2"/>
+                android:id="@+id/r2"/>
         <RadioButton
                 android:text="3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio3"/>
+                android:id="@+id/r3"/>
         <RadioButton
                 android:text="4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio4"/>
+                android:id="@+id/r4"/>
         <RadioButton
                 android:text="5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio5"/>
+                android:id="@+id/r5"/>
     </RadioGroup>
-    <TextView
-            android:text="Rating"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:id="@+id/ratingAddTxt"
-            app:layout_constraintTop_toBottomOf="@+id/roasterAddTxt"
-            android:layout_marginTop="15dp"
-            app:layout_constraintStart_toStartOf="parent"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline5"
-            android:gravity="center"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

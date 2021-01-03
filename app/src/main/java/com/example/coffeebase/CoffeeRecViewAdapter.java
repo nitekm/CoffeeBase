@@ -12,6 +12,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+
 import static com.example.coffeebase.CoffeeActivity.COFFEE_ID_KEY;
 
 import java.util.ArrayList;
@@ -39,11 +41,11 @@ public class CoffeeRecViewAdapter extends RecyclerView.Adapter<CoffeeRecViewAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.coffeeNameTxt.setText(coffees.get(position).getName());
-        //TODO enable choosing photo from phone memory
-        //Glide.with(mContext)
-        //        .asBitmap()
-        //        .load(coffees.get(position).getCoffeeUrl())
-        //        .into(holder.coffeeImg);
+        holder.rating.setText(coffees.get(position).getRating());
+        Glide.with(mContext)
+                .asBitmap()
+                .load(coffees.get(position).getImageUrl())
+                .into(holder.coffeeImg);
         
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,13 +72,14 @@ public class CoffeeRecViewAdapter extends RecyclerView.Adapter<CoffeeRecViewAdap
 
         private CardView cardView;
         private ImageView coffeeImg;
-        private TextView coffeeNameTxt;
+        private TextView coffeeNameTxt, rating;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.coffeeCardView);
             coffeeImg = itemView.findViewById(R.id.imgCoffee);
             coffeeNameTxt = itemView.findViewById(R.id.coffeeNameTxt);
+            rating = itemView.findViewById(R.id.rating);
         }
     }
 }

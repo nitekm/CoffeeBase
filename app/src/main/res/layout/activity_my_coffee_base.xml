@@ -12,11 +12,29 @@
             android:layout_height="wrap_content"
             android:id="@+id/coffeeRecView" tools:ignore="MissingConstraints"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.498" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"/>
+            app:layout_constraintHorizontal_bias="0.498" app:layout_constraintTop_toTopOf="@+id/guideline7"
+            android:layout_marginTop="20dp"/>
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
+    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                android:id="@+id/guideline7" app:layout_constraintGuide_begin="25dp"
+                                                android:orientation="horizontal"/>
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sortSpinner"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline7" app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+            android:text="Sort   "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/sortOptionTxt"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline7" android:layout_marginStart="176dp"
+            app:layout_constraintVertical_bias="0.75" android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/sortSpinner" app:layout_constraintHorizontal_bias="1.0"
+            android:textStyle="bold"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
