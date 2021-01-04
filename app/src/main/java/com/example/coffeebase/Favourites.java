@@ -1,4 +1,4 @@
-/*
+
 package com.example.coffeebase;
 
 
@@ -24,13 +24,14 @@ public class Favourites extends AppCompatActivity {
     private RecyclerView favRecView;
     private CoffeeBaseApi coffeeBaseApi;
     private ArrayList<Coffee> favouriteCoffees = new ArrayList<>();
+    private ArrayList<Coffee> coffees = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
 
-        favRecView = (RecyclerView) findViewById(R.id.favRecView);
+        favRecView = findViewById(R.id.favRecView);
         gridLayoutManager = new GridLayoutManager(this, 2);
         favRecView.setLayoutManager(gridLayoutManager);
 
@@ -39,12 +40,12 @@ public class Favourites extends AppCompatActivity {
 
     public void getFavouriteCoffees() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
 
-        Call<List<Coffee>> call = coffeeBaseApi.getFavouriteCoffees();
+        Call<List<Coffee>> call = coffeeBaseApi.getCoffees();
         call.enqueue(new Callback<List<Coffee>>() {
             @Override
             public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
@@ -52,17 +53,21 @@ public class Favourites extends AppCompatActivity {
                     Toast.makeText(Favourites.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                favouriteCoffees = new ArrayList<>(response.body());
+                coffees = new ArrayList<>(response.body());
+                for(Coffee c:coffees) {
+                    if(c.getFavourite().equals("true")) favouriteCoffees.add(c);
+                }
                 adapter = new CoffeeRecViewAdapter(Favourites.this, favouriteCoffees);
                 favRecView.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<List<Coffee>> call, Throwable t) {
-                Toast.makeText(Favourites.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Favourites.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
+
 }
 
- */

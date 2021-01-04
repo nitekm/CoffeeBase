@@ -23,6 +23,19 @@ public class Coffee {
     @SerializedName("imageUrl")
     @Expose
     private String imageUrl;
+    @SerializedName("favourite")
+    @Expose
+    private String favourite;
+
+    public Coffee(Integer id, String name, String origin, String roaster, String rating, String imageUrl, String favourite) {
+        this.id = id;
+        this.name = name;
+        this.origin = origin;
+        this.roaster = roaster;
+        this.rating = rating;
+        this.imageUrl = imageUrl;
+        this.favourite = favourite;
+    }
 
     public Coffee(String name, String origin, String roaster, String rating, String imageUrl) {
         this.name = name;
@@ -78,5 +91,13 @@ public class Coffee {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public String getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(String favourite) {
+        this.favourite = favourite;
     }
 }

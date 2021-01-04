@@ -14,8 +14,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddCoffee extends AppCompatActivity {
 
-    private String name, origin, roaster, rating, imageUrl;
-    CoffeeBaseApi coffeeBaseApi;
+    private String name, origin, roaster, rating, imageUrl, favourite;
+    private CoffeeBaseApi coffeeBaseApi;
     private Button loadImgBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
     private EditText txtAddCoffeeName, txtAddOrigin, txtRoaster, txtPicUrl;

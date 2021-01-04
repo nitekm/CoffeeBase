@@ -18,6 +18,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.Map;
+
 public class CoffeeActivity extends AppCompatActivity {
 
     CoffeeBaseApi coffeeBaseApi;
@@ -47,7 +49,7 @@ public class CoffeeActivity extends AppCompatActivity {
             int coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
                 getSingleCoffee(coffeeId);
-                //addToFavourites(coffee);
+                addToFavourites(coffeeId);
                 deleteCoffee(coffeeId);
             }
         }
@@ -128,18 +130,33 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-/*
-    public void addToFavourites(Coffee coffee) {
+
+    public void addToFavourites(int id) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
-                coffeeBaseApi.addToFavourites(coffee);
+                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), "true");
+                Call<Void> call = coffeeBaseApi.updateCoffee(coffeeToUpdate);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(CoffeeActivity.this,"Something went wrong", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
- */
+
 
 
 

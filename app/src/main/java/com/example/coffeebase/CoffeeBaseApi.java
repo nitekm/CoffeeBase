@@ -4,6 +4,7 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CoffeeBaseApi {
 
@@ -15,6 +16,9 @@ public interface CoffeeBaseApi {
 
     @POST("coffees")
     Call<Void> addToCoffeeBase(@Body Coffee coffee);
+
+    @PUT("coffees")
+    Call<Void> updateCoffee(@Body Coffee coffeeToUpdate);
 
     @DELETE("coffees/{id}")
     Call<Void> deleteCoffee(@Path("id") int id);

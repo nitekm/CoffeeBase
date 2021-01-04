@@ -43,8 +43,6 @@ public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnIte
         sortSpinner.setAdapter(adapter);
 
         sortSpinner.setOnItemSelectedListener(this);
-
-        getCoffees();
     }
 
     public void getCoffees() {
@@ -153,7 +151,7 @@ public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnIte
             });
         }
         if (sortOption.equals("Z to A")) {
-            Call<List<Coffee>> call = coffeeBaseApi.getSortedByRatingDesc();
+            Call<List<Coffee>> call = coffeeBaseApi.getSortedByNameDesc();
             call.enqueue(new Callback<List<Coffee>>() {
                 @Override
                 public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
