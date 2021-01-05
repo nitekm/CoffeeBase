@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".MyCoffeeBase"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MyCoffeeBase">
+        android:layout_height="match_parent">
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
             android:layout_width="wrap_content"
@@ -14,14 +23,18 @@
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.498" app:layout_constraintTop_toTopOf="@+id/guideline7"
             android:layout_marginTop="20dp"/>
+
+        <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
+                                                    android:id="@+id/guideline7" app:layout_constraintGuide_begin="25dp"
+                                                    android:orientation="horizontal"/>
+
+
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/textView"
             app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline7" app:layout_constraintGuide_begin="25dp"
-                                                android:orientation="horizontal"/>
+
     <Spinner
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,4 +50,21 @@
             app:layout_constraintVertical_bias="0.75" android:textSize="16sp"
             app:layout_constraintEnd_toStartOf="@+id/sortSpinner" app:layout_constraintHorizontal_bias="1.0"
             android:textStyle="bold"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical" app:layout_constraintBottom_toTopOf="parent"
+                  android:id="@+id/linearLayout"/>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  app:layout_constraintTop_toTopOf="@+id/linearLayout"/>
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      app:layout_constraintTop_toTopOf="@+id/linearLayout"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</RelativeLayout>
