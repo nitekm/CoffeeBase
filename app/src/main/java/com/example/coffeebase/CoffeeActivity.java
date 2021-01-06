@@ -18,7 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.Map;
 
 public class CoffeeActivity extends AppCompatActivity {
 
@@ -36,7 +35,6 @@ public class CoffeeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_coffee);
 
         initViews();
-
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(" http://192.168.1.67:8080/")
@@ -130,7 +128,6 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-
     public void addToFavourites(int id) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +143,6 @@ public class CoffeeActivity extends AppCompatActivity {
                         }
                         Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         Toast.makeText(CoffeeActivity.this,"Something went wrong", Toast.LENGTH_SHORT).show();
@@ -155,10 +151,6 @@ public class CoffeeActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
 
     @Override
     public void onBackPressed() {

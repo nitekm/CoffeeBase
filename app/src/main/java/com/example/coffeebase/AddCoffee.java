@@ -14,7 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AddCoffee extends AppCompatActivity {
 
-    private String name, origin, roaster, rating, imageUrl, favourite;
+    private String name, origin, roaster, rating, imageUrl;
     private CoffeeBaseApi coffeeBaseApi;
     private Button loadImgBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
@@ -35,7 +35,7 @@ public class AddCoffee extends AppCompatActivity {
             }
         });
 
-       loadImgBtn.setOnClickListener(new View.OnClickListener() {
+        loadImgBtn.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
                imageUrl = txtPicUrl.getText().toString();
@@ -44,7 +44,6 @@ public class AddCoffee extends AppCompatActivity {
                        .into(imgAddCoffee);
            }
        });
-
     }
 
     public void initViews() {

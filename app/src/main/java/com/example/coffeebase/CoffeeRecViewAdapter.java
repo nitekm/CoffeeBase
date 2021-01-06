@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,19 +56,12 @@ public class CoffeeRecViewAdapter extends RecyclerView.Adapter<CoffeeRecViewAdap
         });
     }
 
-
     @Override
     public int getItemCount() {
         return coffees.size();
     }
 
-    public void setCoffees(ArrayList<Coffee> coffees) {
-        this.coffees = coffees;
-        notifyDataSetChanged();
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         private CardView cardView;
         private ImageView coffeeImg;
         private TextView coffeeNameTxt, rating;

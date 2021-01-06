@@ -31,7 +31,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/imgCoffee"
                 android:layout_marginTop="5dp"
-                android:id="@+id/coffeeNameTxt"/>
+                android:id="@+id/coffeeNameTxt" android:textColor="#FFFFFF"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:textSize="16sp"
                 android:layout_below="@+id/coffeeNameTxt"
                 android:layout_marginLeft="40dp"
-                android:id="@+id/ratingTxt" />
+                android:id="@+id/ratingTxt" android:textColor="#FFFFFF"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_below="@+id/coffeeNameTxt"
                 android:layout_marginLeft="20dp"
                 android:layout_toRightOf="@+id/ratingTxt"
-                android:id="@+id/rating"/>
+                android:id="@+id/rating" android:textColor="#FFFFFF"/>
 
     </RelativeLayout>
 
