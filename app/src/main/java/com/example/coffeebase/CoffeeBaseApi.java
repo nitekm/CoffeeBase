@@ -32,6 +32,6 @@ public interface CoffeeBaseApi {
     @GET("coffees/sort/name_asc")
     Call<List<Coffee>> getSortedByNameAsc();
 
-    @GET("coffees/sort/rating_desc")
+    @GET("coffees/sort/name_desc")
     Call<List<Coffee>> getSortedByNameDesc();
 }
