@@ -82,6 +82,10 @@ public class CoffeeActivity extends AppCompatActivity {
                 Glide.with(CoffeeActivity.this)
                         .asBitmap().load(coffee.getImageUrl())
                         .into(imgCoffee);
+
+                if (coffee.getFavourite().equals("true")) {
+                    addToFavButton.setEnabled(false);
+                }
             }
 
             @Override
@@ -91,42 +95,44 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-    public void deleteCoffee(int id) {
-        deleteActionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CoffeeActivity.this);
-                builder.setTitle("Delete this coffee?");
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {}
-                });
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Call<Void> call = coffeeBaseApi.deleteCoffee(id);
-                        call.enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (!response.isSuccessful()) {
-                                    Toast.makeText(CoffeeActivity.this, response.code(), Toast.LENGTH_SHORT).show();
-                                }
-                                Toast.makeText(CoffeeActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(CoffeeActivity.this, MyCoffeeBase.class);
-                                startActivity(intent);
-                            }
 
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                Toast.makeText(CoffeeActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
-                builder.create().show();
-            }
-        });
-    }
+    public void deleteCoffee(int id) {
+            deleteActionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CoffeeActivity.this);
+                    builder.setTitle("Delete this coffee?");
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Call<Void> call = coffeeBaseApi.deleteCoffee(id);
+                            call.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(CoffeeActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                                    }
+                                    Toast.makeText(CoffeeActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(CoffeeActivity.this, MyCoffeeBase.class);
+                                    startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    Toast.makeText(CoffeeActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    });
+                    builder.create().show();
+                }
+            });
+        }
 
     public void addToFavourites(int id) {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
