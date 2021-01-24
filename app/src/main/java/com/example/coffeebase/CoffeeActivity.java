@@ -37,7 +37,7 @@ public class CoffeeActivity extends AppCompatActivity {
         initViews();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(" http://192.168.1.67:8080/")
+                .baseUrl(" http://127.0.0.1:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);

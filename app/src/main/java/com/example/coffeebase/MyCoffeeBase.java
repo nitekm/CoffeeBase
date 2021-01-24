@@ -46,7 +46,7 @@ public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.67:8080/")
+                .baseUrl("http://127.0.0.1:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
