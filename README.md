@@ -12,7 +12,7 @@ for functionalities:
 
 It presents saved coffees in elegant form, using some of Android features like Card View and Recycler View.
 
-## Technologies
+## Technology
 * Java
 * Android (Retrofit2)
 
