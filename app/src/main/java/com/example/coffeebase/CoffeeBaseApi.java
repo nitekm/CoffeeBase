@@ -20,7 +20,7 @@ public interface CoffeeBaseApi {
     @PUT("coffees/{id}")
     Call<Void> updateCoffee(@Path("id") int id, @Body Coffee coffeeToUpdate);
 
-    @PATCH
+    @PATCH("coffees/{id}")
     Call<Void> switchFavourite(@Path("id") int id);
 
     @DELETE("coffees/{id}")

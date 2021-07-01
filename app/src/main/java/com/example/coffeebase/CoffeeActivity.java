@@ -136,9 +136,7 @@ public class CoffeeActivity extends AppCompatActivity {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), true);
-                System.out.println(coffeeToUpdate.getName() + " fav: " + coffeeToUpdate.isFavourite());
-                Call<Void> call = coffeeBaseApi.updateCoffee(id, coffeeToUpdate);
+                Call<Void> call = coffeeBaseApi.switchFavourite(id);
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -156,6 +154,33 @@ public class CoffeeActivity extends AppCompatActivity {
             }
         });
     }
+
+//    update coffee implement in future
+    public void updateCoffee(int id) {};
+//    public void addToFavourites(int id) {
+//        addToFavButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), true);
+//                System.out.println(coffeeToUpdate.getName() + " fav: " + coffeeToUpdate.isFavourite());
+//                Call<Void> call = coffeeBaseApi.updateCoffee(id, coffeeToUpdate);
+//                call.enqueue(new Callback<Void>() {
+//                    @Override
+//                    public void onResponse(Call<Void> call, Response<Void> response) {
+//                        if (!response.isSuccessful()) {
+//                            Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+//                            return;
+//                        }
+//                        Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
+//                    }
+//                    @Override
+//                    public void onFailure(Call<Void> call, Throwable t) {
+//                        Toast.makeText(CoffeeActivity.this,"Something went wrong", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//            }
+//        });
+//    }
 
     @Override
     public void onBackPressed() {
