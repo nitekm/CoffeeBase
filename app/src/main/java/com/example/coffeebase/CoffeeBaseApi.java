@@ -17,8 +17,11 @@ public interface CoffeeBaseApi {
     @POST("coffees")
     Call<Void> addToCoffeeBase(@Body Coffee coffee);
 
-    @PUT("coffees")
-    Call<Void> updateCoffee(@Body Coffee coffeeToUpdate);
+    @PUT("coffees/{id}")
+    Call<Void> updateCoffee(@Path("id") int id, @Body Coffee coffeeToUpdate);
+
+    @PATCH
+    Call<Void> switchFavourite(@Path("id") int id);
 
     @DELETE("coffees/{id}")
     Call<Void> deleteCoffee(@Path("id") int id);

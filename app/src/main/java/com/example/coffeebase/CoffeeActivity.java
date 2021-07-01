@@ -18,7 +18,6 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class CoffeeActivity extends AppCompatActivity {
 
     CoffeeBaseApi coffeeBaseApi;
@@ -138,7 +137,8 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), true);
-                Call<Void> call = coffeeBaseApi.updateCoffee(coffeeToUpdate);
+                System.out.println(coffeeToUpdate.getName() + " fav: " + coffeeToUpdate.isFavourite());
+                Call<Void> call = coffeeBaseApi.updateCoffee(id, coffeeToUpdate);
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {

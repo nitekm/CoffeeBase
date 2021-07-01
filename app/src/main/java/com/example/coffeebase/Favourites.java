@@ -1,7 +1,6 @@
 
 package com.example.coffeebase;
 
-
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Favourites extends AppCompatActivity {
 
@@ -54,6 +52,7 @@ public class Favourites extends AppCompatActivity {
                 }
                 coffees = new ArrayList<>(response.body());
                 for(Coffee c:coffees) {
+                    System.out.println(c.getName() + " " + c.isFavourite());
                     if(c.isFavourite() == true) favouriteCoffees.add(c);
                 }
                 adapter = new CoffeeRecViewAdapter(Favourites.this, favouriteCoffees);
