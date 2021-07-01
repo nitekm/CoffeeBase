@@ -25,9 +25,9 @@ public class Coffee {
     private String imageUrl;
     @SerializedName("favourite")
     @Expose
-    private String favourite;
+    private boolean favourite;
 
-    public Coffee(Integer id, String name, String origin, String roaster, String rating, String imageUrl, String favourite) {
+    public Coffee(Integer id, String name, String origin, String roaster, String rating, String imageUrl, boolean favourite) {
         this.id = id;
         this.name = name;
         this.origin = origin;
@@ -93,11 +93,11 @@ public class Coffee {
         this.imageUrl = imageUrl;
     }
 
-    public String getFavourite() {
+    public boolean isFavourite() {
         return favourite;
     }
 
-    public void setFavourite(String favourite) {
+    public void setFavourite(boolean favourite) {
         this.favourite = favourite;
     }
 }

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class CoffeeRecViewAdapter extends RecyclerView.Adapter<CoffeeRecViewAdapter.ViewHolder> {
 
-    private static final String TAG = "BooksRecViewAdapter";
+    private static final String TAG = "CoffeeRecViewAdapter";
 
     private ArrayList<Coffee> coffees;
     private Context mContext;

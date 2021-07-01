@@ -37,7 +37,7 @@ public class CoffeeActivity extends AppCompatActivity {
         initViews();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(" http://127.0.0.1:8080/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -83,7 +83,7 @@ public class CoffeeActivity extends AppCompatActivity {
                         .asBitmap().load(coffee.getImageUrl())
                         .into(imgCoffee);
 
-                if (coffee.getFavourite().equals("true")) {
+                if (coffee.isFavourite() == true) {
                     addToFavButton.setEnabled(false);
                 }
             }
@@ -94,7 +94,6 @@ public class CoffeeActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public void deleteCoffee(int id) {
             deleteActionBtn.setOnClickListener(new View.OnClickListener() {
@@ -138,7 +137,7 @@ public class CoffeeActivity extends AppCompatActivity {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), "true");
+                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), true);
                 Call<Void> call = coffeeBaseApi.updateCoffee(coffeeToUpdate);
                 call.enqueue(new Callback<Void>() {
                     @Override

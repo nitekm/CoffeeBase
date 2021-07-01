@@ -39,7 +39,7 @@ public class Favourites extends AppCompatActivity {
 
     public void getFavouriteCoffees() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://127.0.0.1:8080/")
+                .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -54,7 +54,7 @@ public class Favourites extends AppCompatActivity {
                 }
                 coffees = new ArrayList<>(response.body());
                 for(Coffee c:coffees) {
-                    if(c.getFavourite().equals("true")) favouriteCoffees.add(c);
+                    if(c.isFavourite() == true) favouriteCoffees.add(c);
                 }
                 adapter = new CoffeeRecViewAdapter(Favourites.this, favouriteCoffees);
                 favRecView.setAdapter(adapter);
