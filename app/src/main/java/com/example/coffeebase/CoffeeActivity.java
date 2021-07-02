@@ -64,7 +64,6 @@ public class CoffeeActivity extends AppCompatActivity {
     }
 
     public void getSingleCoffee(int id) {
-
         Call<Coffee> call = coffeeBaseApi.getSingleCoffee(id);
         call.enqueue(new Callback<Coffee>() {
             @Override
@@ -83,7 +82,7 @@ public class CoffeeActivity extends AppCompatActivity {
                         .into(imgCoffee);
 
                 if (coffee.isFavourite() == true) {
-                    addToFavButton.setEnabled(false);
+                    addToFavButton.setText("Remove from Favourites");
                 }
             }
 
@@ -144,7 +143,10 @@ public class CoffeeActivity extends AppCompatActivity {
                             Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
+                        //refresh activity to see button text change
+                        finish();
+                        startActivity(getIntent());
+                        Toast.makeText(CoffeeActivity.this,"Favourite status changed", Toast.LENGTH_SHORT).show();
                     }
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
