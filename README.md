@@ -9,7 +9,7 @@ present them in elegant form, using some of Android features like Card View and 
 Please consider that I'm mostly backend developer and designing UI is not my strongest point.  
 Also android app does not use all of API functionalities yet.
 
-For server side of application please refer to [CoffeeBase API](https://github.com/nitekm/CoffeeBaseApi)
+For server (better) side of application please refer to [CoffeeBase API](https://github.com/nitekm/CoffeeBaseApi)
 
 ## Technology Stack
 * Java 11
