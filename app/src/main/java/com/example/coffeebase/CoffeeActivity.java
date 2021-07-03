@@ -145,7 +145,9 @@ public class CoffeeActivity extends AppCompatActivity {
                         }
                         //refresh activity to see button text change
                         finish();
+                        overridePendingTransition(0, 0);
                         startActivity(getIntent());
+                        overridePendingTransition(0, 0);
                         Toast.makeText(CoffeeActivity.this,"Favourite status changed", Toast.LENGTH_SHORT).show();
                     }
                     @Override
