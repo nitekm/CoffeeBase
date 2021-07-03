@@ -6,7 +6,8 @@ CoffeeBase is an android app client for CoffeeBase API.
 App purpose is to send and receive requests from API using [Retrofit](https://square.github.io/retrofit/) and 
 present them in elegant form, using some of Android features like Card View and Recycler View.  
 
-Please consider that I'm mostly backend developer and designing UI is not my strongest point.
+Please consider that I'm mostly backend developer and designing UI is not my strongest point.  
+Also android app does not use all of API functionalities yet.
 
 For server side of application please refer to [CoffeeBase API](https://github.com/nitekm/CoffeeBaseApi)
 
@@ -50,4 +51,3 @@ When coffee is in favourites, button changes to 'Remove from Favourites'
 ### About
 Yup, that's all  
 ![About](https://user-images.githubusercontent.com/72076364/124353303-0400ae00-dc06-11eb-8910-1cb3f59f845e.PNG)
-
