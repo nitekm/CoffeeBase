@@ -110,7 +110,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/originAddTxt" app:layout_constraintVertical_bias="1.0"
             android:gravity="left"/>
     <Button
-            android:text="Add to CoffeeBase"
+            android:text="Save"
             android:layout_width="210dp"
             android:layout_height="70dp"
             android:id="@+id/saveChangesBtn"

@@ -48,7 +48,7 @@ public class AddCoffee extends AppCompatActivity {
 
     public void initViews() {
         loadImgBtn = findViewById(R.id.loadImgBtn);
-        addToCoffeeBaseBtn = findViewById(R.id.addToCoffeeBaseBtn);
+        addToCoffeeBaseBtn = findViewById(R.id.saveChangesBtn);
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
         ratingRadioGroup = findViewById(R.id.ratingRadioGroup);
         txtAddCoffeeName = findViewById(R.id.txtAddCoffeeName);
