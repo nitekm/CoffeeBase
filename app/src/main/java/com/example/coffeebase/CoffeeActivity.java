@@ -26,7 +26,8 @@ public class CoffeeActivity extends AppCompatActivity {
     private TextView txtCoffeeName, txtOrigin, txtRoaster, txtRating;
     private Button addToFavButton;
     private Coffee coffee;
-    private FloatingActionButton deleteActionBtn;
+    private FloatingActionButton deleteActionBtn, editActionBtn;
+    private int coffeeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +44,12 @@ public class CoffeeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(null != intent) {
-            int coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
+            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
                 getSingleCoffee(coffeeId);
                 addToFavourites(coffeeId);
                 deleteCoffee(coffeeId);
+                editCoffee();
             }
         }
     }
@@ -60,6 +62,7 @@ public class CoffeeActivity extends AppCompatActivity {
         txtRating = findViewById(R.id.txtRating);
         addToFavButton = findViewById(R.id.addToFavouritesBtn);
         deleteActionBtn = findViewById(R.id.deleteActionBtn);
+        editActionBtn = findViewById(R.id.editActionBtn);
 
     }
 
@@ -101,8 +104,7 @@ public class CoffeeActivity extends AppCompatActivity {
                     builder.setTitle("Delete this coffee?");
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
+                        public void onClick(DialogInterface dialog, int which) {}
                     });
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
@@ -159,32 +161,28 @@ public class CoffeeActivity extends AppCompatActivity {
         });
     }
 
-//    update coffee implement in future
-    public void updateCoffee(int id) {};
-//    public void addToFavourites(int id) {
-//        addToFavButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Coffee coffeeToUpdate = new Coffee(coffee.getId(), coffee.getName(), coffee.getOrigin(), coffee.getRoaster(), coffee.getRating(), coffee.getImageUrl(), true);
-//                System.out.println(coffeeToUpdate.getName() + " fav: " + coffeeToUpdate.isFavourite());
-//                Call<Void> call = coffeeBaseApi.updateCoffee(id, coffeeToUpdate);
-//                call.enqueue(new Callback<Void>() {
-//                    @Override
-//                    public void onResponse(Call<Void> call, Response<Void> response) {
-//                        if (!response.isSuccessful()) {
-//                            Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//                        Toast.makeText(CoffeeActivity.this, "Added to favourites", Toast.LENGTH_SHORT).show();
-//                    }
-//                    @Override
-//                    public void onFailure(Call<Void> call, Throwable t) {
-//                        Toast.makeText(CoffeeActivity.this,"Something went wrong", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//            }
-//        });
-//    }
+    public void editCoffee() {
+        editActionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CoffeeActivity.this);
+                builder.setTitle("Edit this coffee?");
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {}
+                });
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(final DialogInterface dialog, final int which) {
+                        Intent intent = new Intent(CoffeeActivity.this, EditCoffee.class);
+                        intent.putExtra(COFFEE_ID_KEY, coffeeId);
+                        startActivity(intent);
+                    }
+                });
+                builder.create().show();
+            }
+        });
+    };
 
     @Override
     public void onBackPressed() {

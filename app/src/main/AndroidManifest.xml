@@ -16,6 +16,10 @@
             android:usesCleartextTraffic="true">
         <activity android:name=".AddCoffee">
         </activity>
+        <activity android:name=".EditCoffee"
+                  android:label="EditCoffee">
+
+        </activity>
         <activity
                 android:name=".Favourites"
                 android:label="Favourites">
