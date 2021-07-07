@@ -3,7 +3,7 @@
           package="com.example.coffeebase">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
             android:allowBackup="true"
@@ -14,7 +14,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".AddCoffee">
+        <activity
+                android:name=".AddCoffee">
         </activity>
         <activity android:name=".EditCoffee"
                   android:label="EditCoffee">
@@ -24,7 +25,8 @@
                 android:name=".Favourites"
                 android:label="Favourites">
         </activity>
-        <activity android:name=".CoffeeActivity">
+        <activity
+                android:name=".CoffeeActivity">
         </activity>
         <activity
                 android:name=".MyCoffeeBase"

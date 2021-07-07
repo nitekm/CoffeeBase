@@ -33,7 +33,7 @@ public class EditCoffee extends AppCompatActivity {
         initViews();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
+                .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
@@ -64,7 +64,7 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
-    public void initViews() {
+    private void initViews() {
         loadImgBtn = findViewById(R.id.loadImgBtn);
         saveChangesBtn = findViewById(R.id.saveChangesBtn);
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
@@ -81,7 +81,7 @@ public class EditCoffee extends AppCompatActivity {
 
     }
 
-    public void editCoffee(int id) {
+    private void editCoffee(int id) {
         imageUrl = txtPicUrl.getText().toString();
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
@@ -109,7 +109,7 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
-    public void getSingleCoffee(int id) {
+    private void getSingleCoffee(int id) {
         Call<Coffee> call = coffeeBaseApi.getSingleCoffee(id);
         call.enqueue(new Callback<Coffee>() {
             @Override

@@ -46,7 +46,7 @@ public class AddCoffee extends AppCompatActivity {
        });
     }
 
-    public void initViews() {
+    private void initViews() {
         loadImgBtn = findViewById(R.id.loadImgBtn);
         addToCoffeeBaseBtn = findViewById(R.id.saveChangesBtn);
         imgAddCoffee = findViewById(R.id.imgAddCoffee);
@@ -58,14 +58,14 @@ public class AddCoffee extends AppCompatActivity {
 
     }
 
-    public void addCoffee() {
+    private void addCoffee() {
         name = txtAddCoffeeName.getText().toString();
         origin = txtAddOrigin.getText().toString();
         roaster = txtRoaster.getText().toString();
         setRating();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:8080/")
+                .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);

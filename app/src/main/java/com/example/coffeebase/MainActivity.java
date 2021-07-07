@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void initViews() {
+    private void initViews() {
         addNewCoffeeBtn = findViewById(R.id.btnAddCoffee);
         myCoffeeBaseBtn = findViewById(R.id.btnMyCoffeeBase);
         favouriteCoffeesBtn = findViewById(R.id.btnFavCoffee);
