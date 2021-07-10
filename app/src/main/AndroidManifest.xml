@@ -15,10 +15,11 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity
-                android:name=".AddCoffee">
+                android:name=".AddCoffee"
+                android:label="Add new coffee">
         </activity>
         <activity android:name=".EditCoffee"
-                  android:label="EditCoffee">
+                  android:label="Edit coffee">
 
         </activity>
         <activity
@@ -26,11 +27,12 @@
                 android:label="Favourites">
         </activity>
         <activity
-                android:name=".CoffeeActivity">
+                android:name=".CoffeeActivity"
+                android:label="My CoffeeBase">
         </activity>
         <activity
                 android:name=".MyCoffeeBase"
-                android:label="My Coffee Base">
+                android:label="My CoffeeBase">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>
