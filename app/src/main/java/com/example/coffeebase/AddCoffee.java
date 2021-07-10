@@ -76,7 +76,7 @@ public class AddCoffee extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful()) {
-                    Toast.makeText(AddCoffee.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddCoffee.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Toast.makeText(AddCoffee.this, "Coffee added", Toast.LENGTH_SHORT).show();

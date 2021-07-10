@@ -75,7 +75,7 @@ public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(MyCoffeeBase.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MyCoffeeBase.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 coffees = new ArrayList<>(response.body());

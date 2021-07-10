@@ -94,7 +94,7 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(!response.isSuccessful()) {
-                    Toast.makeText(EditCoffee.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCoffee.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Toast.makeText(EditCoffee.this, "Changes saved", Toast.LENGTH_SHORT).show();
@@ -115,7 +115,7 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onResponse(Call<Coffee> call, Response<Coffee> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(EditCoffee.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditCoffee.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 coffee = response.body();

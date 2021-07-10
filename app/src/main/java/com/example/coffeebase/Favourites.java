@@ -47,7 +47,7 @@ public class Favourites extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(Favourites.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Favourites.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 coffees = new ArrayList<>(response.body());

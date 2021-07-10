@@ -72,7 +72,7 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Coffee> call, Response<Coffee> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CoffeeActivity.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 coffee = response.body();
@@ -114,7 +114,7 @@ public class CoffeeActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
                                     if (!response.isSuccessful()) {
-                                        Toast.makeText(CoffeeActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(CoffeeActivity.this, response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                                     }
                                     Toast.makeText(CoffeeActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(CoffeeActivity.this, MyCoffeeBase.class);
@@ -142,7 +142,7 @@ public class CoffeeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         if (!response.isSuccessful()) {
-                            Toast.makeText(CoffeeActivity.this, "Code: " + response.code(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CoffeeActivity.this, "Code: " + response.code() + " " + response.message(), Toast.LENGTH_SHORT).show();
                             return;
                         }
                         //refresh activity to see button text change
