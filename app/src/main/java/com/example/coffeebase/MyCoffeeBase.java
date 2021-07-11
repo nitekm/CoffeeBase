@@ -19,7 +19,7 @@ import java.util.List;
 public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private GridLayoutManager gridLayoutManager;
-    private CoffeeBaseApi coffeeBaseApi;
+    private CoffeeApi coffeeApi;
     private CoffeeRecViewAdapter adapter;
     private RecyclerView coffeeRecView;
     private Spinner sortSpinner;
@@ -49,26 +49,26 @@ public class MyCoffeeBase extends AppCompatActivity implements AdapterView.OnIte
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        coffeeApi = retrofit.create(CoffeeApi.class);
 
         String sortOption = parent.getItemAtPosition(position).toString();
 
-        Call<List<Coffee>> call = coffeeBaseApi.getCoffees();
+        Call<List<Coffee>> call = coffeeApi.getCoffees();
 
         if (sortOption.equals("Rating asc")) {
-            call = coffeeBaseApi.getSortedByRatingAsc();
+            call = coffeeApi.getSortedByRatingAsc();
         }
         if (sortOption.equals("Rating desc")) {
-           call = coffeeBaseApi.getSortedByRatingDesc();
+           call = coffeeApi.getSortedByRatingDesc();
         }
         if (sortOption.equals("A to Z")) {
-           call = coffeeBaseApi.getSortedByNameAsc();
+           call = coffeeApi.getSortedByNameAsc();
         }
         if (sortOption.equals("Z to A")) {
-            call = coffeeBaseApi.getSortedByNameDesc();
+            call = coffeeApi.getSortedByNameDesc();
         }
         if (sortOption.equals("Default")) {
-            call = coffeeBaseApi.getCoffees();
+            call = coffeeApi.getCoffees();
         }
 
         call.enqueue(new Callback<List<Coffee>>() {

@@ -17,7 +17,7 @@ public class EditCoffee extends AppCompatActivity {
     public static final String COFFEE_ID_KEY = "coffeeId";
     private Coffee coffee;
     private String name, origin, roaster, rating, imageUrl;
-    private CoffeeBaseApi coffeeBaseApi;
+    private CoffeeApi coffeeApi;
     private Button loadImgBtn, saveChangesBtn;
     private ImageView imgAddCoffee;
     private EditText txtAddCoffeeName, txtAddOrigin, txtRoaster, txtPicUrl;
@@ -36,7 +36,7 @@ public class EditCoffee extends AppCompatActivity {
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        coffeeApi = retrofit.create(CoffeeApi.class);
 
         Intent intent = getIntent();
         if (null != intent) {
@@ -89,7 +89,7 @@ public class EditCoffee extends AppCompatActivity {
         setRating();
 
         Coffee coffee = new Coffee(name, origin, roaster, rating, imageUrl);
-        Call<Void> call = coffeeBaseApi.updateCoffee(id, coffee);
+        Call<Void> call = coffeeApi.updateCoffee(id, coffee);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -110,7 +110,7 @@ public class EditCoffee extends AppCompatActivity {
     }
 
     private void getSingleCoffee(int id) {
-        Call<Coffee> call = coffeeBaseApi.getSingleCoffee(id);
+        Call<Coffee> call = coffeeApi.getSingleCoffee(id);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(Call<Coffee> call, Response<Coffee> response) {

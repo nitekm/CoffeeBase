@@ -15,22 +15,36 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity
-                android:name=".AddCoffee">
+                android:name=".MyGroups"
+                android:label="My Groups">
         </activity>
-        <activity android:name=".EditCoffee"
-                  android:label="EditCoffee">
-
+        <activity
+                android:name=".AddGroup"
+                android:label="Create Group">
+        </activity>
+        <activity
+                android:name=".AddCoffee"
+                android:label="Add new Coffee">
+        </activity>
+        <activity
+                android:name=".GroupsActivity"
+                android:label="Groups">
+        </activity>
+        <activity
+                android:name=".EditCoffee"
+                android:label="Edit Coffee">
         </activity>
         <activity
                 android:name=".Favourites"
                 android:label="Favourites">
         </activity>
         <activity
-                android:name=".CoffeeActivity">
+                android:name=".CoffeeActivity"
+                android:label="My CoffeeBase">
         </activity>
         <activity
                 android:name=".MyCoffeeBase"
-                android:label="My Coffee Base">
+                android:label="My CoffeeBase">
         </activity>
         <activity android:name=".MainActivity">
             <intent-filter>

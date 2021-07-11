@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AddCoffee extends AppCompatActivity {
 
     private String name, origin, roaster, rating, imageUrl;
-    private CoffeeBaseApi coffeeBaseApi;
+    private CoffeeApi coffeeApi;
     private Button loadImgBtn, addToCoffeeBaseBtn;
     private ImageView imgAddCoffee;
     private EditText txtAddCoffeeName, txtAddOrigin, txtRoaster, txtPicUrl;
@@ -68,10 +68,10 @@ public class AddCoffee extends AppCompatActivity {
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        coffeeApi = retrofit.create(CoffeeApi.class);
 
         Coffee coffee = new Coffee(name, origin, roaster, rating, imageUrl);
-        Call<Void> call = coffeeBaseApi.addToCoffeeBase(coffee);
+        Call<Void> call = coffeeApi.addToCoffeeBase(coffee);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

@@ -19,7 +19,7 @@ public class Favourites extends AppCompatActivity {
     private GridLayoutManager gridLayoutManager;
     private CoffeeRecViewAdapter adapter;
     private RecyclerView favRecView;
-    private CoffeeBaseApi coffeeBaseApi;
+    private CoffeeApi coffeeApi;
     private ArrayList<Coffee> favouriteCoffees = new ArrayList<>();
     private ArrayList<Coffee> coffees = new ArrayList<>();
 
@@ -40,9 +40,9 @@ public class Favourites extends AppCompatActivity {
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        coffeeApi = retrofit.create(CoffeeApi.class);
 
-        Call<List<Coffee>> call = coffeeBaseApi.getCoffees();
+        Call<List<Coffee>> call = coffeeApi.getCoffees();
         call.enqueue(new Callback<List<Coffee>>() {
             @Override
             public void onResponse(Call<List<Coffee>> call, Response<List<Coffee>> response) {

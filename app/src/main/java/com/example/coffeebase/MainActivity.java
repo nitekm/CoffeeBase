@@ -10,7 +10,7 @@ import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button addNewCoffeeBtn, myCoffeeBaseBtn, favouriteCoffeesBtn, aboutBtn;
+    private Button addNewCoffeeBtn, myCoffeeBaseBtn, favouriteCoffeesBtn, aboutBtn, groupsBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
                 builder.create().show();
             }
         });
+
+        groupsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GroupsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initViews() {
@@ -62,5 +70,6 @@ public class MainActivity extends AppCompatActivity {
         myCoffeeBaseBtn = findViewById(R.id.btnMyCoffeeBase);
         favouriteCoffeesBtn = findViewById(R.id.btnFavCoffee);
         aboutBtn = findViewById(R.id.btnAbout);
+        groupsBtn = findViewById(R.id.btnMyGroups);
     }
 }

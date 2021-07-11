@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <ImageView
+            android:layout_width="150dp"
+            android:layout_height="130dp"
+            tools:srcCompat="@tools:sample/avatars"
+            android:id="@+id/imgCoffeeBean2"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="50dp"
+            android:src="@mipmap/coffeebean"/>
+
+    <Button
+            android:text="New Group"
+            android:layout_width="341dp"
+            android:layout_height="126dp"
+            android:id="@+id/btnAddGroup"
+            android:drawableTop="@drawable/ic_add"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toBottomOf="@+id/imgCoffeeBean2"
+            android:layout_marginTop="50dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintHorizontal_bias="0.25"/>
+
+    <Button
+            android:text="My Groups"
+            android:layout_width="341dp"
+            android:layout_height="85dp"
+            android:id="@+id/btnMyGroups"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddGroup"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline8"
+            app:layout_constraintGuide_begin="35dp"
+            android:orientation="vertical"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline9"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="35dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

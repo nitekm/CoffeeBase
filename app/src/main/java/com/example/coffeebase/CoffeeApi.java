@@ -4,9 +4,8 @@ import retrofit2.Call;
 import retrofit2.http.*;
 
 import java.util.List;
-import java.util.Map;
 
-public interface CoffeeBaseApi {
+public interface CoffeeApi {
 
     @GET("coffees")
     Call<List<Coffee>> getCoffees();

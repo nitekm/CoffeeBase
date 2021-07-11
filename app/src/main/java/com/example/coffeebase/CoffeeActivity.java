@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CoffeeActivity extends AppCompatActivity {
 
-    CoffeeBaseApi coffeeBaseApi;
+    CoffeeApi coffeeApi;
     public static final String COFFEE_ID_KEY = "coffeeId";
     private ImageView imgCoffee;
     private TextView txtCoffeeName, txtOrigin, txtRoaster, txtRating;
@@ -40,7 +40,7 @@ public class CoffeeActivity extends AppCompatActivity {
                 .baseUrl(BuildConfig.URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        coffeeBaseApi = retrofit.create(CoffeeBaseApi.class);
+        coffeeApi = retrofit.create(CoffeeApi.class);
 
         Intent intent = getIntent();
         if(null != intent) {
@@ -67,7 +67,7 @@ public class CoffeeActivity extends AppCompatActivity {
     }
 
     public void getSingleCoffee(int id) {
-        Call<Coffee> call = coffeeBaseApi.getSingleCoffee(id);
+        Call<Coffee> call = coffeeApi.getSingleCoffee(id);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(Call<Coffee> call, Response<Coffee> response) {
@@ -109,7 +109,7 @@ public class CoffeeActivity extends AppCompatActivity {
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Call<Void> call = coffeeBaseApi.deleteCoffee(id);
+                            Call<Void> call = coffeeApi.deleteCoffee(id);
                             call.enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -137,7 +137,7 @@ public class CoffeeActivity extends AppCompatActivity {
         addToFavButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Call<Void> call = coffeeBaseApi.switchFavourite(id);
+                Call<Void> call = coffeeApi.switchFavourite(id);
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {

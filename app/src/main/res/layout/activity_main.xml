@@ -7,64 +7,95 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <Button
-            android:text="about"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/btnAbout"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2" app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintHorizontal_bias="0.494"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.38" app:layout_constraintTop_toBottomOf="@+id/btnFavCoffee"/>
-    <Button
-            android:text="Add new coffee"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:id="@+id/btnAddCoffee"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/imgCoffeeBean"
-            android:layout_marginTop="48dp"
-            android:drawableTop="@drawable/ic_add"
-            app:layout_constraintHorizontal_bias="0.476"
-            android:textSize="20sp"/>
-    <Button
-            android:text="My CoffeeBase"
-            android:layout_width="140dp"
-            android:layout_height="90dp" android:id="@+id/btnMyCoffeeBase"
-            android:layout_marginTop="48dp"
-            app:layout_constraintTop_toBottomOf="@+id/btnAddCoffee"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintEnd_toStartOf="@+id/btnFavCoffee" app:layout_constraintHorizontal_bias="0.0"
-            android:textSize="14sp" app:layout_constraintBottom_toBottomOf="@+id/btnFavCoffee"
-            app:layout_constraintVertical_bias="1.0"/>
-    <Button
-            android:text="Favourite Coffees"
-            android:layout_width="140dp"
-            android:layout_height="90dp" android:id="@+id/btnFavCoffee"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2" app:layout_constraintTop_toBottomOf="@+id/btnAddCoffee"
-            android:layout_marginTop="35dp"/>
     <ImageView
             android:layout_width="150dp"
             android:layout_height="130dp"
             tools:srcCompat="@tools:sample/avatars"
             android:id="@+id/imgCoffeeBean"
             app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginTop="50dp"
             android:src="@mipmap/coffeebean"/>
-    <androidx.constraintlayout.widget.Barrier android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                              android:id="@+id/barrier" app:barrierDirection="left"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline"
-                                                android:orientation="vertical"
-                                                app:layout_constraintGuide_begin="35dp"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline2"
-                                                android:orientation="vertical"
-                                                app:layout_constraintGuide_end="35dp"/>
-    <androidx.constraintlayout.widget.Guideline android:layout_width="wrap_content" android:layout_height="wrap_content"
-                                                android:id="@+id/guideline3"
-                                                android:orientation="horizontal"
-                                                app:layout_constraintGuide_percent="0.72640216"/>
+
+    <Button
+            android:text="Add new coffee"
+            android:layout_width="341dp"
+            android:layout_height="126dp"
+            android:id="@+id/btnAddCoffee"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/imgCoffeeBean"
+            android:layout_marginTop="40dp"
+            android:drawableTop="@drawable/ic_add"
+            app:layout_constraintHorizontal_bias="0.489"
+            android:textSize="20sp"/>
+
+    <Button
+            android:text="Groups"
+            android:layout_width="341dp"
+            android:layout_height="85dp"
+            android:id="@+id/btnMyGroups"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/btnAddCoffee"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"/>
+
+    <Button
+            android:text="My CoffeeBase"
+            android:layout_width="140dp"
+            android:layout_height="90dp" android:id="@+id/btnMyCoffeeBase"
+            app:layout_constraintTop_toBottomOf="@+id/btnMyGroups"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toStartOf="@+id/btnFavCoffee" app:layout_constraintHorizontal_bias="0.0"
+            android:textSize="14sp" app:layout_constraintBottom_toBottomOf="@+id/btnFavCoffee"
+            app:layout_constraintVertical_bias="1.0"/>
+
+    <Button
+            android:text="Favourite Coffees"
+            android:layout_width="140dp"
+            android:layout_height="90dp" android:id="@+id/btnFavCoffee"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2" app:layout_constraintTop_toBottomOf="@+id/btnMyGroups"
+            android:layout_marginTop="20dp"/>
+
+    <Button
+            android:text="about"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnAbout"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.205"
+            app:layout_constraintTop_toBottomOf="@+id/btnFavCoffee"/>
+
+    <androidx.constraintlayout.widget.Barrier
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barrier"
+            app:barrierDirection="left"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="35dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline2"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="35dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/guideline3"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.72640216"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
