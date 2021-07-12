@@ -1,5 +1,6 @@
-package com.example.coffeebase;
+package coffeebase.app.api;
 
+import coffeebase.app.model.Coffee;
 import retrofit2.Call;
 import retrofit2.http.*;
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.coffeebase">
+          package="coffeebase.app.activity">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -15,35 +15,35 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity
-                android:name=".MyGroups"
+                android:name=".groups.MyGroups"
                 android:label="My Groups">
         </activity>
         <activity
-                android:name=".AddGroup"
+                android:name=".groups.AddGroup"
                 android:label="Create Group">
         </activity>
         <activity
-                android:name=".AddCoffee"
+                android:name=".coffee.AddCoffee"
                 android:label="Add new Coffee">
         </activity>
         <activity
-                android:name=".GroupsActivity"
+                android:name=".groups.GroupsActivity"
                 android:label="Groups">
         </activity>
         <activity
-                android:name=".EditCoffee"
+                android:name=".coffee.EditCoffee"
                 android:label="Edit Coffee">
         </activity>
         <activity
-                android:name=".Favourites"
+                android:name=".coffee.Favourites"
                 android:label="Favourites">
         </activity>
         <activity
-                android:name=".CoffeeActivity"
+                android:name=".coffee.CoffeeActivity"
                 android:label="My CoffeeBase">
         </activity>
         <activity
-                android:name=".MyCoffeeBase"
+                android:name=".coffee.MyCoffeeBase"
                 android:label="My CoffeeBase">
         </activity>
         <activity android:name=".MainActivity">

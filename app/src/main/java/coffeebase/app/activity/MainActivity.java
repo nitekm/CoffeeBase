@@ -1,4 +1,4 @@
-package com.example.coffeebase;
+package coffeebase.app.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +7,10 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import coffeebase.app.activity.coffee.AddCoffee;
+import coffeebase.app.activity.coffee.Favourites;
+import coffeebase.app.activity.coffee.MyCoffeeBase;
+import coffeebase.app.activity.groups.GroupsActivity;
 
 public class MainActivity extends AppCompatActivity {
 

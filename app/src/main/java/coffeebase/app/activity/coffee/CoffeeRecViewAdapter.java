@@ -1,4 +1,4 @@
-package com.example.coffeebase;
+package coffeebase.app.activity.coffee;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import coffeebase.app.activity.R;
 import com.bumptech.glide.Glide;
+import coffeebase.app.model.Coffee;
 
-import static com.example.coffeebase.CoffeeActivity.COFFEE_ID_KEY;
+import static coffeebase.app.activity.coffee.CoffeeActivity.COFFEE_ID_KEY;
 
 import java.util.ArrayList;
 

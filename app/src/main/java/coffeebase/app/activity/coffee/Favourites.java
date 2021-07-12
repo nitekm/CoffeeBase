@@ -1,11 +1,15 @@
 
-package com.example.coffeebase;
+package coffeebase.app.activity.coffee;
 
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import coffeebase.app.activity.BuildConfig;
+import coffeebase.app.activity.R;
+import coffeebase.app.api.CoffeeApi;
+import coffeebase.app.model.Coffee;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

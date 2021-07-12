@@ -1,4 +1,4 @@
-package com.example.coffeebase;
+package coffeebase.app.activity.coffee;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +10,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import coffeebase.app.activity.BuildConfig;
+import coffeebase.app.activity.R;
 import com.bumptech.glide.Glide;
+import coffeebase.app.api.CoffeeApi;
+import coffeebase.app.model.Coffee;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import retrofit2.Call;
 import retrofit2.Callback;
