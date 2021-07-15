@@ -16,6 +16,9 @@ public class CoffeeGroup {
     @SerializedName("groupType")
     @Expose
     private GroupType groupType;
+    @SerializedName("imageUrl")
+    @Expose
+    private String imageUrl;
     @SerializedName("coffees")
     @Expose
     private Set<Coffee> coffees;
@@ -24,19 +27,21 @@ public class CoffeeGroup {
         METHOD, ORIGIN, ROASTER
     }
 
-    CoffeeGroup(final Integer id, final String name, final GroupType groupType, final Set<Coffee> coffees) {
+    CoffeeGroup(final Integer id, final String name, final GroupType groupType, final String imageUrl, final Set<Coffee> coffees) {
         this.id = id;
         this.name = name;
         this.groupType = groupType;
+        this.imageUrl = imageUrl;
         this.coffees = coffees;
     }
 
-    CoffeeGroup(final String name, final GroupType groupType) {
+    CoffeeGroup(final String name, final GroupType groupType, final String imageUrl) {
         this.name = name;
         this.groupType = groupType;
+        this.imageUrl = imageUrl;
     }
 
-    Integer getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -44,7 +49,7 @@ public class CoffeeGroup {
         this.id = id;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
@@ -52,7 +57,15 @@ public class CoffeeGroup {
         this.name = name;
     }
 
-    GroupType getGroupType() {
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    void setImageUrl(final String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public GroupType getGroupType() {
         return groupType;
     }
 
@@ -60,7 +73,7 @@ public class CoffeeGroup {
         this.groupType = groupType;
     }
 
-    Set<Coffee> getCoffees() {
+    public Set<Coffee> getCoffees() {
         return coffees;
     }
 
