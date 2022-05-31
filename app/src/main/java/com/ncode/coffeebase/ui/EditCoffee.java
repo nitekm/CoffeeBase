@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
@@ -25,7 +25,7 @@ public class EditCoffee extends AppCompatActivity {
 
     public static final String COFFEE_ID_KEY = "coffeeId";
     private int coffeeId;
-
+    private MaterialToolbar toolbar;
     private Coffee coffee;
     private ImageView imgCoffee;
     private Button addImageBtn, saveBtn;
@@ -38,6 +38,10 @@ public class EditCoffee extends AppCompatActivity {
         setContentView(R.layout.activity_edit_coffee);
 
         initViews();
+        toolbar.setNavigationOnClickListener(view -> {
+            Intent intent = new Intent(EditCoffee.this, MainActivity.class);
+            startActivity(intent);
+        });
         if (isCoffeeEdited()) {
             getSingleCoffee(coffeeId);
             saveBtn.setOnClickListener(view -> editCoffee(coffeeId));
@@ -54,6 +58,7 @@ public class EditCoffee extends AppCompatActivity {
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
         inputOrigin = findViewById(R.id.inputOrigin);
         inputRoaster = findViewById(R.id.inputRoaster);
+        toolbar = findViewById(R.id.topAppBar);
     }
 
     private boolean isCoffeeEdited() {

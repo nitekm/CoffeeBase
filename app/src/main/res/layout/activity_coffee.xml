@@ -69,7 +69,6 @@
             android:orientation="horizontal"/>
 
     <com.google.android.material.textfield.TextInputLayout
-            android:enabled="false"
             android:layout_width="match_parent"
             android:hint="Origin"
             android:layout_height="wrap_content"
@@ -83,6 +82,7 @@
             android:id="@+id/originOutputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -91,7 +91,6 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-            android:enabled="false"
             android:layout_width="match_parent"
             android:hint="Roaster"
             android:layout_height="wrap_content"
@@ -104,6 +103,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
+                android:focusable="false"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

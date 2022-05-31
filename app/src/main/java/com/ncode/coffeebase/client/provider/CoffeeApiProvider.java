@@ -5,7 +5,7 @@ import com.ncode.coffeebase.client.api.CoffeeApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CoffeeApiProvider {
+public class CoffeeApiProvider  {
 
     public static CoffeeApi createCoffeeApi() {
         Retrofit retrofit = new Retrofit.Builder()

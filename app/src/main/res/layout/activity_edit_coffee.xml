@@ -7,15 +7,32 @@
         android:layout_height="match_parent"
         tools:context=".ui.EditCoffee">
 
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appBarLayout"
+            tools:ignore="MissingConstraints">
+
+        <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="Coffee"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <ImageView
             android:layout_width="250dp"
             android:layout_height="250dp"
             tools:srcCompat="@mipmap/coffeebean"
             android:id="@+id/imgCoffee"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="10dp"/>
 
     <Button
             android:text="Add Image"
@@ -31,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/guideline2"
-            app:layout_constraintGuide_begin="325dp"
+            app:layout_constraintGuide_begin="365dp"
             android:orientation="horizontal"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -41,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline2"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -125,11 +142,10 @@
             android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:id="@+id/saveBtn"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintTop_toBottomOf="@+id/roasterOutputLayout"/>
-
+            app:layout_constraintTop_toBottomOf="@id/roasterOutputLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

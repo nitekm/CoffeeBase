@@ -1,10 +1,8 @@
 package com.ncode.coffeebase.ui;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -13,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.Toolbar;
 import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,7 +32,8 @@ public class CoffeeActivity extends AppCompatActivity {
     private ActionMenuItemView favouriteMenuItem;
     private ImageView imgCoffee;
     private TextView txtCoffeeName;
-    private TextInputEditText txtOrigin, txtRoaster;
+    private TextInputEditText txtRoaster;
+    private TextView txtOrigin;
     private RatingBar coffeeRating;
 
 

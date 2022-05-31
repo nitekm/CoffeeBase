@@ -2,12 +2,12 @@ package com.ncode.coffeebase.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public static final String TAG = "MainActivity";
 
     private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
-
     private RecyclerView recyclerView;
     private MaterialToolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -51,6 +50,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         getAllCoffees();
     }
 
+    private void initViews() {
+        recyclerView = findViewById(R.id.coffeeRecView);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        toolbar = findViewById(R.id.topAppBar);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigation);
+    }
+
+    private void setUpNavigationDrawer() {
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
     private void setUpNavigationDrawerContent(NavigationView navigationView) {
         navigationView.bringToFront();
         navigationView.setNavigationItemSelectedListener(
@@ -65,8 +81,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         switch (item.getItemId()) {
             case R.id.addCoffee: launchEditCoffee();
                 break;
-            case R.id.about:
-                Log.d(TAG, "onOptionsItemSelected: INFO");
+            case R.id.about: showAbout();
                 break;
             case R.id.account:
                 showToast(this, "Selected item: " + item.getTitle());
@@ -80,24 +95,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    @Override
-    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
-    }
-
-    @Override
-    public void onNothingSelected(final AdapterView<?> adapterView) {
-    }
-
-    private void initViews() {
-        recyclerView = findViewById(R.id.coffeeRecView);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        toolbar = findViewById(R.id.topAppBar);
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigation);
-    }
-
     private void getAllCoffees() {
+
         Call<List<Coffee>> call = createCoffeeApi().getCoffees();
 
         call.enqueue(new Callback<List<Coffee>>() {
@@ -114,21 +113,28 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-
+                showToast(MainActivity.this, "Something went wrong");
             }
         });
-    }
-
-    private void setUpNavigationDrawer() {
-        setSupportActionBar(toolbar);
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
     }
 
     private void launchEditCoffee() {
         Intent intent = new Intent(MainActivity.this, EditCoffee.class);
         startActivity(intent);
+    }
+
+    private void showAbout() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Developed by NCode");
+        alertDialogBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> { });
+        alertDialogBuilder.create().show();
+    }
+
+    @Override
+    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+    }
+
+    @Override
+    public void onNothingSelected(final AdapterView<?> adapterView) {
     }
 }
