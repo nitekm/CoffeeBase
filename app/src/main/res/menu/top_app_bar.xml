@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+      <item android:title="Add to Favourites"
+            android:icon="@drawable/ic_favorite"
+            android:id="@+id/favouritesMenuItem"
+            app:showAsAction="ifRoom"/>
+
+      <item android:title="Edit Coffee"
+            android:icon="@drawable/ic_edit"
+            android:id="@+id/editMenuItem"
+            app:showAsAction="ifRoom"/>
+
+      <item android:title="Delete Coffee"
+            android:icon="@drawable/ic_delete"
+            android:id="@+id/deleteMenuItem"
+            app:showAsAction="ifRoom"/>
+</menu>

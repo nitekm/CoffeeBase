@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<com.google.android.material.card.MaterialCardView
+        android:id="@+id/coffeeCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="12dp"
+        app:cardCornerRadius="20dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@drawable/dotted_border"
+            android:orientation="vertical">
+
+        <!-- Media -->
+        <ImageView
+                android:layout_width="170dp"
+                android:layout_height="150dp"
+                android:id="@+id/imgCoffee"
+                app:srcCompat="@mipmap/ic_launcher"
+                android:scaleType="centerCrop"
+        />
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp"
+                android:layout_below="@+id/imgCoffee"
+                android:layout_alignEnd="@id/imgCoffee"
+                android:layout_alignStart="@+id/imgCoffee">
+
+            <!-- Title, secondary and supporting text -->
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Coffee Name"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/coffeeNameTxt"
+                    android:ellipsize="none"
+                    android:scrollHorizontally="false"
+                    android:textStyle="bold"
+                    android:textSize="14dp"
+                    android:textColor="@color/black"
+
+            />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>
