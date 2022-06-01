@@ -11,10 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
-import com.ncode.coffeebase.ui.CoffeeActivity;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
+import com.ncode.coffeebase.ui.CoffeeActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,8 +44,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.coffeeNameTxt.setText(coffees.get(holder.getAdapterPosition()).getName());
-        Glide.with(context)
-                .asBitmap()
+        Picasso.with(context)
                 .load(coffees.get(holder.getAdapterPosition()).getImageUrl())
                 .placeholder(R.mipmap.coffeebean)
                 .into(holder.coffeeImg);

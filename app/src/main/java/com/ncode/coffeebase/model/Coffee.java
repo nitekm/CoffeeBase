@@ -39,11 +39,12 @@ public class Coffee {
         this.favourite = favourite;
     }
 
-    public Coffee(String name, String origin, String roaster, BigDecimal rating) {
+    public Coffee(String name, String origin, String roaster, BigDecimal rating, String imageUrl) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
         this.rating = rating;
+        this.imageUrl = imageUrl;
     }
 
     public Integer getId() {

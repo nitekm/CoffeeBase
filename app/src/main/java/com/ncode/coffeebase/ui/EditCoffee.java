@@ -1,16 +1,21 @@
 package com.ncode.coffeebase.ui;
 
+import android.Manifest;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,6 +24,8 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncode.coffeebase.utils.PermissionsUtils.checkCameraPermission;
+import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
@@ -28,20 +35,25 @@ public class EditCoffee extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private Coffee coffee;
     private ImageView imgCoffee;
+    private String imageUri;
     private Button addImageBtn, saveBtn;
     private RatingBar coffeeRatingBar;
     private TextInputEditText inputCoffeeName, inputOrigin, inputRoaster;
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_coffee);
 
         initViews();
+        //TODO: to method
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);
         });
+        addImageBtn.setOnClickListener(view -> addImage());
+
         if (isCoffeeEdited()) {
             getSingleCoffee(coffeeId);
             saveBtn.setOnClickListener(view -> editCoffee(coffeeId));
@@ -59,6 +71,53 @@ public class EditCoffee extends AppCompatActivity {
         inputOrigin = findViewById(R.id.inputOrigin);
         inputRoaster = findViewById(R.id.inputRoaster);
         toolbar = findViewById(R.id.topAppBar);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void addImage() {
+        boolean addImageChoice = true;
+        if (addImageChoice) {
+            if (!checkCameraPermission(this) || !checkStoragePermission(this)) {
+                requestCameraPermission();
+            } else {
+                pickImage();
+            }
+        } else {
+            if (!checkStoragePermission(this)) {
+                requestStoragePermission();
+            } else {
+                pickImage();
+            }
+        }
+    }
+    //TODO: unnacesary method
+    private void pickImage() {
+        CropImage.activity().start(this);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestCameraPermission() {
+        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void requestStoragePermission() {
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Picasso.with(this).load(resultUri).into(imgCoffee);
+                imageUri = resultUri.toString();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     private boolean isCoffeeEdited() {
@@ -81,8 +140,7 @@ public class EditCoffee extends AppCompatActivity {
                 inputOrigin.setText(coffee.getOrigin());
                 inputRoaster.setText(coffee.getRoaster());
                 coffeeRatingBar.setRating(coffee.getRating().floatValue());
-                Glide.with(EditCoffee.this)
-                        .asBitmap()
+                Picasso.with(EditCoffee.this)
                         .load(coffee.getImageUrl())
                         .placeholder(R.mipmap.coffeebean)
                         .into(imgCoffee);
@@ -138,6 +196,6 @@ public class EditCoffee extends AppCompatActivity {
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
 
-        return new Coffee(name, origin, roaster, rating);
+        return new Coffee(name, origin, roaster, rating, imageUri);
     }
 }

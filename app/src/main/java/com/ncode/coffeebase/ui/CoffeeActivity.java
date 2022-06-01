@@ -11,11 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
-import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
+import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,12 +102,10 @@ public class CoffeeActivity extends AppCompatActivity {
                 txtOrigin.setText(coffee.getOrigin());
                 txtRoaster.setText(coffee.getRoaster());
                 coffeeRating.setRating(coffee.getRating().floatValue());
-                Glide.with(CoffeeActivity.this)
-                        .asBitmap()
+                Picasso.with(CoffeeActivity.this)
                         .load(coffee.getImageUrl())
                         .placeholder(R.mipmap.coffeebean)
                         .into(imgCoffee);
-
                 if (coffee.isFavourite()) {
                     favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
 
@@ -149,7 +147,8 @@ public class CoffeeActivity extends AppCompatActivity {
     private void deleteCoffee(int coffeeId) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
         alertDialogBuilder.setTitle("Delete this coffee?");
-        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> { });
+        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
         alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
             Call<Void> call = createCoffeeApi().deleteCoffee(coffeeId);
             call.enqueue(new Callback<Void>() {

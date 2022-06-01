@@ -22,7 +22,7 @@
                 android:layout_height="150dp"
                 android:id="@+id/imgCoffee"
                 app:srcCompat="@mipmap/ic_launcher"
-                android:scaleType="centerCrop"
+                android:scaleType="fitCenter"
         />
 
         <RelativeLayout
