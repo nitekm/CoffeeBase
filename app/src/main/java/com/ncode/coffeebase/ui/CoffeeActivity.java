@@ -108,7 +108,6 @@ public class CoffeeActivity extends AppCompatActivity {
                         .into(imgCoffee);
                 if (coffee.isFavourite()) {
                     favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
-
                 }
             }
 
@@ -125,9 +124,7 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 finish();
-                overridePendingTransition(0, 0);
                 startActivity(getIntent());
-                overridePendingTransition(0, 0);
                 showToast(CoffeeActivity.this, "Coffee favourite state changed!");
             }
 

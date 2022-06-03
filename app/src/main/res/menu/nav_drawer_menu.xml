@@ -6,12 +6,12 @@
         <item
                 android:id="@+id/addCoffee"
                 android:title="Add Coffee"
-                android:icon="@drawable/ic_baseline_add_circle_24"/>
+                android:icon="@drawable/ic_add_circle"/>
 
         <item
                 android:id="@+id/about"
                 android:title="About"
-                android:icon="@drawable/baseline_info_24"/>
+                android:icon="@drawable/ic_info"/>
 
     </group>
 
@@ -21,12 +21,17 @@
                 <item
                     android:id="@+id/account"
                     android:title="Account"
-                    android:icon="@drawable/ic_account_circle_24"/>
+                    android:icon="@drawable/ic_account"/>
+
+                <item
+                    android:id="@+id/signin"
+                    android:title="Sign In"
+                    android:icon="@drawable/ic_login"/>
 
                 <item
                     android:id="@+id/signout"
                     android:title="Sign Out"
-                    android:icon="@drawable/ic_logout_black_24"/>
+                    android:icon="@drawable/ic_logout"/>
             </menu>
         </item>
     </group>
