@@ -24,11 +24,6 @@
                     android:icon="@drawable/ic_account"/>
 
                 <item
-                    android:id="@+id/signin"
-                    android:title="Sign In"
-                    android:icon="@drawable/ic_login"/>
-
-                <item
                     android:id="@+id/signout"
                     android:title="Sign Out"
                     android:icon="@drawable/ic_logout"/>

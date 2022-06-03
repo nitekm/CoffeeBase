@@ -63,19 +63,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         initViews();
         setUpNavigationDrawer();
         setUpNavigationDrawerContent(navigationView);
-        getAllCoffees();
 
+        //TODO: to method
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        updateUI(account);
+        if (account == null) {
+            signIn();
+        } else {
+            updateUI(account);
+        }
     }
 
     @Override
@@ -91,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             updateUI(account);
+            getAllCoffees();
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
@@ -138,9 +145,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.account:
                 showToast(this, "Selected item: " + item.getTitle());
                 break;
-            case R.id.signin: signIn();
-                break;
-            case R.id.signout: signout();
+            case R.id.signout:
+                signOut();
                 break;
             default:
                 break;
@@ -153,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         startActivityForResult(intent, RC_SIGN_IN);
     }
 
-    private void signout() {
+    private void signOut() {
         googleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
                     showToast(this, "Successfully logged out!");
@@ -163,17 +169,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        if (account != null) {
-            Log.d(TAG, "User logged [id: " + account.getId() + " name: " + account.getDisplayName() + " photoUrl: " + account.getPhotoUrl() + "]");
-            User user = createUserFromAccount(account);
-            userNameTxt.setText(user.getUsername());
-            if (user.getPicture() != null) {
-                Picasso.with(this)
-                        .load(user.getPicture())
-                        .placeholder(R.drawable.ic_account)
-                        .into(userPictureImage);
-            }
+        Log.d(TAG, "User logged [id: " + account.getId() + " name: " + account.getDisplayName() + " photoUrl: " + account.getPhotoUrl() + "]");
+
+        User user = createUserFromAccount(account);
+        userNameTxt.setText(user.getUsername());
+        if (user.getPicture() != null) {
+            Picasso.with(this)
+                    .load(user.getPicture())
+                    .placeholder(R.drawable.ic_account)
+                    .into(userPictureImage);
         }
+        getAllCoffees();
     }
 
     private User createUserFromAccount(GoogleSignInAccount account) {
