@@ -28,6 +28,9 @@ public class Coffee {
     @SerializedName("favourite")
     @Expose
     private boolean favourite;
+    @SerializedName("userId")
+    @Expose
+    private String userId;
 
     public Coffee(final Integer id, final String name, final String origin, final String roaster, final BigDecimal rating, final String imageUrl, final boolean favourite) {
         this.id = id;
@@ -39,12 +42,13 @@ public class Coffee {
         this.favourite = favourite;
     }
 
-    public Coffee(String name, String origin, String roaster, BigDecimal rating, String imageUrl) {
+    public Coffee(String name, String origin, String roaster, BigDecimal rating, String imageUrl, String userId) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
         this.rating = rating;
         this.imageUrl = imageUrl;
+        this.userId = userId;
     }
 
     public Integer getId() {

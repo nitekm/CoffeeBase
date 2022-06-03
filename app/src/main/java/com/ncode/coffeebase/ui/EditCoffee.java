@@ -24,6 +24,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncode.coffeebase.ui.utility.Global.USER_ID;
 import static com.ncode.coffeebase.utils.PermissionsUtils.checkCameraPermission;
 import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
@@ -196,6 +197,6 @@ public class EditCoffee extends AppCompatActivity {
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
 
-        return new Coffee(name, origin, roaster, rating, imageUri);
+        return new Coffee(name, origin, roaster, rating, imageUri, USER_ID);
     }
 }

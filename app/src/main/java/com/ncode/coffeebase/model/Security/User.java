@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.model;
+package com.ncode.coffeebase.model.Security;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

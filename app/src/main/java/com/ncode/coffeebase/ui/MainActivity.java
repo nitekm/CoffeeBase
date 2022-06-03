@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,8 +28,10 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
-import com.ncode.coffeebase.model.User;
+import com.ncode.coffeebase.model.Security.Token;
+import com.ncode.coffeebase.model.Security.User;
 import com.ncode.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
+import com.ncode.coffeebase.ui.utility.Global;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +41,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncode.coffeebase.client.provider.SecurityApiProvider.createSecurityApi;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
+import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -53,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private NavigationView navigationView;
     private TextView userNameTxt;
     private ImageView userPictureImage;
+    private ProgressBar progressBar;
     private List<Coffee> coffees = new ArrayList<>();
 
     @Override
@@ -66,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //TODO: to method
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             signIn();
         } else {
             updateUI(account);
+            authenticateWithBackend(account);
         }
     }
 
@@ -96,14 +104,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
             updateUI(account);
-            getAllCoffees();
+            authenticateWithBackend(account);
         } catch (ApiException e) {
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
 
     private void initViews() {
+        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.coffeeRecView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -136,17 +146,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @SuppressLint("NonConstantResourceId")
     private void selectDrawerItem(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.addCoffee:
-                launchEditCoffee();
+            case R.id.addCoffee: launchEditCoffee();
                 break;
-            case R.id.about:
-                showAbout();
+            case R.id.about: showAbout();
                 break;
-            case R.id.account:
-                showToast(this, "Selected item: " + item.getTitle());
+            case R.id.account: showToast(this, "Selected item: " + item.getTitle());
                 break;
-            case R.id.signout:
-                signOut();
+            case R.id.signout: signOut();
                 break;
             default:
                 break;
@@ -172,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "User logged [id: " + account.getId() + " name: " + account.getDisplayName() + " photoUrl: " + account.getPhotoUrl() + "]");
 
         User user = createUserFromAccount(account);
+        Global.USER_ID = user.getUserId();
         userNameTxt.setText(user.getUsername());
         if (user.getPicture() != null) {
             Picasso.with(this)
@@ -179,7 +186,30 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     .placeholder(R.drawable.ic_account)
                     .into(userPictureImage);
         }
-        getAllCoffees();
+    }
+
+    private void
+    authenticateWithBackend(GoogleSignInAccount account) {
+        Log.d(TAG, "Authenticating with backend server");
+
+        Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
+        call.enqueue(new Callback<Token>() {
+            @Override
+            public void onResponse(final Call<Token> call, final Response<Token> response) {
+                if (response.body() == null) {
+                    signOut();
+                } else {
+                    Global.TOKEN = response.body().getToken();
+                    Log.d(TAG, "Authentication success! JWT: " + Global.TOKEN);
+                    getAllCoffees();
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Token> call, final Throwable t) {
+                showToast(MainActivity.this, "Something went wrong!");
+            }
+        });
     }
 
     private User createUserFromAccount(GoogleSignInAccount account) {
@@ -194,9 +224,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllCoffees() {
-
+        progressBar.setVisibility(View.VISIBLE);
         Call<List<Coffee>> call = createCoffeeApi().getCoffees();
-
         call.enqueue(new Callback<List<Coffee>>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
@@ -207,11 +236,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 coffees = new ArrayList<>(response.body());
                 coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
                 recyclerView.setAdapter(coffeeRecyclerViewAdapter);
+                progressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                showToast(MainActivity.this, "Something went wrong");
+                Log.d(TAG, "Call failed! Retry after 5 sec...");
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                call.clone().enqueue(this);
             }
         });
     }
