@@ -106,4 +106,12 @@ public class Coffee {
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(final String userId) {
+        this.userId = userId;
+    }
 }

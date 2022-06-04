@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -30,7 +31,7 @@ import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
-
+    private static final String TAG = "EditCoffee";
     public static final String COFFEE_ID_KEY = "coffeeId";
     private int coffeeId;
     private MaterialToolbar toolbar;
@@ -197,6 +198,7 @@ public class EditCoffee extends AppCompatActivity {
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
 
+        Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "]");
         return new Coffee(name, origin, roaster, rating, imageUri, USER_ID);
     }
 }
