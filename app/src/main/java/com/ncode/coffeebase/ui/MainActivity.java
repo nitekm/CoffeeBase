@@ -31,7 +31,7 @@ import com.ncode.coffeebase.model.Coffee;
 import com.ncode.coffeebase.model.Security.Token;
 import com.ncode.coffeebase.model.Security.User;
 import com.ncode.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
-import com.ncode.coffeebase.ui.utility.Global;
+import com.ncode.coffeebase.utils.Global;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;

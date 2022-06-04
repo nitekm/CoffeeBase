@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.ui.utility;
+package com.ncode.coffeebase.utils;
 
 public class Global {
     public static String TOKEN = "";

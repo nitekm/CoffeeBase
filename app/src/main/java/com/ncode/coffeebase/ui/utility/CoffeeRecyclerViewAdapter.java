@@ -39,11 +39,13 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         return new ViewHolder(view);
     }
 
-    //TODO: it may not work with position not used holder.getAdapterPosition
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.coffeeNameTxt.setText(coffees.get(holder.getAdapterPosition()).getName());
+        if (coffees.get(holder.getAdapterPosition()).isFavourite()) {
+            holder.imgFavourite.setVisibility(View.VISIBLE);
+        }
         Picasso.with(context)
                 .load(coffees.get(holder.getAdapterPosition()).getImageUrl())
                 .placeholder(R.mipmap.coffeebean)
@@ -69,6 +71,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         private CardView cardView;
         private ImageView coffeeImg;
         private TextView coffeeNameTxt;
+        private ImageView imgFavourite;
 
 
         public ViewHolder(@NonNull final View itemView) {
@@ -76,6 +79,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
             cardView = itemView.findViewById(R.id.coffeeCardView);
             coffeeImg = itemView.findViewById(R.id.imgCoffee);
             coffeeNameTxt = itemView.findViewById(R.id.coffeeNameTxt);
+            imgFavourite = itemView.findViewById(R.id.imgFavourite);
         }
     }
 }

@@ -2,7 +2,7 @@ package com.ncode.coffeebase.client.provider;
 
 import com.ncode.coffeebase.BuildConfig;
 import com.ncode.coffeebase.client.api.CoffeeApi;
-import com.ncode.coffeebase.ui.utility.Global;
+import com.ncode.coffeebase.utils.Global;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
