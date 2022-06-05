@@ -42,6 +42,8 @@ import java.util.List;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncode.coffeebase.client.provider.SecurityApiProvider.createSecurityApi;
+import static com.ncode.coffeebase.utils.Logger.logCall;
+import static com.ncode.coffeebase.utils.Logger.logCallFail;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 import static java.lang.Thread.sleep;
 
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
             case R.id.about: showAbout();
                 break;
-            case R.id.account: showToast(this, "Selected item: " + item.getTitle());
+            case R.id.account: showAccountInfo();
                 break;
             case R.id.signout: signOut();
                 break;
@@ -161,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void signIn() {
+        Log.d(TAG, "No logged user found! Initializing signIn");
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, RC_SIGN_IN);
     }
@@ -175,9 +178,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void updateUI(GoogleSignInAccount account) {
-        Log.d(TAG, "User logged [id: " + account.getId() + " name: " + account.getDisplayName() + " photoUrl: " + account.getPhotoUrl() + "]");
+        Log.d(TAG, "User logged [id: " + account.getId() +
+                " name: " + account.getDisplayName() +
+                " email: " + account.getEmail() +
+                " photoUrl: " + account.getPhotoUrl() + "]");
 
         User user = createUserFromAccount(account);
+        Log.d(TAG, "Set up Global.USER_ID " +  user.getUserId());
         Global.USER_ID = user.getUserId();
         userNameTxt.setText(user.getUsername());
         if (user.getPicture() != null) {
@@ -190,9 +197,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void
     authenticateWithBackend(GoogleSignInAccount account) {
-        Log.d(TAG, "Authenticating with backend server");
-
+        Log.d(TAG, "Authenticating with backend server...");
         Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
+        logCall(TAG, call);
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(final Call<Token> call, final Response<Token> response) {
@@ -208,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onFailure(final Call<Token> call, final Throwable t) {
                 showToast(MainActivity.this, "Something went wrong!");
+                logCallFail(TAG, call);
             }
         });
     }
@@ -220,12 +228,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (account.getPhotoUrl() != null) {
             user.setPicture(account.getPhotoUrl().toString());
         }
+        Log.d(TAG, "User created!");
         return user;
     }
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
         Call<List<Coffee>> call = createCoffeeApi().getCoffees();
+        logCall(TAG, call);
         call.enqueue(new Callback<List<Coffee>>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
@@ -241,12 +251,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                Log.d(TAG, "Call failed! Retry after 5 sec...");
+                logCallFail(TAG, call);
                 try {
                     sleep(5000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+                Log.d(TAG, "Retrying...");
                 call.clone().enqueue(this);
             }
         });
@@ -263,6 +274,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         alertDialogBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> {
         });
         alertDialogBuilder.create().show();
+    }
+
+    private void showAccountInfo() {
+        showToast(this, "Signed in with Google");
     }
 
     @Override

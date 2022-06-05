@@ -26,6 +26,8 @@ import java.util.Objects;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncode.coffeebase.utils.Global.USER_ID;
+import static com.ncode.coffeebase.utils.Logger.logCall;
+import static com.ncode.coffeebase.utils.Logger.logCallFail;
 import static com.ncode.coffeebase.utils.PermissionsUtils.checkCameraPermission;
 import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
@@ -55,7 +57,7 @@ public class EditCoffee extends AppCompatActivity {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);
         });
-        addImageBtn.setOnClickListener(view ->  addImage());
+        addImageBtn.setOnClickListener(view -> addImage());
 
         if (isCoffeeEdited()) {
             getSingleCoffee(coffeeId);
@@ -83,11 +85,11 @@ public class EditCoffee extends AppCompatActivity {
     private void addImage() {
         if (!checkCameraPermission(this)) {
             requestCameraPermission();
-        } else if (!checkStoragePermission(this)) {
-            requestStoragePermission();
-        } else {
-            CropImage.activity().start(this);
         }
+        if (!checkStoragePermission(this)) {
+            requestStoragePermission();
+        }
+        CropImage.activity().start(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -104,11 +106,10 @@ public class EditCoffee extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            Log.d(TAG, "im here " + resultCode);
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                Log.d(TAG, "image result: " + resultUri);
+                Log.d(TAG, "Image loaded: " + resultUri);
                 Picasso.with(this)
                         .load(resultUri)
                         .placeholder(R.mipmap.coffeebean)
@@ -131,7 +132,7 @@ public class EditCoffee extends AppCompatActivity {
 
     private void getSingleCoffee(int coffeeId) {
         Call<Coffee> call = createCoffeeApi().getSingleCoffee(coffeeId);
-
+        logCall(TAG, call);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
@@ -149,6 +150,7 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 showToast(EditCoffee.this, "Something went wrong");
+                logCallFail(TAG, call);
             }
         });
     }
@@ -156,6 +158,7 @@ public class EditCoffee extends AppCompatActivity {
     private void editCoffee(int id) {
         Coffee coffee = createCoffee();
         Call<Void> call = createCoffeeApi().updateCoffee(id, coffee);
+        logCall(TAG, call);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
@@ -167,6 +170,7 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 showToast(EditCoffee.this, "Something went wrong");
+                logCallFail(TAG, call);
             }
         });
     }
@@ -174,7 +178,7 @@ public class EditCoffee extends AppCompatActivity {
     private void addCoffee() {
         Coffee coffee = createCoffee();
         Call<Coffee> call = createCoffeeApi().createCoffee(coffee);
-
+        logCall(TAG, call);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
@@ -186,6 +190,7 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 showToast(EditCoffee.this, "Something went wrong");
+                logCallFail(TAG, call);
             }
         });
     }
@@ -196,7 +201,7 @@ public class EditCoffee extends AppCompatActivity {
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
 
-        Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "]");
+        Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
         return new Coffee(name, origin, roaster, rating, imageUri, USER_ID);
     }
 }

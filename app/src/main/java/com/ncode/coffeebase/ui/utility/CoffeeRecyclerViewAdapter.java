@@ -22,7 +22,7 @@ import static com.ncode.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
 
 public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecyclerViewAdapter.ViewHolder> {
 
-    public static final String TAG = "CoffeeRecViewAdapter";
+    public static final String TAG = "CoffeeRecyclerViewAdapter";
 
     private List<Coffee> coffees;
     private Context context;

@@ -3,6 +3,7 @@ package com.ncode.coffeebase.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -21,9 +22,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncode.coffeebase.utils.Logger.logCall;
+import static com.ncode.coffeebase.utils.Logger.logCallFail;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class CoffeeActivity extends AppCompatActivity {
+    private static final String TAG = "CoffeeActivity";
 
     public static final String COFFEE_ID_KEY = "coffeeId";
     private Coffee coffee;
@@ -44,6 +48,7 @@ public class CoffeeActivity extends AppCompatActivity {
 
         initViews();
         setToolbar();
+        //TODO: to method
         Intent intent = getIntent();
         if (null != intent) {
             coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
@@ -75,12 +80,15 @@ public class CoffeeActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem:
                 addToFavourites(coffeeId);
+                Log.d(TAG, "addToFavouritesMenuItem clicked");
                 return true;
             case R.id.editMenuItem:
                 editCoffee(coffeeId);
+                Log.d(TAG, "editMenuItem clicked");
                 return true;
             case R.id.deleteMenuItem:
                 deleteCoffee(coffeeId);
+                Log.d(TAG, "deleteMenuItem clicked");
                 return true;
             default:
                 return true;
@@ -89,7 +97,7 @@ public class CoffeeActivity extends AppCompatActivity {
 
     private void getSingleCoffee(int coffeeId) {
         Call<Coffee> call = createCoffeeApi().getSingleCoffee(coffeeId);
-
+        logCall(TAG, call);
         call.enqueue(new Callback<Coffee>() {
             @SuppressLint("RestrictedApi")
             @Override
@@ -114,15 +122,18 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 showToast(CoffeeActivity.this, "Something went wrong");
+                logCallFail(TAG, call);
             }
         });
     }
 
     private void addToFavourites(int coffeeId) {
         Call<Void> call = createCoffeeApi().switchFavourite(coffeeId);
+        logCall(TAG, call);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
+                //TODO: to method
                 finish();
                 startActivity(getIntent());
                 showToast(CoffeeActivity.this, "Coffee favourite state changed!");
@@ -131,6 +142,7 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 showToast(CoffeeActivity.this, "Something went wrong!");
+                logCallFail(TAG, call);
             }
         });
     }
@@ -144,10 +156,10 @@ public class CoffeeActivity extends AppCompatActivity {
     private void deleteCoffee(int coffeeId) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
         alertDialogBuilder.setTitle("Delete this coffee?");
-        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
-        });
+        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> { });
         alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
             Call<Void> call = createCoffeeApi().deleteCoffee(coffeeId);
+            logCall(TAG, call);
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(final Call<Void> call, final Response<Void> response) {
@@ -159,7 +171,7 @@ public class CoffeeActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(final Call<Void> call, final Throwable t) {
                     showToast(CoffeeActivity.this, "Something went wrong!");
-
+                    logCallFail(TAG, call);
                 }
             });
         });
