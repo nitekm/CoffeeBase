@@ -48,13 +48,14 @@ public class EditCoffee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_coffee);
 
+
         initViews();
         //TODO: to method
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);
         });
-        addImageBtn.setOnClickListener(view -> addImage());
+        addImageBtn.setOnClickListener(view ->  addImage());
 
         if (isCoffeeEdited()) {
             getSingleCoffee(coffeeId);
@@ -66,6 +67,9 @@ public class EditCoffee extends AppCompatActivity {
 
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
+        if (imageUri == null) {
+            imgCoffee.setImageResource(R.mipmap.coffeebean);
+        }
         addImageBtn = findViewById(R.id.addImageBtn);
         saveBtn = findViewById(R.id.saveBtn);
         coffeeRatingBar = findViewById(R.id.coffeeRatingBar);
@@ -77,29 +81,18 @@ public class EditCoffee extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void addImage() {
-        boolean addImageChoice = true;
-        if (addImageChoice) {
-            if (!checkCameraPermission(this) || !checkStoragePermission(this)) {
-                requestCameraPermission();
-            } else {
-                pickImage();
-            }
+        if (!checkCameraPermission(this)) {
+            requestCameraPermission();
+        } else if (!checkStoragePermission(this)) {
+            requestStoragePermission();
         } else {
-            if (!checkStoragePermission(this)) {
-                requestStoragePermission();
-            } else {
-                pickImage();
-            }
+            CropImage.activity().start(this);
         }
-    }
-    //TODO: unnacesary method
-    private void pickImage() {
-        CropImage.activity().start(this);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void requestCameraPermission() {
-        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 203);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -111,13 +104,18 @@ public class EditCoffee extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            Log.d(TAG, "im here " + resultCode);
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                Picasso.with(this).load(resultUri).into(imgCoffee);
+                Log.d(TAG, "image result: " + resultUri);
+                Picasso.with(this)
+                        .load(resultUri)
+                        .placeholder(R.mipmap.coffeebean)
+                        .into(imgCoffee);
                 imageUri = resultUri.toString();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Exception error = result.getError();
+                Log.d(TAG, "Error cropping image code: " + resultCode);
             }
         }
     }
