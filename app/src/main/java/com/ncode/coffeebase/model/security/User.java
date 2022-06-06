@@ -17,9 +17,9 @@ public class User {
     @Expose
     private String email;
 
-    @SerializedName("picture")
+    @SerializedName("pictureUri")
     @Expose
-    private String picture;
+    private String pictureUri;
 
     public User() { }
 
@@ -47,11 +47,11 @@ public class User {
         this.email = email;
     }
 
-    public String getPicture() {
-        return picture;
+    public String getPictureUri() {
+        return pictureUri;
     }
 
-    public void setPicture(final String picture) {
-        this.picture = picture;
+    public void setPictureUri(final String pictureUri) {
+        this.pictureUri = pictureUri;
     }
 }

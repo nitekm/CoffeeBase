@@ -24,8 +24,8 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
 
     public static final String TAG = "CoffeeRecyclerViewAdapter";
 
-    private List<Coffee> coffees;
-    private Context context;
+    private final List<Coffee> coffees;
+    private final Context context;
 
     public CoffeeRecyclerViewAdapter(final Context context, final List<Coffee> coffees) {
         this.context = context;
@@ -35,7 +35,9 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_coffee_card_view, parent, false);
+        View view = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.activity_coffee_card_view, parent, false);
         return new ViewHolder(view);
     }
 
@@ -50,14 +52,10 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
                 .load(coffees.get(holder.getAdapterPosition()).getImageUrl())
                 .placeholder(R.mipmap.coffeebean)
                 .into(holder.coffeeImg);
-
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, CoffeeActivity.class);
-                intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId());
-                context.startActivity(intent);
-            }
+        holder.cardView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, CoffeeActivity.class);
+            intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId());
+            context.startActivity(intent);
         });
 
     }
@@ -68,10 +66,10 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
-        private ImageView coffeeImg;
-        private TextView coffeeNameTxt;
-        private ImageView imgFavourite;
+        private final CardView cardView;
+        private final ImageView coffeeImg;
+        private final TextView coffeeNameTxt;
+        private final ImageView imgFavourite;
 
 
         public ViewHolder(@NonNull final View itemView) {

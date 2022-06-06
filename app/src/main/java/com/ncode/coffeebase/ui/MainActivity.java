@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     public static final String TAG = "MainActivity";
     private static final int RC_SIGN_IN = 0;
-
+    private List<Coffee> coffees = new ArrayList<>();
     private GoogleSignInClient googleSignInClient;
     private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
     private RecyclerView recyclerView;
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView userNameTxt;
     private ImageView userPictureImage;
     private ProgressBar progressBar;
-    private List<Coffee> coffees = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,13 +70,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         initViews();
         setUpNavigationDrawer();
         setUpNavigationDrawerContent(navigationView);
-
-        //TODO: to method
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        setUpGoogleSignIn();
 
 
     }
@@ -103,17 +96,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
-            updateUI(account);
-            authenticateWithBackend(account);
-        } catch (ApiException e) {
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-        }
-    }
-
     private void initViews() {
         progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.coffeeRecView);
@@ -129,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void setUpNavigationDrawer() {
         setSupportActionBar(toolbar);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -145,6 +126,25 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         );
     }
 
+    private void setUpGoogleSignIn() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
+            updateUI(account);
+            authenticateWithBackend(account);
+        } catch (ApiException e) {
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
     @SuppressLint("NonConstantResourceId")
     private void selectDrawerItem(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
@@ -158,7 +158,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
             default:
                 break;
-
         }
     }
 
@@ -187,16 +186,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "Set up Global.USER_ID " +  user.getUserId());
         Global.USER_ID = user.getUserId();
         userNameTxt.setText(user.getUsername());
-        if (user.getPicture() != null) {
+        if (user.getPictureUri() != null) {
             Picasso.with(this)
-                    .load(user.getPicture())
+                    .load(user.getPictureUri())
                     .placeholder(R.drawable.ic_account)
                     .into(userPictureImage);
         }
     }
 
-    private void
-    authenticateWithBackend(GoogleSignInAccount account) {
+    private void authenticateWithBackend(GoogleSignInAccount account) {
         Log.d(TAG, "Authenticating with backend server...");
         Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
         logCall(TAG, call);
@@ -226,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         user.setUsername(account.getDisplayName());
         user.setEmail(account.getEmail());
         if (account.getPhotoUrl() != null) {
-            user.setPicture(account.getPhotoUrl().toString());
+            user.setPictureUri(account.getPhotoUrl().toString());
         }
         Log.d(TAG, "User created!");
         return user;

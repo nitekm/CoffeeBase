@@ -27,9 +27,8 @@ import static com.ncode.coffeebase.utils.Logger.logCallFail;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class CoffeeActivity extends AppCompatActivity {
-    private static final String TAG = "CoffeeActivity";
-
     public static final String COFFEE_ID_KEY = "coffeeId";
+    private static final String TAG = "CoffeeActivity";
     private Coffee coffee;
     private int coffeeId;
     private MaterialToolbar toolbar;
@@ -48,14 +47,7 @@ public class CoffeeActivity extends AppCompatActivity {
 
         initViews();
         setToolbar();
-        //TODO: to method
-        Intent intent = getIntent();
-        if (null != intent) {
-            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
-            if (coffeeId != -1) {
-                getSingleCoffee(coffeeId);
-            }
-        }
+        showCoffeeInfo();
     }
 
     private void initViews() {
@@ -76,7 +68,8 @@ public class CoffeeActivity extends AppCompatActivity {
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
-    public boolean onMenuItemClick(@NonNull final MenuItem item) {
+    @SuppressLint("NonConstantResourceId")
+    private boolean onMenuItemClick(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem:
                 addToFavourites(coffeeId);
@@ -87,11 +80,77 @@ public class CoffeeActivity extends AppCompatActivity {
                 Log.d(TAG, "editMenuItem clicked");
                 return true;
             case R.id.deleteMenuItem:
-                deleteCoffee(coffeeId);
+                showDeleteDialog(coffeeId);
                 Log.d(TAG, "deleteMenuItem clicked");
                 return true;
             default:
                 return true;
+        }
+    }
+
+    private void addToFavourites(int coffeeId) {
+        Call<Void> call = createCoffeeApi().switchFavourite(coffeeId);
+        logCall(TAG, call);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(final Call<Void> call, final Response<Void> response) {
+                refresh();
+                showToast(CoffeeActivity.this, "Coffee favourite state changed!");
+            }
+
+            @Override
+            public void onFailure(final Call<Void> call, final Throwable t) {
+                showToast(CoffeeActivity.this, "Something went wrong!");
+                logCallFail(TAG, call);
+            }
+        });
+    }
+
+    private void refresh() {
+        finish();
+        startActivity(getIntent());
+    }
+
+    private void editCoffee(int coffeeId) {
+        Intent intent = new Intent(CoffeeActivity.this, EditCoffee.class);
+        intent.putExtra(COFFEE_ID_KEY, coffeeId);
+        startActivity(intent);
+    }
+
+    private void showDeleteDialog(int coffeeId) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
+        alertDialogBuilder.setTitle("Delete this coffee?");
+        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> { });
+        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> deleteCoffee(coffeeId));
+        alertDialogBuilder.create().show();
+    }
+
+    private void deleteCoffee(final int coffeeId) {
+        Call<Void> call = createCoffeeApi().deleteCoffee(coffeeId);
+        logCall(TAG, call);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(final Call<Void> call, final Response<Void> response) {
+                showToast(CoffeeActivity.this, "Coffee deleted!");
+                Intent intent = new Intent(CoffeeActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(final Call<Void> call, final Throwable t) {
+                showToast(CoffeeActivity.this, "Something went wrong!");
+                logCallFail(TAG, call);
+            }
+        });
+    }
+
+    private void showCoffeeInfo() {
+        Intent intent = getIntent();
+        if (null != intent) {
+            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
+            if (coffeeId != -1) {
+                getSingleCoffee(coffeeId);
+            }
         }
     }
 
@@ -125,56 +184,5 @@ public class CoffeeActivity extends AppCompatActivity {
                 logCallFail(TAG, call);
             }
         });
-    }
-
-    private void addToFavourites(int coffeeId) {
-        Call<Void> call = createCoffeeApi().switchFavourite(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(final Call<Void> call, final Response<Void> response) {
-                //TODO: to method
-                finish();
-                startActivity(getIntent());
-                showToast(CoffeeActivity.this, "Coffee favourite state changed!");
-            }
-
-            @Override
-            public void onFailure(final Call<Void> call, final Throwable t) {
-                showToast(CoffeeActivity.this, "Something went wrong!");
-                logCallFail(TAG, call);
-            }
-        });
-    }
-
-    private void editCoffee(int coffeeId) {
-        Intent intent = new Intent(CoffeeActivity.this, EditCoffee.class);
-        intent.putExtra(COFFEE_ID_KEY, coffeeId);
-        startActivity(intent);
-    }
-
-    private void deleteCoffee(int coffeeId) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
-        alertDialogBuilder.setTitle("Delete this coffee?");
-        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> { });
-        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
-            Call<Void> call = createCoffeeApi().deleteCoffee(coffeeId);
-            logCall(TAG, call);
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(final Call<Void> call, final Response<Void> response) {
-                    showToast(CoffeeActivity.this, "Coffee deleted!");
-                    Intent intent = new Intent(CoffeeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onFailure(final Call<Void> call, final Throwable t) {
-                    showToast(CoffeeActivity.this, "Something went wrong!");
-                    logCallFail(TAG, call);
-                }
-            });
-        });
-        alertDialogBuilder.create().show();
     }
 }

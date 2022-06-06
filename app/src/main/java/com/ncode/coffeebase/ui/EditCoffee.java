@@ -33,13 +33,13 @@ import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
-    private static final String TAG = "EditCoffee";
     public static final String COFFEE_ID_KEY = "coffeeId";
-    private int coffeeId;
-    private MaterialToolbar toolbar;
+    private static final String TAG = "EditCoffee";
     private Coffee coffee;
-    private ImageView imgCoffee;
+    private int coffeeId;
     private String imageUri;
+    private MaterialToolbar toolbar;
+    private ImageView imgCoffee;
     private Button addImageBtn, saveBtn;
     private RatingBar coffeeRatingBar;
     private TextInputEditText inputCoffeeName, inputOrigin, inputRoaster;
@@ -50,20 +50,26 @@ public class EditCoffee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_coffee);
 
-
         initViews();
-        //TODO: to method
-        toolbar.setNavigationOnClickListener(view -> {
-            Intent intent = new Intent(EditCoffee.this, MainActivity.class);
-            startActivity(intent);
-        });
-        addImageBtn.setOnClickListener(view -> addImage());
+        determineContext();
+    }
 
-        if (isCoffeeEdited()) {
-            getSingleCoffee(coffeeId);
-            saveBtn.setOnClickListener(view -> editCoffee(coffeeId));
-        } else {
-            saveBtn.setOnClickListener(view -> addCoffee());
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                Log.d(TAG, "Image loaded: " + resultUri);
+                Picasso.with(this)
+                        .load(resultUri)
+                        .placeholder(R.mipmap.coffeebean)
+                        .into(imgCoffee);
+                imageUri = resultUri.toString();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Log.d(TAG, "Error cropping image code: " + resultCode);
+            }
         }
     }
 
@@ -73,12 +79,17 @@ public class EditCoffee extends AppCompatActivity {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }
         addImageBtn = findViewById(R.id.addImageBtn);
+        addImageBtn.setOnClickListener(view -> addImage());
         saveBtn = findViewById(R.id.saveBtn);
         coffeeRatingBar = findViewById(R.id.coffeeRatingBar);
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
         inputOrigin = findViewById(R.id.inputOrigin);
         inputRoaster = findViewById(R.id.inputRoaster);
         toolbar = findViewById(R.id.topAppBar);
+        toolbar.setNavigationOnClickListener(view -> {
+            Intent intent = new Intent(EditCoffee.this, MainActivity.class);
+            startActivity(intent);
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -102,22 +113,12 @@ public class EditCoffee extends AppCompatActivity {
         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                Log.d(TAG, "Image loaded: " + resultUri);
-                Picasso.with(this)
-                        .load(resultUri)
-                        .placeholder(R.mipmap.coffeebean)
-                        .into(imgCoffee);
-                imageUri = resultUri.toString();
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Log.d(TAG, "Error cropping image code: " + resultCode);
-            }
+    private void determineContext() {
+        if (isCoffeeEdited()) {
+            getSingleCoffee(coffeeId);
+            saveBtn.setOnClickListener(view -> editCoffee(coffeeId));
+        } else {
+            saveBtn.setOnClickListener(view -> addCoffee());
         }
     }
 

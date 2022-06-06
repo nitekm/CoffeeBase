@@ -13,7 +13,10 @@ public class CoffeeApiProvider  {
     public static CoffeeApi createCoffeeApi() {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
-                    Request request = chain.request().newBuilder().addHeader("Authorization", "Bearer " + Global.TOKEN).build();
+                    Request request = chain.request()
+                            .newBuilder()
+                            .addHeader("Authorization", "Bearer " + Global.TOKEN)
+                            .build();
                     return chain.proceed(request);
                 });
 
