@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setUpNavigationDrawer();
         setUpNavigationDrawerContent(navigationView);
         setUpGoogleSignIn();
-
-
     }
 
     @Override
