@@ -37,8 +37,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
             tools:context=".ui.MainActivity"
             android:layout_width="match_parent"
