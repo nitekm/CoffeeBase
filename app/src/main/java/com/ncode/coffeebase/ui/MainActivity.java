@@ -146,13 +146,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @SuppressLint("NonConstantResourceId")
     private void selectDrawerItem(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.addCoffee: launchEditCoffee();
+            case R.id.addCoffee:
+                launchEditCoffee();
                 break;
-            case R.id.about: showAbout();
+            case R.id.about:
+                showAbout();
                 break;
-            case R.id.account: showAccountInfo();
+            case R.id.account:
+                showAccountInfo();
                 break;
-            case R.id.signout: signOut();
+            case R.id.signout:
+                signOut();
                 break;
             default:
                 break;
@@ -181,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 " photoUrl: " + account.getPhotoUrl() + "]");
 
         User user = createUserFromAccount(account);
-        Log.d(TAG, "Set up Global.USER_ID " +  user.getUserId());
+        Log.d(TAG, "Set up Global.USER_ID " + user.getUserId());
         Global.USER_ID = user.getUserId();
         userNameTxt.setText(user.getUsername());
         if (user.getPictureUri() != null) {
@@ -282,5 +286,19 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onNothingSelected(final AdapterView<?> adapterView) {
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Exit Application");
+        alertDialogBuilder.setNegativeButton("No", ((dialogInterface, i) -> {}));
+        alertDialogBuilder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        alertDialogBuilder.create().show();
     }
 }
