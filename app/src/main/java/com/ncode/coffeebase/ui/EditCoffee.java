@@ -1,50 +1,68 @@
 package com.ncode.coffeebase.ui;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import androidx.annotation.RequiresApi;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncode.coffeebase.R;
 import com.ncode.coffeebase.model.Coffee;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.io.OutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncode.coffeebase.utils.Global.USER_ID;
 import static com.ncode.coffeebase.utils.Logger.logCall;
 import static com.ncode.coffeebase.utils.Logger.logCallFail;
-import static com.ncode.coffeebase.utils.PermissionsUtils.checkCameraPermission;
-import static com.ncode.coffeebase.utils.PermissionsUtils.checkStoragePermission;
+import static com.ncode.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
+import static com.ncode.coffeebase.utils.PermissionsUtils.checkWriteStoragePermission;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
+
+    private boolean isReadPermissionGranted = false;
+    private boolean isWritePermissionGranted = false;
+    ActivityResultLauncher<String[]> mPermissionResultLauncher;
+    ActivityResultLauncher<Intent> mGetPhotoImage;
+    ActivityResultLauncher<Intent> mGetGalleryImage;
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
     private Coffee coffee;
     private int coffeeId;
-    private String imageUri;
+    private Uri imageUri;
     private MaterialToolbar toolbar;
     private ImageView imgCoffee;
     private Button addImageBtn, saveBtn;
     private RatingBar coffeeRatingBar;
     private TextInputEditText inputCoffeeName, inputOrigin, inputRoaster;
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+    private Dialog imageDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,25 +70,9 @@ public class EditCoffee extends AppCompatActivity {
 
         initViews();
         determineContext();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == RESULT_OK) {
-                Uri resultUri = result.getUri();
-                Log.d(TAG, "Image loaded: " + resultUri);
-                Picasso.with(this)
-                        .load(resultUri)
-                        .placeholder(R.mipmap.coffeebean)
-                        .into(imgCoffee);
-                imageUri = resultUri.toString();
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Log.d(TAG, "Error cropping image code: " + resultCode);
-            }
-        }
+        getPermissions();
+        getCoffeePhotoImage();
+        getCoffeeGalleryImage();
     }
 
     private void initViews() {
@@ -79,7 +81,7 @@ public class EditCoffee extends AppCompatActivity {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }
         addImageBtn = findViewById(R.id.addImageBtn);
-        addImageBtn.setOnClickListener(view -> addImage());
+        addImageBtn.setOnClickListener(view -> showAddImageDialog());
         saveBtn = findViewById(R.id.saveBtn);
         coffeeRatingBar = findViewById(R.id.coffeeRatingBar);
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
@@ -92,25 +94,113 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void addImage() {
-        if (!checkCameraPermission(this)) {
-            requestCameraPermission();
-        }
-        if (!checkStoragePermission(this)) {
-            requestStoragePermission();
-        }
-        CropImage.activity().start(this);
+    private void showAddImageDialog() {
+        imageDialog = new Dialog(EditCoffee.this);
+        imageDialog.setContentView(R.layout.imagedialog);
+        ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
+        ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
+        btnPhotoLibrary.setOnClickListener(view -> {
+            mGetGalleryImage.launch(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
+            imageDialog.hide();
+        });
+        btnPhotoCamera.setOnClickListener(view -> {
+            mGetPhotoImage.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+            imageDialog.hide();
+        });
+        imageDialog.show();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestCameraPermission() {
-        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 203);
+    private void getPermissions() {
+        mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
+            if (result.get(Manifest.permission.READ_EXTERNAL_STORAGE) != null) {
+                isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
+            }
+            if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
+                isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
+            }
+        });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void requestStoragePermission() {
-        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+    private void getCoffeeGalleryImage() {
+        mGetGalleryImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                imageUri = result.getData().getData();
+                Picasso.with(EditCoffee.this)
+                        .load(imageUri.toString())
+                        .into(imgCoffee);
+            } else {
+                showToast(EditCoffee.this, "Failed while fetching image");
+            }
+        });
+    }
+
+    private void getCoffeePhotoImage() {
+        mGetPhotoImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                Bundle bundle = result.getData().getExtras();
+                Bitmap bitmap = (Bitmap) bundle.get("data");
+
+                if (isWritePermissionGranted) {
+                    if (saveImageToExternalStorage(UUID.randomUUID().toString(), bitmap)) {
+                        Picasso.with(EditCoffee.this)
+                                .load(imageUri.toString())
+                                .into(imgCoffee);
+                        imageDialog.hide();
+                    }
+                } else {
+                    showToast(EditCoffee.this, "Permission not granted!");
+                }
+            }
+        });
+
+        requestPermission();
+    }
+
+    private void requestPermission() {
+        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+
+        isReadPermissionGranted = checkReadStoragePermission(this);
+        isWritePermissionGranted = checkWriteStoragePermission(this);
+
+        isWritePermissionGranted = isWritePermissionGranted || minSDK;
+
+        List<String> permissionRequest = new ArrayList<>();
+        if (!isReadPermissionGranted) {
+            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (!isWritePermissionGranted) {
+            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (!permissionRequest.isEmpty()) {
+            mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+        }
+    }
+
+    private boolean saveImageToExternalStorage(String imgName, Bitmap bmp) {
+        Uri imageCollection;
+        ContentResolver resolver = getContentResolver();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
+        } else {
+            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imgName + ".jpg");
+        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        imageUri = resolver.insert(imageCollection, contentValues);
+
+        try {
+            OutputStream outputStream = resolver.openOutputStream(Objects.requireNonNull(imageUri));
+            bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            Objects.requireNonNull(outputStream);
+            return true;
+        } catch (Exception e) {
+            showToast(this, "Image not saved!");
+        }
+        return false;
     }
 
     private void determineContext() {
@@ -203,6 +293,6 @@ public class EditCoffee extends AppCompatActivity {
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
 
         Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
-        return new Coffee(name, origin, roaster, rating, imageUri, USER_ID);
+        return new Coffee(name, origin, roaster, rating, imageUri.toString(), USER_ID);
     }
 }
