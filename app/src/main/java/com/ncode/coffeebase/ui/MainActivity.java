@@ -45,6 +45,8 @@ import static com.ncode.coffeebase.client.provider.SecurityApiProvider.createSec
 import static com.ncode.coffeebase.utils.Logger.logCall;
 import static com.ncode.coffeebase.utils.Logger.logCallFail;
 import static com.ncode.coffeebase.utils.ToastUtils.showToast;
+import static com.ncode.coffeebase.utils.Utils.hideProgressBar;
+import static com.ncode.coffeebase.utils.Utils.showProgressBar;
 import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStart() {
         super.onStart();
+        showProgressBar(progressBar, MainActivity.this);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account == null) {
             signIn();
@@ -139,6 +142,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             updateUI(account);
             authenticateWithBackend(account);
         } catch (ApiException e) {
+            signIn();
+            showToast(this, "Login failed with code: " + e.getStatusCode());
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }
@@ -194,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     .placeholder(R.drawable.ic_account)
                     .into(userPictureImage);
         }
+        hideProgressBar(progressBar, MainActivity.this);
     }
 
     private void authenticateWithBackend(GoogleSignInAccount account) {
@@ -214,8 +220,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
             @Override
             public void onFailure(final Call<Token> call, final Throwable t) {
-                showToast(MainActivity.this, "Something went wrong!");
                 logCallFail(TAG, call);
+                try {
+                    sleep(5000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                Log.d(TAG, "Retrying...");
+                call.clone().enqueue(this);
             }
         });
     }
@@ -233,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllCoffees() {
-        progressBar.setVisibility(View.VISIBLE);
+        showProgressBar(progressBar, MainActivity.this);
         Call<List<Coffee>> call = createCoffeeApi().getCoffees();
         logCall(TAG, call);
         call.enqueue(new Callback<List<Coffee>>() {
@@ -246,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 coffees = new ArrayList<>(response.body());
                 coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
                 recyclerView.setAdapter(coffeeRecyclerViewAdapter);
-                progressBar.setVisibility(View.INVISIBLE);
+                hideProgressBar(progressBar, MainActivity.this);
             }
 
             @Override
@@ -301,4 +313,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }));
         alertDialogBuilder.create().show();
     }
+
 }

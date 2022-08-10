@@ -26,7 +26,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="650dp">
+            android:layout_height="match_parent"
+            android:layout_marginBottom="70dp">
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -72,7 +73,8 @@
                         app:layout_constraintStart_toStartOf="@+id/coffeeNameOutputLayout"
                         app:layout_constraintEnd_toStartOf="@+id/coffeeRatingBar"
                         app:layout_constraintTop_toTopOf="@id/guideline2"
-                        android:textSize="25sp" app:layout_constraintHorizontal_bias="0.496"/>
+                        android:textSize="25sp"
+                        app:layout_constraintHorizontal_bias="0.200"/>
 
                 <RatingBar
                         android:id="@+id/coffeeRatingBar"
@@ -82,12 +84,15 @@
                         style="?android:attr/ratingBarStyleIndicator"
                         android:numStars="5"
                         android:stepSize="0.5"
-
                         app:layout_constraintEnd_toEndOf="@+id/coffeeNameOutputLayout"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/guideline2"
-                        app:layout_constraintHorizontal_bias="0.895"/>
-
+                        app:layout_constraintHorizontal_bias="0.950"
+                        android:progressTint="@color/coffeeBrownVariant"
+                        android:indeterminate="false"
+                        android:background="#FFFFFF"
+                        android:backgroundTint="#171414"
+                        android:backgroundTintMode="add"/>
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:hint="Coffee Name"
