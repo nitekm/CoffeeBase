@@ -99,7 +99,6 @@ public class CoffeeActivity extends AppCompatActivity {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 refresh();
-                showToast(CoffeeActivity.this, "Coffee favourite state changed!");
             }
 
             @Override
