@@ -1,7 +1,7 @@
-package com.ncode.coffeebase.client.provider;
+package com.ncodedev.coffeebase.client.provider;
 
-import com.ncode.coffeebase.BuildConfig;
-import com.ncode.coffeebase.client.api.SecurityApi;
+import com.ncodedev.coffeebase.BuildConfig;
+import com.ncodedev.coffeebase.client.api.SecurityApi;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

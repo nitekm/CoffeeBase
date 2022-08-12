@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.ui.utility;
+package com.ncodedev.coffeebase.ui.utility;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,14 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.ncode.coffeebase.R;
-import com.ncode.coffeebase.model.Coffee;
-import com.ncode.coffeebase.ui.CoffeeActivity;
+import com.ncodedev.coffeebase.R;
+import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.ui.CoffeeActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.ncode.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
+import static com.ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
 
 public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecyclerViewAdapter.ViewHolder> {
 

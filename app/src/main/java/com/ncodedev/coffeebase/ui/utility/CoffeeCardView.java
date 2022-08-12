@@ -1,8 +1,8 @@
-package com.ncode.coffeebase.ui.utility;
+package com.ncodedev.coffeebase.ui.utility;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.ncode.coffeebase.R;
+import androidx.appcompat.app.AppCompatActivity;
+import com.ncodedev.coffeebase.R;
 
 public class CoffeeCardView extends AppCompatActivity {
 

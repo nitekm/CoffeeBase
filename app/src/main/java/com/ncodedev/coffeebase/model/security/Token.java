@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.model.security;
+package com.ncodedev.coffeebase.model.security;
 
 public class Token {
 

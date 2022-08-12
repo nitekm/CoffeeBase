@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.ui;
+package com.ncodedev.coffeebase.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -26,12 +26,12 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
-import com.ncode.coffeebase.R;
-import com.ncode.coffeebase.model.Coffee;
-import com.ncode.coffeebase.model.security.Token;
-import com.ncode.coffeebase.model.security.User;
-import com.ncode.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
-import com.ncode.coffeebase.utils.Global;
+import com.ncodedev.coffeebase.R;
+import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.security.Token;
+import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
+import com.ncodedev.coffeebase.utils.Global;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,13 +40,13 @@ import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
-import static com.ncode.coffeebase.client.provider.SecurityApiProvider.createSecurityApi;
-import static com.ncode.coffeebase.utils.Logger.logCall;
-import static com.ncode.coffeebase.utils.Logger.logCallFail;
-import static com.ncode.coffeebase.utils.ToastUtils.showToast;
-import static com.ncode.coffeebase.utils.Utils.hideProgressBar;
-import static com.ncode.coffeebase.utils.Utils.showProgressBar;
+import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncodedev.coffeebase.client.provider.SecurityApiProvider.createSecurityApi;
+import static com.ncodedev.coffeebase.utils.Logger.logCall;
+import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
+import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.utils.Utils.hideProgressBar;
+import static com.ncodedev.coffeebase.utils.Utils.showProgressBar;
 import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {

@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.ui;
+package com.ncodedev.coffeebase.ui;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,8 +21,8 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.ncode.coffeebase.R;
-import com.ncode.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.R;
+import com.ncodedev.coffeebase.model.Coffee;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,13 +35,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
-import static com.ncode.coffeebase.utils.Global.USER_ID;
-import static com.ncode.coffeebase.utils.Logger.logCall;
-import static com.ncode.coffeebase.utils.Logger.logCallFail;
-import static com.ncode.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
-import static com.ncode.coffeebase.utils.PermissionsUtils.checkWriteStoragePermission;
-import static com.ncode.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncodedev.coffeebase.utils.Global.USER_ID;
+import static com.ncodedev.coffeebase.utils.Logger.logCall;
+import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
+import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
+import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkWriteStoragePermission;
+import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
 
@@ -100,7 +100,7 @@ public class EditCoffee extends AppCompatActivity {
         ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
         ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
         btnPhotoLibrary.setOnClickListener(view -> {
-            mGetGalleryImage.launch(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
+            mGetGalleryImage.launch(new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
             imageDialog.hide();
         });
         btnPhotoCamera.setOnClickListener(view -> {
@@ -125,11 +125,16 @@ public class EditCoffee extends AppCompatActivity {
         mGetGalleryImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                 imageUri = result.getData().getData();
+
+                final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+                EditCoffee.this.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
                 Picasso.with(EditCoffee.this)
                         .load(imageUri.toString())
                         .into(imgCoffee);
+                imageDialog.hide();
+
             } else {
-                showToast(EditCoffee.this, "Failed while fetching image");
+                showToast(EditCoffee.this, "Permission not granted!");
             }
         });
     }

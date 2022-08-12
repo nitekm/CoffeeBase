@@ -1,7 +1,8 @@
-package com.ncode.coffeebase.ui;
+package com.ncodedev.coffeebase.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -14,17 +15,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
-import com.ncode.coffeebase.R;
-import com.ncode.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.R;
+import com.ncodedev.coffeebase.model.Coffee;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.ncode.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
-import static com.ncode.coffeebase.utils.Logger.logCall;
-import static com.ncode.coffeebase.utils.Logger.logCallFail;
-import static com.ncode.coffeebase.utils.ToastUtils.showToast;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncodedev.coffeebase.utils.Logger.logCall;
+import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
+import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class CoffeeActivity extends AppCompatActivity {
     public static final String COFFEE_ID_KEY = "coffeeId";
@@ -169,6 +173,12 @@ public class CoffeeActivity extends AppCompatActivity {
                 txtOrigin.setText(coffee.getOrigin());
                 txtRoaster.setText(coffee.getRoaster());
                 coffeeRating.setRating(coffee.getRating().floatValue());
+                try {
+                    InputStream is = getContentResolver().openInputStream(Uri.parse((coffee.getImageUrl())));
+                    System.out.println(is);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 Picasso.with(CoffeeActivity.this)
                         .load(coffee.getImageUrl())
                         .placeholder(R.mipmap.coffeebean)

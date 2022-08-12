@@ -1,4 +1,4 @@
-package com.ncode.coffeebase.utils;
+package com.ncodedev.coffeebase.utils;
 
 import android.Manifest;
 import android.content.Context;
