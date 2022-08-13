@@ -203,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void authenticateWithBackend(GoogleSignInAccount account) {
+        showProgressBar(progressBar, MainActivity.this);
         Log.d(TAG, "Authenticating with backend server...");
         Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
         logCall(TAG, call);
