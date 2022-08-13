@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -211,9 +212,17 @@ public class EditCoffee extends AppCompatActivity {
     private void determineContext() {
         if (isCoffeeEdited()) {
             getSingleCoffee(coffeeId);
-            saveBtn.setOnClickListener(view -> editCoffee(coffeeId));
+            saveBtn.setOnClickListener(view -> {
+                if (validate()) {
+                    editCoffee(coffeeId);
+                }
+            });
         } else {
-            saveBtn.setOnClickListener(view -> addCoffee());
+            saveBtn.setOnClickListener(view -> {
+                if (validate()) {
+                    addCoffee();
+                };
+            });
         }
     }
 
@@ -251,6 +260,14 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
+    private boolean validate() {
+        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
+            showToast(EditCoffee.this, "Name cannot be empty!");
+            return false;
+        }
+        return true;
+    }
+
     private void editCoffee(int id) {
         Coffee coffee = createCoffee();
         Call<Void> call = createCoffeeApi().updateCoffee(id, coffee);
@@ -265,8 +282,12 @@ public class EditCoffee extends AppCompatActivity {
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
-                showToast(EditCoffee.this, "Something went wrong");
-                logCallFail(TAG, call);
+                if (inputCoffeeName.toString().trim().isEmpty()) {
+                    showToast(EditCoffee.this, "Name cannot be empty!");
+                } else {
+                    showToast(EditCoffee.this, "Something went wrong");
+                    logCallFail(TAG, call);
+                }
             }
         });
     }
@@ -296,6 +317,10 @@ public class EditCoffee extends AppCompatActivity {
         String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
         BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
+        if (imageUri == null) {
+            Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
+            return new Coffee(name, origin, roaster, rating, null, USER_ID);
+        }
 
         Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
         return new Coffee(name, origin, roaster, rating, imageUri.toString(), USER_ID);

@@ -2,7 +2,6 @@ package com.ncodedev.coffeebase.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,9 +20,6 @@ import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 
 import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
@@ -123,7 +119,8 @@ public class CoffeeActivity extends AppCompatActivity {
     private void showDeleteDialog(int coffeeId) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
         alertDialogBuilder.setTitle("Delete this coffee?");
-        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> { });
+        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
+        });
         alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> deleteCoffee(coffeeId));
         alertDialogBuilder.create().show();
     }
@@ -172,16 +169,12 @@ public class CoffeeActivity extends AppCompatActivity {
                 txtOrigin.setText(coffee.getOrigin());
                 txtRoaster.setText(coffee.getRoaster());
                 coffeeRating.setRating(coffee.getRating().floatValue());
-                try {
-                    InputStream is = getContentResolver().openInputStream(Uri.parse((coffee.getImageUrl())));
-                    System.out.println(is);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
+                if (coffee.getImageUrl() != null) {
+                    Picasso.with(CoffeeActivity.this)
+                            .load(coffee.getImageUrl())
+                            .placeholder(R.mipmap.coffeebean)
+                            .into(imgCoffee);
                 }
-                Picasso.with(CoffeeActivity.this)
-                        .load(coffee.getImageUrl())
-                        .placeholder(R.mipmap.coffeebean)
-                        .into(imgCoffee);
                 if (coffee.isFavourite()) {
                     favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
                 }
