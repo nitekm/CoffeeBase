@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.ui.CoffeeActivity;
 import com.squareup.picasso.Picasso;
 

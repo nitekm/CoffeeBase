@@ -15,7 +15,7 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;

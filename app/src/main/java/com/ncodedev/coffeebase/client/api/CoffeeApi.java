@@ -1,6 +1,6 @@
 package com.ncodedev.coffeebase.client.api;
 
-import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.domain.Coffee;
 import retrofit2.Call;
 import retrofit2.http.*;
 

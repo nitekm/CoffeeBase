@@ -23,14 +23,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -316,7 +315,7 @@ public class EditCoffee extends AppCompatActivity {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
         String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
-        BigDecimal rating = BigDecimal.valueOf(coffeeRatingBar.getRating());
+        Double rating = Double.valueOf(coffeeRatingBar.getRating());
         if (imageUri == null) {
             Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
             return new Coffee(name, origin, roaster, rating, null, USER_ID);

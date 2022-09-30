@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.Coffee;
+import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.security.Token;
 import com.ncodedev.coffeebase.model.security.User;
 import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
