@@ -88,7 +88,7 @@ public class EditCoffee extends AppCompatActivity {
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
         inputOrigin = findViewById(R.id.inputOrigin);
         inputRoaster = findViewById(R.id.inputRoaster);
-        toolbar = findViewById(R.id.topAppBar);
+        toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);

@@ -56,7 +56,7 @@ public class CoffeeActivity extends AppCompatActivity {
         txtOrigin = findViewById(R.id.txtOrigin);
         txtRoaster = findViewById(R.id.txtRoaster);
         coffeeRating = findViewById(R.id.coffeeRating);
-        toolbar = findViewById(R.id.topAppBar);
+        toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         favouriteMenuItem = findViewById(R.id.favouritesMenuItem);
     }
 

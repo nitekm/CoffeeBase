@@ -3,13 +3,14 @@ package com.ncodedev.coffeebase.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         recyclerView = findViewById(R.id.coffeeRecView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
-        toolbar = findViewById(R.id.topAppBar);
+        toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation);
         View headerView = navigationView.getHeaderView(0);
@@ -125,6 +126,43 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     return true;
                 }
         );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar_my_coffeebase, menu);
+
+        MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(final MenuItem menuItem) {
+                Log.d(TAG, "onMenuItemActionExpand: Search mode activated");
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(final MenuItem menuItem) {
+                Log.d(TAG, "onMenuItemActionCollapse: Search mode deactivated");
+                return true;
+            }
+        };
+        menu.findItem(R.id.searchMenuItem).setOnActionExpandListener(onActionExpandListener);
+        SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
+        searchView.setQueryHint("Search...");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(final String searchBy) {
+                search(searchBy);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(final String searchBy) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> search(searchBy), 2000);
+                return true;
+            }
+        });
+        return true;
     }
 
     private void setUpGoogleSignIn() {
@@ -276,6 +314,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
     }
 
+    private void search(String content) {
+        showProgressBar(progressBar, MainActivity.this);
+        Call<List<Coffee>> call = createCoffeeApi().searchCoffees(content);
+        logCall(TAG, call);
+
+        call.enqueue(new Callback<List<Coffee>>() {
+            @Override
+            public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
+                if (!response.isSuccessful()) {
+                    showToast(MainActivity.this, "Code: " + response.code() + " " + response.message());
+                    return;
+                }
+                coffees = new ArrayList<>(response.body());
+                coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
+                recyclerView.setAdapter(coffeeRecyclerViewAdapter);
+                hideProgressBar(progressBar, MainActivity.this);
+            }
+
+            @Override
+            public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
+                showToast(MainActivity.this, "Something went wrong!");
+                logCallFail(TAG, call);
+            }
+        });
+    }
+
     private void launchEditCoffee() {
         Intent intent = new Intent(MainActivity.this, EditCoffee.class);
         startActivity(intent);
@@ -314,5 +378,4 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }));
         alertDialogBuilder.create().show();
     }
-
 }

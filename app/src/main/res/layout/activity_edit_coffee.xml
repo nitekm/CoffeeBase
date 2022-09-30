@@ -14,7 +14,7 @@
             tools:ignore="MissingConstraints">
 
         <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
+                android:id="@+id/topAppBarCoffeeActivity"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:title="Coffee"

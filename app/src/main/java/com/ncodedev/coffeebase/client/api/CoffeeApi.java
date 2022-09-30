@@ -11,6 +11,9 @@ public interface CoffeeApi {
     @GET("coffees")
     Call<List<Coffee>> getCoffees();
 
+    @GET("coffees/search")
+    Call<List<Coffee>> searchCoffees(@Query("content") String content);
+
     @GET("coffees/{id}")
     Call<Coffee> getSingleCoffee(@Path("id") int id);
 

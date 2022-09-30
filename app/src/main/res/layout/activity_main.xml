@@ -48,11 +48,11 @@
                 android:id="@+id/appBarLayout">
 
             <com.google.android.material.appbar.MaterialToolbar
-                    android:id="@+id/topAppBar"
+                    android:id="@+id/topAppBarCoffeeActivity"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:title="My CoffeeBase"
-                    app:menu="@menu/top_app_bar"
+                    app:menu="@menu/top_app_bar_coffee_activity"
                     app:navigationIcon="@drawable/ic_menu_black_24"
                     app:layout_scrollFlags="scroll|enterAlways|snap"
                     style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
