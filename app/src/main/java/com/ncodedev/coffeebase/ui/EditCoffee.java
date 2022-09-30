@@ -13,10 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,8 +56,11 @@ public class EditCoffee extends AppCompatActivity {
     private ImageView imgCoffee;
     private Button addImageBtn, saveBtn;
     private RatingBar coffeeRatingBar;
-    private TextInputEditText inputCoffeeName, inputOrigin, inputRoaster;
+    private TextInputEditText inputCoffeeName, inputRoaster, inputOrigin, inputRegion, inputFarm, inputCropHeight, inputProcessing, inputScaRating;
 
+    private Spinner roastProfileSpinner, continentSpinner;
+
+    ArrayAdapter<CharSequence> roastProfileAdapter, continentAdapter;
     private Dialog imageDialog;
 
     @Override
@@ -77,16 +77,37 @@ public class EditCoffee extends AppCompatActivity {
 
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
-        if (imageUri == null) {
+        if (imageUri == null || imageUri.toString().isEmpty()) {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }
         addImageBtn = findViewById(R.id.addImageBtn);
         addImageBtn.setOnClickListener(view -> showAddImageDialog());
         saveBtn = findViewById(R.id.saveBtn);
+
         coffeeRatingBar = findViewById(R.id.coffeeRatingBar);
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
-        inputOrigin = findViewById(R.id.inputOrigin);
         inputRoaster = findViewById(R.id.inputRoaster);
+        inputOrigin = findViewById(R.id.inputOrigin);
+        inputRegion = findViewById(R.id.inputRegion);
+        inputFarm = findViewById(R.id.inputFarm);
+        inputCropHeight = findViewById(R.id.inputCropHeight);
+        inputProcessing = findViewById(R.id.inputProcessing);
+        inputScaRating = findViewById(R.id.inputScaRating);
+
+        roastProfileSpinner = findViewById(R.id.roastProfileSpinner);
+        roastProfileAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.roastProfiles,
+                android.R.layout.simple_spinner_dropdown_item);
+        roastProfileSpinner.setAdapter(roastProfileAdapter);
+
+        continentSpinner = findViewById(R.id.continentSpinner);
+        continentAdapter = ArrayAdapter.createFromResource(
+                this,
+                R.array.continents,
+                android.R.layout.simple_spinner_dropdown_item);
+        continentSpinner.setAdapter(continentAdapter);
+
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
@@ -241,10 +262,25 @@ public class EditCoffee extends AppCompatActivity {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 coffee = response.body();
-                inputCoffeeName.setText(coffee.getName());
-                inputOrigin.setText(coffee.getOrigin());
-                inputRoaster.setText(coffee.getRoaster());
                 coffeeRatingBar.setRating(coffee.getRating().floatValue());
+                inputCoffeeName.setText(coffee.getName());
+                inputRoaster.setText(coffee.getRoaster());
+                inputOrigin.setText(coffee.getOrigin());
+                inputRegion.setText(coffee.getRegion());
+                inputFarm.setText(coffee.getFarm());
+                inputCropHeight.setText(coffee.getCropHeight());
+                inputProcessing.setText(coffee.getProcessing());
+                inputScaRating.setText(coffee.getScaRating());
+
+                String roastProfile = coffee.getRoastProfile();
+                int roastProfileSpinnerPosition = roastProfileAdapter.getPosition(roastProfile);
+                roastProfileSpinner.setSelection(roastProfileSpinnerPosition);
+
+                String continent = coffee.getContinent();
+                int continentSpinnerPosition = continentAdapter.getPosition(continent);
+                roastProfileSpinner.setSelection(continentSpinnerPosition);
+
+
                 Picasso.with(EditCoffee.this)
                         .load(coffee.getImageUrl())
                         .placeholder(R.mipmap.coffeebean)
@@ -313,15 +349,26 @@ public class EditCoffee extends AppCompatActivity {
 
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
-        String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
-        Double rating = Double.valueOf(coffeeRatingBar.getRating());
+        String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
+        String region = Objects.requireNonNull(inputRegion.getText()).toString();
+        String farm = Objects.requireNonNull(inputFarm.getText()).toString();
+        Integer cropHeight = Integer.parseInt(Objects.requireNonNull(inputCropHeight.getText()).toString());
+        String processing = Objects.requireNonNull(inputProcessing.getText()).toString();
+        Integer scaRating = Integer.parseInt(Objects.requireNonNull(inputScaRating.getText()).toString());
+        Double rating = (double) coffeeRatingBar.getRating();
+        String roastProfile = roastProfileSpinner.getSelectedItem().toString();
+        String continent = continentSpinner.getSelectedItem().toString();
+
+        //TODO: change this xD if null u go same constructor but with null imageUrl xD
         if (imageUri == null) {
-            Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
-            return new Coffee(name, origin, roaster, rating, null, USER_ID);
+            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, USER_ID);
+            Log.d(TAG, " Object: " + createdCoffee + "created!");
+            return createdCoffee;
         }
 
-        Log.d(TAG, " Object: Coffee[" + name + ", " + origin + ", " + roaster + ", " + rating + ", " + imageUri + ", " + USER_ID + "] created!");
-        return new Coffee(name, origin, roaster, rating, imageUri.toString(), USER_ID);
+        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), USER_ID);
+        Log.d(TAG, " Object: " + createdCoffee + " created!");
+        return createdCoffee;
     }
 }

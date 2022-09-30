@@ -16,7 +16,7 @@
         <item>South America</item>
     </string-array>
 
-    <string-array name="roastProfile">
+    <string-array name="roastProfiles">
         <item>Roast Profile</item>
         <item>Light</item>
         <item>Omniroast</item>

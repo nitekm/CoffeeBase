@@ -2,8 +2,6 @@ package com.ncodedev.coffeebase.model.domain;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.ncodedev.coffeebase.model.enums.Continent;
-import com.ncodedev.coffeebase.model.enums.RoastProfile;
 
 public class Coffee {
 
@@ -27,7 +25,7 @@ public class Coffee {
 
     @SerializedName("roastProfile")
     @Expose
-    private RoastProfile roastProfile;
+    private String roastProfile;
 
     @SerializedName("region")
     @Expose
@@ -35,7 +33,7 @@ public class Coffee {
 
     @SerializedName("continent")
     @Expose
-    private Continent continent;
+    private String continent;
 
     @SerializedName("farm")
     @Expose
@@ -63,7 +61,7 @@ public class Coffee {
     private String userId;
 
 
-    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final RoastProfile roastProfile, final String region, final Continent continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final boolean favourite, final String userId) {
+    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final boolean favourite, final String userId) {
         this.id = id;
         this.name = name;
         this.origin = origin;
@@ -80,11 +78,17 @@ public class Coffee {
         this.favourite = favourite;
         this.userId = userId;
     }
-
-    public Coffee(String name, String origin, String roaster, Double rating, String imageUrl, String userId) {
+    public Coffee(final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final String userId) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
+        this.processing = processing;
+        this.roastProfile = roastProfile;
+        this.region = region;
+        this.continent = continent;
+        this.farm = farm;
+        this.cropHeight = cropHeight;
+        this.scaRating = scaRating;
         this.rating = rating;
         this.imageUrl = imageUrl;
         this.userId = userId;
@@ -130,11 +134,11 @@ public class Coffee {
         this.processing = processing;
     }
 
-    public RoastProfile getRoastProfile() {
+    public String getRoastProfile() {
         return roastProfile;
     }
 
-    public void setRoastProfile(final RoastProfile roastProfile) {
+    public void setRoastProfile(final String roastProfile) {
         this.roastProfile = roastProfile;
     }
 
@@ -146,11 +150,11 @@ public class Coffee {
         this.region = region;
     }
 
-    public Continent getContinent() {
+    public String getContinent() {
         return continent;
     }
 
-    public void setContinent(final Continent continent) {
+    public void setContinent(final String continent) {
         this.continent = continent;
     }
 
@@ -208,5 +212,26 @@ public class Coffee {
 
     public void setUserId(final String userId) {
         this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Coffee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", origin='" + origin + '\'' +
+                ", roaster='" + roaster + '\'' +
+                ", processing='" + processing + '\'' +
+                ", roastProfile='" + roastProfile + '\'' +
+                ", region='" + region + '\'' +
+                ", continent='" + continent + '\'' +
+                ", farm='" + farm + '\'' +
+                ", cropHeight=" + cropHeight +
+                ", scaRating=" + scaRating +
+                ", rating=" + rating +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", favourite=" + favourite +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }
