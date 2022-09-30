@@ -31,7 +31,8 @@
 
         <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent" tools:layout_editor_absoluteY="-152dp"
+                tools:layout_editor_absoluteX="-16dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -119,11 +120,59 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
+                        android:hint="Roaster"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:layout_constraintTop_toBottomOf="@+id/coffeeNameOutputLayout"
+                        android:id="@+id/roasterOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="32"
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/inputRoaster"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Spinner
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/roasterOutputLayout"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:id="@+id/roastProfileSpinner"
+                        android:spinnerMode="dropdown"/>
+
+                <Spinner
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/roastProfileSpinner"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:id="@+id/continentSpinner"
+                        android:spinnerMode="dropdown"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
                         android:hint="Origin"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/coffeeNameOutputLayout"
+                        app:layout_constraintTop_toBottomOf="@id/continentSpinner"
                         android:layout_marginTop="20dp"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
@@ -143,16 +192,16 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Roaster"
+                        android:hint="Region"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/originOutputLayout"
                         android:layout_marginTop="20dp"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        app:layout_constraintTop_toBottomOf="@+id/originOutputLayout"
-                        android:id="@+id/roasterOutputLayout">
+                        android:id="@+id/regionOutputLayout">
 
                     <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
@@ -161,9 +210,107 @@
                             android:maxLength="32"
                             android:inputType="textCapWords"
                             android:imeOptions="actionDone"
-                            android:id="@+id/inputRoaster"/>
+                            android:id="@+id/inputRegion"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Farm"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/regionOutputLayout"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/farmOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="32"
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/inputFarm"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Crop Height"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/farmOutputLayout"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/cropHeightOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="32"
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone"
+                            android:digits="0123456789"
+                            android:id="@+id/inputCropHeight"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Processing"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:layout_constraintTop_toBottomOf="@+id/cropHeightOutputLayout"
+                        android:id="@+id/processingOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="32"
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/inputProcessing"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="SCA Rating"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        app:layout_constraintTop_toBottomOf="@+id/processingOutputLayout"
+                        android:id="@+id/scaRatingOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:maxLength="32"
+                            android:inputType="textCapWords"
+                            android:imeOptions="actionDone"
+                            android:id="@+id/inputScaRating"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>

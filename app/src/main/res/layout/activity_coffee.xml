@@ -38,91 +38,247 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-    <ImageView
-            android:layout_width="250dp"
-            android:layout_height="250dp"
-            tools:srcCompat="@mipmap/coffeebean"
-            android:id="@+id/imgCoffee"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="60dp"/>
+                <ImageView
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        tools:srcCompat="@mipmap/coffeebean"
+                        android:id="@+id/imgCoffee"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="60dp"/>
 
 
-    <TextView
-            android:text="Coffee Name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtCoffeeName"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="@+id/imgCoffee"
-            app:layout_constraintStart_toStartOf="@+id/imgCoffee"
-            app:layout_constraintTop_toBottomOf="@+id/imgCoffee"
-            android:layout_marginTop="10dp"
-            android:gravity="center"/>
+                <TextView
+                        android:text="Coffee Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtCoffeeName"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="@+id/imgCoffee"
+                        app:layout_constraintStart_toStartOf="@+id/imgCoffee"
+                        app:layout_constraintTop_toBottomOf="@+id/imgCoffee"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center"/>
 
-    <RatingBar
-            android:id="@+id/coffeeRating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?android:attr/ratingBarStyleSmall"
-            android:numStars="5"
-            android:stepSize="0.1"
-            android:isIndicator="true"
-            android:layout_marginTop="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCoffeeName"/>
+                <RatingBar
+                        android:id="@+id/coffeeRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:numStars="5"
+                        android:stepSize="0.1"
+                        android:isIndicator="true"
+                        android:layout_marginTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtCoffeeName"/>
 
-    <androidx.constraintlayout.widget.Guideline
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/guideline2"
-            app:layout_constraintGuide_begin="400dp"
-            android:orientation="horizontal"/>
+                <androidx.constraintlayout.widget.Guideline
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/guideline2"
+                        app:layout_constraintGuide_begin="400dp"
+                        android:orientation="horizontal"/>
 
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:hint="Origin"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline2"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/originOutputLayout">
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Roaster"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/roasterOutputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/txtOrigin"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtRoaster"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:hint="Roaster"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/originOutputLayout"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Roast Profile"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/roasterOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/roastProfileOutputLayout">
 
-        <com.google.android.material.textfield.TextInputEditText
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/txtRoaster"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtRoastProfile"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Continent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/roastProfileOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/continentOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtContinent"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Origin"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/continentOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/originOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtOrigin"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Region"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/originOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/regionOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtRegion"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Farm"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/regionOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/farmOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtFarm"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Crop Height"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/farmOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/cropHeightOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtCropHeight"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="Processing"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cropHeightOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/processingOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtProcessing"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:hint="SCA Score"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/processingOutputLayout"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:id="@+id/scaScoreOutputLayout">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:focusable="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:id="@+id/txtScaScore"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
