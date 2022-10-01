@@ -268,18 +268,17 @@ public class EditCoffee extends AppCompatActivity {
                 inputOrigin.setText(coffee.getOrigin());
                 inputRegion.setText(coffee.getRegion());
                 inputFarm.setText(coffee.getFarm());
-                inputCropHeight.setText(coffee.getCropHeight());
                 inputProcessing.setText(coffee.getProcessing());
-                inputScaRating.setText(coffee.getScaRating());
 
-                String roastProfile = coffee.getRoastProfile();
-                int roastProfileSpinnerPosition = roastProfileAdapter.getPosition(roastProfile);
-                roastProfileSpinner.setSelection(roastProfileSpinnerPosition);
+                if (coffee.getCropHeight() != null) {
+                    inputCropHeight.setText(String.valueOf(coffee.getCropHeight()));
+                }
+                if (coffee.getScaRating() != null) {
+                    inputScaRating.setText(String.valueOf(coffee.getScaRating()));
+                }
 
-                String continent = coffee.getContinent();
-                int continentSpinnerPosition = continentAdapter.getPosition(continent);
-                roastProfileSpinner.setSelection(continentSpinnerPosition);
-
+                roastProfileSpinner.post(() -> roastProfileSpinner.setSelection(roastProfileAdapter.getPosition(coffee.getRoastProfile())));
+                continentSpinner.post(() -> continentSpinner.setSelection(continentAdapter.getPosition(coffee.getContinent())));
 
                 Picasso.with(EditCoffee.this)
                         .load(coffee.getImageUrl())
@@ -353,14 +352,20 @@ public class EditCoffee extends AppCompatActivity {
         String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
         String region = Objects.requireNonNull(inputRegion.getText()).toString();
         String farm = Objects.requireNonNull(inputFarm.getText()).toString();
-        Integer cropHeight = Integer.parseInt(Objects.requireNonNull(inputCropHeight.getText()).toString());
         String processing = Objects.requireNonNull(inputProcessing.getText()).toString();
-        Integer scaRating = Integer.parseInt(Objects.requireNonNull(inputScaRating.getText()).toString());
         Double rating = (double) coffeeRatingBar.getRating();
         String roastProfile = roastProfileSpinner.getSelectedItem().toString();
         String continent = continentSpinner.getSelectedItem().toString();
 
-        //TODO: change this xD if null u go same constructor but with null imageUrl xD
+        Integer cropHeight = null, scaRating = null;
+        if (TextUtils.getTrimmedLength(inputCropHeight.getText()) > 0) {
+            cropHeight = Integer.parseInt(inputCropHeight.getText().toString());
+        }
+        if (TextUtils.getTrimmedLength(inputScaRating.getText()) > 0) {
+            scaRating = Integer.parseInt(inputScaRating.getText().toString());
+        }
+
+        //TODO: chane this v
         if (imageUri == null) {
             Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, USER_ID);
             Log.d(TAG, " Object: " + createdCoffee + "created!");

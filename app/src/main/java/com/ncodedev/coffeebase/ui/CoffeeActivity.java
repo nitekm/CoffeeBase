@@ -35,8 +35,7 @@ public class CoffeeActivity extends AppCompatActivity {
     private ActionMenuItemView favouriteMenuItem;
     private ImageView imgCoffee;
     private TextView txtCoffeeName;
-    private TextInputEditText txtRoaster;
-    private TextView txtOrigin;
+    private TextInputEditText txtRoaster, txtOrigin, txtRegion, txtFarm, txtCropHeight, txtProcessing, txtScaRating, txtContinent, txtRoastProfile;
     private RatingBar coffeeRating;
 
 
@@ -53,8 +52,15 @@ public class CoffeeActivity extends AppCompatActivity {
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
         txtCoffeeName = findViewById(R.id.txtCoffeeName);
-        txtOrigin = findViewById(R.id.txtOrigin);
         txtRoaster = findViewById(R.id.txtRoaster);
+        txtOrigin = findViewById(R.id.txtOrigin);
+        txtRegion = findViewById(R.id.txtRegion);
+        txtFarm = findViewById(R.id.txtFarm);
+        txtCropHeight = findViewById(R.id.txtCropHeight);
+        txtProcessing = findViewById(R.id.txtProcessing);
+        txtScaRating = findViewById(R.id.txtScaScore);
+        txtContinent = findViewById(R.id.txtContinent);
+        txtRoastProfile = findViewById(R.id.txtRoastProfile);
         coffeeRating = findViewById(R.id.coffeeRating);
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         favouriteMenuItem = findViewById(R.id.favouritesMenuItem);
@@ -165,16 +171,28 @@ public class CoffeeActivity extends AppCompatActivity {
                     showToast(CoffeeActivity.this, "Something went wrong");
                 }
                 coffee = response.body();
-                txtCoffeeName.setText(coffee.getName());
-                txtOrigin.setText(coffee.getOrigin());
-                txtRoaster.setText(coffee.getRoaster());
                 coffeeRating.setRating(coffee.getRating().floatValue());
-                if (coffee.getImageUrl() != null) {
-                    Picasso.with(CoffeeActivity.this)
-                            .load(coffee.getImageUrl())
-                            .placeholder(R.mipmap.coffeebean)
-                            .into(imgCoffee);
+                txtCoffeeName.setText(coffee.getName());
+                txtRoaster.setText(coffee.getRoaster());
+                txtOrigin.setText(coffee.getOrigin());
+                txtRegion.setText(coffee.getRegion());
+                txtFarm.setText(coffee.getFarm());
+                txtProcessing.setText(coffee.getProcessing());
+                txtRoastProfile.setText(coffee.getRoastProfile());
+                txtContinent.setText(coffee.getContinent());
+
+                if (coffee.getCropHeight() != null) {
+                    txtCropHeight.setText(String.valueOf(coffee.getCropHeight()));
                 }
+                if (coffee.getScaRating() != null) {
+                    txtScaRating.setText(String.valueOf(coffee.getScaRating()));
+                }
+
+                Picasso.with(CoffeeActivity.this)
+                        .load(coffee.getImageUrl())
+                        .placeholder(R.mipmap.coffeebean)
+                        .into(imgCoffee);
+
                 if (coffee.isFavourite()) {
                     favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
                 }
