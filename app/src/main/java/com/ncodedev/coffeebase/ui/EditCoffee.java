@@ -6,22 +6,30 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
+import com.ncodedev.coffeebase.model.domain.Tag;
 import com.squareup.picasso.Picasso;
+import petrov.kristiyan.colorpicker.ColorPicker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +50,7 @@ import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class EditCoffee extends AppCompatActivity {
 
+    private int tagColor = Color.parseColor("#f84c44");
     private boolean isReadPermissionGranted = false;
     private boolean isWritePermissionGranted = false;
     ActivityResultLauncher<String[]> mPermissionResultLauncher;
@@ -55,10 +64,12 @@ public class EditCoffee extends AppCompatActivity {
     private MaterialToolbar toolbar;
     private ImageView imgCoffee;
     private Button addImageBtn, saveBtn;
+    private FloatingActionButton colorPickerBtn;
     private RatingBar coffeeRatingBar;
     private TextInputEditText inputCoffeeName, inputRoaster, inputOrigin, inputRegion, inputFarm, inputCropHeight, inputProcessing, inputScaRating;
-
     private Spinner roastProfileSpinner, continentSpinner;
+    private ChipGroup tagsChipGroup;
+    private MultiAutoCompleteTextView tagsTextView;
 
     ArrayAdapter<CharSequence> roastProfileAdapter, continentAdapter;
     private Dialog imageDialog;
@@ -73,6 +84,8 @@ public class EditCoffee extends AppCompatActivity {
         getPermissions();
         getCoffeePhotoImage();
         getCoffeeGalleryImage();
+        launchColorPicker();
+        handleAddTag();
     }
 
     private void initViews() {
@@ -83,6 +96,9 @@ public class EditCoffee extends AppCompatActivity {
         addImageBtn = findViewById(R.id.addImageBtn);
         addImageBtn.setOnClickListener(view -> showAddImageDialog());
         saveBtn = findViewById(R.id.saveBtn);
+        colorPickerBtn = findViewById(R.id.colorPickerButton);
+        colorPickerBtn.setBackgroundTintList(ColorStateList.valueOf(tagColor));
+        colorPickerBtn.setSupportBackgroundTintList(ColorStateList.valueOf(tagColor));
 
         coffeeRatingBar = findViewById(R.id.coffeeRatingBar);
         inputCoffeeName = findViewById(R.id.inputCoffeeName);
@@ -93,6 +109,8 @@ public class EditCoffee extends AppCompatActivity {
         inputCropHeight = findViewById(R.id.inputCropHeight);
         inputProcessing = findViewById(R.id.inputProcessing);
         inputScaRating = findViewById(R.id.inputScaRating);
+        tagsChipGroup = findViewById(R.id.tagsChipGroup);
+        tagsTextView = findViewById(R.id.tagsTextView);
 
         roastProfileSpinner = findViewById(R.id.roastProfileSpinner);
         roastProfileAdapter = ArrayAdapter.createFromResource(
@@ -241,7 +259,7 @@ public class EditCoffee extends AppCompatActivity {
             saveBtn.setOnClickListener(view -> {
                 if (validate()) {
                     addCoffee();
-                };
+                }
             });
         }
     }
@@ -253,6 +271,54 @@ public class EditCoffee extends AppCompatActivity {
             return coffeeId != -1;
         }
         return false;
+    }
+
+    private void handleAddTag() {
+        tagsTextView.setOnEditorActionListener((textView, actionId, keyEvent) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                addTag(tagsTextView.getText().toString());
+                tagsTextView.getText().clear();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private void launchColorPicker() {
+        colorPickerBtn.setOnClickListener(view -> {
+            ColorPicker colorPicker = new ColorPicker(this);
+            colorPicker.setOnFastChooseColorListener(new ColorPicker.OnFastChooseColorListener() {
+                        @Override
+                        public void setOnFastChooseColorListener(final int position, final int color) {
+                            tagColor = color;
+                            colorPickerBtn.setBackgroundTintList(ColorStateList.valueOf(tagColor));
+                            colorPickerBtn.setSupportBackgroundTintList(ColorStateList.valueOf(tagColor));
+                        }
+
+                        @Override
+                        public void onCancel() {
+                        }
+                    })
+                    .setRoundColorButton(true)
+                    .setColumns(5)
+                    .show();
+        });
+    }
+
+    private void addTag(String tag) {
+        Chip chip = new Chip(this);
+
+        chip.setText("#" + tag);
+        chip.setChipBackgroundColor(ColorStateList.valueOf(tagColor));
+        chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
+
+        chip.setCloseIconVisible(true);
+        chip.setClickable(true);
+
+        chip.setChipIconVisible(false);
+        chip.setCheckable(false);
+
+        tagsChipGroup.addView(chip);
     }
 
     private void getSingleCoffee(int coffeeId) {
@@ -279,6 +345,23 @@ public class EditCoffee extends AppCompatActivity {
 
                 roastProfileSpinner.post(() -> roastProfileSpinner.setSelection(roastProfileAdapter.getPosition(coffee.getRoastProfile())));
                 continentSpinner.post(() -> continentSpinner.setSelection(continentAdapter.getPosition(coffee.getContinent())));
+
+                List<Tag> tags = coffee.getTags();
+                tags.forEach(tag -> {
+                    Chip chip = new Chip(EditCoffee.this);
+                    chip.setText(tag.getName());
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.getInteger(tag.getColor())));
+                    chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
+
+                    chip.setCloseIconVisible(true);
+                    chip.setClickable(true);
+
+                    chip.setChipIconVisible(false);
+                    chip.setCheckable(false);
+
+                    tagsChipGroup.addView(chip);
+                });
+
 
                 Picasso.with(EditCoffee.this)
                         .load(coffee.getImageUrl())
@@ -365,15 +448,24 @@ public class EditCoffee extends AppCompatActivity {
             scaRating = Integer.parseInt(inputScaRating.getText().toString());
         }
 
+        List<Tag> tags = new ArrayList<>();
+        for (int i = 0; i < tagsChipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) tagsChipGroup.getChildAt(i);
+            Tag tag = new Tag(chip.getText().toString(), String.valueOf(tagColor));
+            tags.add(tag);
+        }
+
+
         //TODO: chane this v
         if (imageUri == null) {
-            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, USER_ID);
+            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, USER_ID, tags);
             Log.d(TAG, " Object: " + createdCoffee + "created!");
             return createdCoffee;
         }
 
-        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), USER_ID);
+        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), USER_ID, tags);
         Log.d(TAG, " Object: " + createdCoffee + " created!");
         return createdCoffee;
     }
+
 }

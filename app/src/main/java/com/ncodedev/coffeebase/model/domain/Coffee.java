@@ -3,6 +3,8 @@ package com.ncodedev.coffeebase.model.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Coffee {
 
     @SerializedName("id")
@@ -59,9 +61,12 @@ public class Coffee {
     @SerializedName("userId")
     @Expose
     private String userId;
+    @SerializedName("tags")
+    @Expose
+    private List<Tag> tags;
 
 
-    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final boolean favourite, final String userId) {
+    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final boolean favourite, final String userId, final List<Tag> tags) {
         this.id = id;
         this.name = name;
         this.origin = origin;
@@ -77,8 +82,9 @@ public class Coffee {
         this.imageUrl = imageUrl;
         this.favourite = favourite;
         this.userId = userId;
+        this.tags = tags;
     }
-    public Coffee(final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final String userId) {
+    public Coffee(final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final String userId, final List<Tag> tags) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
@@ -92,6 +98,7 @@ public class Coffee {
         this.rating = rating;
         this.imageUrl = imageUrl;
         this.userId = userId;
+        this.tags = tags;
     }
 
     public Integer getId() {
@@ -214,6 +221,14 @@ public class Coffee {
         this.userId = userId;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(final List<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Coffee{" +
@@ -232,6 +247,7 @@ public class Coffee {
                 ", imageUrl='" + imageUrl + '\'' +
                 ", favourite=" + favourite +
                 ", userId='" + userId + '\'' +
+                ", tags=" + tags +
                 '}';
     }
 }
