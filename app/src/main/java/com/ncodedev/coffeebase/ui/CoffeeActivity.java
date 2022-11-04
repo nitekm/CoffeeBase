@@ -2,6 +2,7 @@ package com.ncodedev.coffeebase.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,13 +14,18 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
+import com.ncodedev.coffeebase.model.domain.Tag;
 import com.squareup.picasso.Picasso;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import java.util.List;
 
 import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
@@ -37,6 +43,7 @@ public class CoffeeActivity extends AppCompatActivity {
     private TextView txtCoffeeName;
     private TextInputEditText txtRoaster, txtOrigin, txtRegion, txtFarm, txtCropHeight, txtProcessing, txtScaRating, txtContinent, txtRoastProfile;
     private RatingBar coffeeRating;
+    private ChipGroup tagChipGroup;
 
 
     @Override
@@ -64,6 +71,7 @@ public class CoffeeActivity extends AppCompatActivity {
         coffeeRating = findViewById(R.id.coffeeRating);
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         favouriteMenuItem = findViewById(R.id.favouritesMenuItem);
+        tagChipGroup = findViewById(R.id.displayChipGroup);
     }
 
     private void setToolbar() {
@@ -196,6 +204,20 @@ public class CoffeeActivity extends AppCompatActivity {
                 if (coffee.isFavourite()) {
                     favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
                 }
+
+                List<Tag> tags = coffee.getTags();
+                tags.forEach(tag -> {
+                    Chip chip = new Chip(CoffeeActivity.this);
+                    chip.setText(tag.getName());
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
+
+                    chip.setCloseIconVisible(false);
+                    chip.setClickable(false);
+                    chip.setChipIconVisible(false);
+                    chip.setCheckable(false);
+
+                    tagChipGroup.addView(chip);
+                });
             }
 
             @Override

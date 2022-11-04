@@ -74,12 +74,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/txtCoffeeName"/>
 
-                <androidx.constraintlayout.widget.Guideline
+                <com.google.android.material.chip.ChipGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/guideline2"
-                        app:layout_constraintGuide_begin="400dp"
-                        android:orientation="horizontal"/>
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/coffeeRating"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:id="@+id/displayChipGroup" />
+
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -87,7 +92,7 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/guideline2"
+                        app:layout_constraintTop_toBottomOf="@id/displayChipGroup"
                         android:layout_marginTop="25dp"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"

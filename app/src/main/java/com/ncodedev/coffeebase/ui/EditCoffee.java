@@ -12,9 +12,14 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import androidx.activity.result.ActivityResultLauncher;
@@ -39,8 +44,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncodedev.coffeebase.client.provider.TagApiProvider.createTagApi;
 import static com.ncodedev.coffeebase.utils.Global.USER_ID;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
@@ -69,10 +76,11 @@ public class EditCoffee extends AppCompatActivity {
     private TextInputEditText inputCoffeeName, inputRoaster, inputOrigin, inputRegion, inputFarm, inputCropHeight, inputProcessing, inputScaRating;
     private Spinner roastProfileSpinner, continentSpinner;
     private ChipGroup tagsChipGroup;
-    private MultiAutoCompleteTextView tagsTextView;
+    private AutoCompleteTextView tagsTextView;
 
     ArrayAdapter<CharSequence> roastProfileAdapter, continentAdapter;
     private Dialog imageDialog;
+    List<Tag> tags = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +119,34 @@ public class EditCoffee extends AppCompatActivity {
         inputScaRating = findViewById(R.id.inputScaRating);
         tagsChipGroup = findViewById(R.id.tagsChipGroup);
         tagsTextView = findViewById(R.id.tagsTextView);
+        tagsTextView.setThreshold(1);
+        tagsTextView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+            }
+
+            @Override
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+                new Handler(Looper.getMainLooper()).postDelayed(() -> searchTags(charSequence.toString()), 1300);
+            }
+
+            @Override
+            public void afterTextChanged(final Editable editable) {
+
+            }
+        });
+
+        tagsTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
+                tags.stream().filter(tag -> tag.getName().equalsIgnoreCase(adapterView.getItemAtPosition(i).toString()))
+                        .findAny()
+                        .ifPresent(tag -> {
+                            addTag(tag.getName(), Integer.parseInt(tag.getColor()));
+                            tagsTextView.getText().clear();
+                        });
+            }
+        });
 
         roastProfileSpinner = findViewById(R.id.roastProfileSpinner);
         roastProfileAdapter = ArrayAdapter.createFromResource(
@@ -276,7 +312,7 @@ public class EditCoffee extends AppCompatActivity {
     private void handleAddTag() {
         tagsTextView.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addTag(tagsTextView.getText().toString());
+                addTag(tagsTextView.getText().toString(), tagColor);
                 tagsTextView.getText().clear();
                 return true;
             }
@@ -305,11 +341,15 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
-    private void addTag(String tag) {
+    private void addTag(String tag, int color) {
         Chip chip = new Chip(this);
 
-        chip.setText("#" + tag);
-        chip.setChipBackgroundColor(ColorStateList.valueOf(tagColor));
+        if (tag.length() > 0 && tag.charAt(0) == '#') {
+            chip.setText(tag);
+        } else {
+            chip.setText("#" + tag);
+        }
+        chip.setChipBackgroundColor(ColorStateList.valueOf(color));
         chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
 
         chip.setCloseIconVisible(true);
@@ -350,7 +390,7 @@ public class EditCoffee extends AppCompatActivity {
                 tags.forEach(tag -> {
                     Chip chip = new Chip(EditCoffee.this);
                     chip.setText(tag.getName());
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.getInteger(tag.getColor())));
+                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
                     chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
 
                     chip.setCloseIconVisible(true);
@@ -429,6 +469,32 @@ public class EditCoffee extends AppCompatActivity {
         });
     }
 
+    private void searchTags(String name) {
+        Call<List<Tag>> call = createTagApi().searchTags(name);
+        logCall(TAG, call);
+
+        call.enqueue(new Callback<List<Tag>>() {
+            @Override
+            public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
+                if (response.body() != null && !response.body().isEmpty()) {
+                    tags = response.body();
+                    List<String> tagNames = tags.stream()
+                            .map(Tag::getName)
+                            .collect(Collectors.toList());
+                    ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(EditCoffee.this, android.R.layout.simple_list_item_1, tagNames);
+                    tagsTextView.setAdapter(tagAdapter);
+                    tagAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<List<Tag>> call, final Throwable t) {
+                showToast(EditCoffee.this, "Cannot search tags");
+                logCallFail(TAG, call);
+            }
+        });
+    }
+
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
@@ -451,7 +517,7 @@ public class EditCoffee extends AppCompatActivity {
         List<Tag> tags = new ArrayList<>();
         for (int i = 0; i < tagsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) tagsChipGroup.getChildAt(i);
-            Tag tag = new Tag(chip.getText().toString(), String.valueOf(tagColor));
+            Tag tag = new Tag(chip.getText().toString(), String.valueOf(chip.getChipBackgroundColor().getDefaultColor()));
             tags.add(tag);
         }
 
