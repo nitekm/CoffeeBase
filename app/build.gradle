@@ -9,10 +9,10 @@ android {
         applicationId "com.ncodedev.coffeebase"
         minSdk 26
         targetSdk 31
-        versionCode 1
+        versionCode 3
         versionName "1.0"
-        buildConfigField "String", "BaseURL", '\"http://10.0.2.2:8080/"'
-//        buildConfigField "String", "BaseURL", '\"https://coffee-base-api.herokuapp.com/"'
+//        buildConfigField "String", "BaseURL", '\"http://10.0.2.2:8080/"'
+        buildConfigField "String", "BaseURL", '\"https://coffee-base-api.herokuapp.com/"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
