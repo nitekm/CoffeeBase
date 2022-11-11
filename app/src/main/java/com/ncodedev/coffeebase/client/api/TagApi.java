@@ -10,4 +10,7 @@ import java.util.List;
 public interface TagApi {
     @GET("tags/search")
     Call<List<Tag>> searchTags(@Query("name") String name);
+
+    @GET("tags")
+    Call<List<Tag>> getTags();
 }
