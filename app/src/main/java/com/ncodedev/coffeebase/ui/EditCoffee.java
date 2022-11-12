@@ -32,6 +32,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
+import com.ncodedev.coffeebase.model.security.User;
 import com.squareup.picasso.Picasso;
 import petrov.kristiyan.colorpicker.ColorPicker;
 import retrofit2.Call;
@@ -44,7 +45,6 @@ import java.util.stream.Collectors;
 
 import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncodedev.coffeebase.client.provider.TagApiProvider.createTagApi;
-import static com.ncodedev.coffeebase.utils.Global.USER_ID;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
@@ -527,7 +527,7 @@ public class EditCoffee extends AppCompatActivity {
         List<Tag> tags = new ArrayList<>();
         for (int i = 0; i < tagsChipGroup.getChildCount(); i++) {
             Chip chip = (Chip) tagsChipGroup.getChildAt(i);
-            Tag newTag = new Tag(chip.getText().toString(), String.valueOf(chip.getChipBackgroundColor().getDefaultColor()), USER_ID);
+            Tag newTag = new Tag(chip.getText().toString(), String.valueOf(chip.getChipBackgroundColor().getDefaultColor()), User.getInstance().getUserId());
             Optional<Tag> existingTag = allTags.stream()
                     .filter(tag -> tag.getName().equalsIgnoreCase(newTag.getName())
                             && tag.getColor().equalsIgnoreCase(newTag.getColor()))
@@ -542,12 +542,12 @@ public class EditCoffee extends AppCompatActivity {
 
         //TODO: chane this v
         if (imageUri == null) {
-            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, USER_ID, tags);
+            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, User.getInstance().getUserId(), tags);
             Log.d(TAG, " Object: " + createdCoffee + "created!");
             return createdCoffee;
         }
 
-        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), USER_ID, tags);
+        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), User.getInstance().getUserId(), tags);
         Log.d(TAG, " Object: " + createdCoffee + " created!");
         return createdCoffee;
     }

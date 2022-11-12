@@ -2,7 +2,7 @@ package com.ncodedev.coffeebase.client.provider;
 
 import com.ncodedev.coffeebase.BuildConfig;
 import com.ncodedev.coffeebase.client.api.CoffeeApi;
-import com.ncodedev.coffeebase.utils.Global;
+import com.ncodedev.coffeebase.model.security.User;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -15,7 +15,7 @@ public class CoffeeApiProvider  {
                 .addInterceptor(chain -> {
                     Request request = chain.request()
                             .newBuilder()
-                            .addHeader("Authorization", "Bearer " + Global.TOKEN)
+                            .addHeader("Authorization", "Bearer " + User.getInstance().getToken())
                             .build();
                     return chain.proceed(request);
                 });
