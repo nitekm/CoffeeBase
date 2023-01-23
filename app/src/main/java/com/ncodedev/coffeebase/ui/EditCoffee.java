@@ -43,13 +43,13 @@ import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
-import static com.ncodedev.coffeebase.client.provider.TagApiProvider.createTagApi;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
 import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkWriteStoragePermission;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.web.provider.CoffeeApiProvider.createCoffeeApi;
+import static com.ncodedev.coffeebase.web.provider.TagApiProvider.createTagApi;
 
 public class EditCoffee extends AppCompatActivity {
 

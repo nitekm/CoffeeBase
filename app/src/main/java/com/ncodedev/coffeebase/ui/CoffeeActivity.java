@@ -20,22 +20,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
+import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.List;
 
-import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
-import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-
 public class CoffeeActivity extends AppCompatActivity {
-    public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "CoffeeActivity";
-    private Coffee coffee;
+    public static final String COFFEE_ID_KEY = "coffeeId";
     private int coffeeId;
     private MaterialToolbar toolbar;
     private ActionMenuItemView favouriteMenuItem;
@@ -44,6 +36,7 @@ public class CoffeeActivity extends AppCompatActivity {
     private TextInputEditText txtRoaster, txtOrigin, txtRegion, txtFarm, txtCropHeight, txtProcessing, txtScaRating, txtContinent, txtRoastProfile;
     private RatingBar coffeeRating;
     private ChipGroup tagChipGroup;
+    private CoffeeApiProvider coffeeApiProvider = new CoffeeApiProvider();
 
 
     @Override
@@ -86,7 +79,9 @@ public class CoffeeActivity extends AppCompatActivity {
     private boolean onMenuItemClick(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem:
-                addToFavourites(coffeeId);
+                coffeeApiProvider.switchFavourites(this, coffeeId);
+                finish();
+                startActivity(getIntent());
                 Log.d(TAG, "addToFavouritesMenuItem clicked");
                 return true;
             case R.id.editMenuItem:
@@ -102,28 +97,6 @@ public class CoffeeActivity extends AppCompatActivity {
         }
     }
 
-    private void addToFavourites(int coffeeId) {
-        Call<Void> call = createCoffeeApi().switchFavourite(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(final Call<Void> call, final Response<Void> response) {
-                refresh();
-            }
-
-            @Override
-            public void onFailure(final Call<Void> call, final Throwable t) {
-                showToast(CoffeeActivity.this, "Something went wrong!");
-                logCallFail(TAG, call);
-            }
-        });
-    }
-
-    private void refresh() {
-        finish();
-        startActivity(getIntent());
-    }
-
     private void editCoffee(int coffeeId) {
         Intent intent = new Intent(CoffeeActivity.this, EditCoffee.class);
         intent.putExtra(COFFEE_ID_KEY, coffeeId);
@@ -135,27 +108,8 @@ public class CoffeeActivity extends AppCompatActivity {
         alertDialogBuilder.setTitle("Delete this coffee?");
         alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
         });
-        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> deleteCoffee(coffeeId));
+        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> coffeeApiProvider.delete(this, coffeeId));
         alertDialogBuilder.create().show();
-    }
-
-    private void deleteCoffee(final int coffeeId) {
-        Call<Void> call = createCoffeeApi().deleteCoffee(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(final Call<Void> call, final Response<Void> response) {
-                showToast(CoffeeActivity.this, "Coffee deleted!");
-                Intent intent = new Intent(CoffeeActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(final Call<Void> call, final Throwable t) {
-                showToast(CoffeeActivity.this, "Something went wrong!");
-                logCallFail(TAG, call);
-            }
-        });
     }
 
     private void showCoffeeInfo() {
@@ -163,68 +117,52 @@ public class CoffeeActivity extends AppCompatActivity {
         if (null != intent) {
             coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
-                getSingleCoffee(coffeeId);
+                coffeeApiProvider.getOne(this, coffeeId)
+                        .ifPresent(coffee -> loadCoffeeData(coffee));
             }
         }
     }
 
-    private void getSingleCoffee(int coffeeId) {
-        Call<Coffee> call = createCoffeeApi().getSingleCoffee(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Coffee>() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
-                if (!response.isSuccessful()) {
-                    showToast(CoffeeActivity.this, "Something went wrong");
-                }
-                coffee = response.body();
-                coffeeRating.setRating(coffee.getRating().floatValue());
-                txtCoffeeName.setText(coffee.getName());
-                txtRoaster.setText(coffee.getRoaster());
-                txtOrigin.setText(coffee.getOrigin());
-                txtRegion.setText(coffee.getRegion());
-                txtFarm.setText(coffee.getFarm());
-                txtProcessing.setText(coffee.getProcessing());
-                txtRoastProfile.setText(coffee.getRoastProfile());
-                txtContinent.setText(coffee.getContinent());
+    @SuppressLint("RestrictedApi")
+    private void loadCoffeeData(Coffee coffee) {
+        coffeeRating.setRating(coffee.getRating().floatValue());
+        txtCoffeeName.setText(coffee.getName());
+        txtRoaster.setText(coffee.getRoaster());
+        txtOrigin.setText(coffee.getOrigin());
+        txtRegion.setText(coffee.getRegion());
+        txtFarm.setText(coffee.getFarm());
+        txtProcessing.setText(coffee.getProcessing());
+        txtRoastProfile.setText(coffee.getRoastProfile());
+        txtContinent.setText(coffee.getContinent());
 
-                if (coffee.getCropHeight() != null) {
-                    txtCropHeight.setText(String.valueOf(coffee.getCropHeight()));
-                }
-                if (coffee.getScaRating() != null) {
-                    txtScaRating.setText(String.valueOf(coffee.getScaRating()));
-                }
+        if (coffee.getCropHeight() != null) {
+            txtCropHeight.setText(String.valueOf(coffee.getCropHeight()));
+        }
+        if (coffee.getScaRating() != null) {
+            txtScaRating.setText(String.valueOf(coffee.getScaRating()));
+        }
 
-                Picasso.with(CoffeeActivity.this)
-                        .load(coffee.getImageUrl())
-                        .placeholder(R.mipmap.coffeebean)
-                        .into(imgCoffee);
+        Picasso.with(CoffeeActivity.this)
+                .load(coffee.getImageUrl())
+                .placeholder(R.mipmap.coffeebean)
+                .into(imgCoffee);
 
-                if (coffee.isFavourite()) {
-                    favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
-                }
+        if (coffee.isFavourite()) {
+            favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));
+        }
 
-                List<Tag> tags = coffee.getTags();
-                tags.forEach(tag -> {
-                    Chip chip = new Chip(CoffeeActivity.this);
-                    chip.setText(tag.getName());
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
+        List<Tag> tags = coffee.getTags();
+        tags.forEach(tag -> {
+            Chip chip = new Chip(CoffeeActivity.this);
+            chip.setText(tag.getName());
+            chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
 
-                    chip.setCloseIconVisible(false);
-                    chip.setClickable(false);
-                    chip.setChipIconVisible(false);
-                    chip.setCheckable(false);
+            chip.setCloseIconVisible(false);
+            chip.setClickable(false);
+            chip.setChipIconVisible(false);
+            chip.setCheckable(false);
 
-                    tagChipGroup.addView(chip);
-                });
-            }
-
-            @Override
-            public void onFailure(final Call<Coffee> call, final Throwable t) {
-                showToast(CoffeeActivity.this, "Something went wrong");
-                logCallFail(TAG, call);
-            }
+            tagChipGroup.addView(chip);
         });
     }
 }

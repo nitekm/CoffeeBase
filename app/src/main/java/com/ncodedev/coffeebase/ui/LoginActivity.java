@@ -18,10 +18,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.ncodedev.coffeebase.client.provider.SecurityApiProvider.createSecurityApi;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.web.provider.SecurityApiProvider.createSecurityApi;
 import static java.lang.Thread.sleep;
 
 public class LoginActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package com.ncodedev.coffeebase.client.api;
+package com.ncodedev.coffeebase.web.api;
 
 import com.ncodedev.coffeebase.model.security.Token;
 import retrofit2.Call;

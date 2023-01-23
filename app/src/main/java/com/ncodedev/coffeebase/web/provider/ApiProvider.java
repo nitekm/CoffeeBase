@@ -1,16 +1,15 @@
-package com.ncodedev.coffeebase.client.provider;
+package com.ncodedev.coffeebase.web.provider;
 
 import com.ncodedev.coffeebase.BuildConfig;
-import com.ncodedev.coffeebase.client.api.CoffeeApi;
 import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.web.api.Api;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CoffeeApiProvider  {
-
-    public static CoffeeApi createCoffeeApi() {
+public class ApiProvider {
+    public static <A extends Api> A createApi(Class<A> api) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request request = chain.request()
@@ -26,6 +25,6 @@ public class CoffeeApiProvider  {
                 .client(httpClient.build())
                 .build();
 
-        return retrofit.create(CoffeeApi.class);
+        return retrofit.create(api);
     }
 }

@@ -33,12 +33,12 @@ import retrofit2.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncodedev.coffeebase.client.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.utils.Utils.hideProgressBar;
 import static com.ncodedev.coffeebase.utils.Utils.showProgressBar;
+import static com.ncodedev.coffeebase.web.provider.CoffeeApiProvider.createCoffeeApi;
 import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -171,8 +171,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void updateUI() {
         User user = User.getInstance();
-
-        Log.d(TAG, "Set up Global.USER_ID " + user.getUserId());
         userNameTxt.setText(user.getUsername());
         if (user.getPictureUri() != null) {
             Picasso.with(this)

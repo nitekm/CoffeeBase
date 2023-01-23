@@ -1,8 +1,8 @@
-package com.ncodedev.coffeebase.client.provider;
+package com.ncodedev.coffeebase.web.provider;
 
 import com.ncodedev.coffeebase.BuildConfig;
-import com.ncodedev.coffeebase.client.api.TagApi;
 import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.web.api.TagApi;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;

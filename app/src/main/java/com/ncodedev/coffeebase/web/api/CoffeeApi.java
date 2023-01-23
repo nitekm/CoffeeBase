@@ -1,4 +1,4 @@
-package com.ncodedev.coffeebase.client.api;
+package com.ncodedev.coffeebase.web.api;
 
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import retrofit2.Call;
@@ -6,7 +6,7 @@ import retrofit2.http.*;
 
 import java.util.List;
 
-public interface CoffeeApi {
+public interface CoffeeApi extends Api {
 
     @GET("coffees")
     Call<List<Coffee>> getCoffees();
