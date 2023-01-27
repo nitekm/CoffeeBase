@@ -20,12 +20,13 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
+import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class CoffeeActivity extends AppCompatActivity {
+public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
     public static final String COFFEE_ID_KEY = "coffeeId";
     private int coffeeId;
@@ -36,7 +37,7 @@ public class CoffeeActivity extends AppCompatActivity {
     private TextInputEditText txtRoaster, txtOrigin, txtRegion, txtFarm, txtCropHeight, txtProcessing, txtScaRating, txtContinent, txtRoastProfile;
     private RatingBar coffeeRating;
     private ChipGroup tagChipGroup;
-    private CoffeeApiProvider coffeeApiProvider = new CoffeeApiProvider();
+    private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
 
 
     @Override
@@ -67,9 +68,12 @@ public class CoffeeActivity extends AppCompatActivity {
         tagChipGroup = findViewById(R.id.displayChipGroup);
     }
 
+
+
+    //TOOLBAR - START -----------------------------------------------------------------------------------------------\\
     private void setToolbar() {
         toolbar.setNavigationOnClickListener(view -> {
-            Intent intent = new Intent(CoffeeActivity.this, MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         });
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
@@ -79,13 +83,15 @@ public class CoffeeActivity extends AppCompatActivity {
     private boolean onMenuItemClick(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem:
-                coffeeApiProvider.switchFavourites(this, coffeeId);
+                coffeeApiProvider.switchFavourites(coffeeId, this);
                 finish();
                 startActivity(getIntent());
                 Log.d(TAG, "addToFavouritesMenuItem clicked");
                 return true;
             case R.id.editMenuItem:
-                editCoffee(coffeeId);
+                Intent intent = new Intent(this, EditCoffee.class);
+                intent.putExtra(COFFEE_ID_KEY, coffeeId);
+                startActivity(intent);
                 Log.d(TAG, "editMenuItem clicked");
                 return true;
             case R.id.deleteMenuItem:
@@ -97,34 +103,30 @@ public class CoffeeActivity extends AppCompatActivity {
         }
     }
 
-    private void editCoffee(int coffeeId) {
-        Intent intent = new Intent(CoffeeActivity.this, EditCoffee.class);
-        intent.putExtra(COFFEE_ID_KEY, coffeeId);
-        startActivity(intent);
-    }
-
     private void showDeleteDialog(int coffeeId) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(CoffeeActivity.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Delete this coffee?");
-        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {
-        });
-        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> coffeeApiProvider.delete(this, coffeeId));
+        alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {});
+        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> coffeeApiProvider.delete(coffeeId, this));
         alertDialogBuilder.create().show();
     }
+    //TOOLBAR - END -------------------------------------------------------------------------------------------------\\
+
+
 
     private void showCoffeeInfo() {
         Intent intent = getIntent();
         if (null != intent) {
             coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
             if (coffeeId != -1) {
-                coffeeApiProvider.getOne(this, coffeeId)
-                        .ifPresent(coffee -> loadCoffeeData(coffee));
+                coffeeApiProvider.getOne(coffeeId, this, this);
             }
         }
     }
 
     @SuppressLint("RestrictedApi")
-    private void loadCoffeeData(Coffee coffee) {
+    @Override
+    public void handleCoffeeResponse(final Coffee coffee) {
         coffeeRating.setRating(coffee.getRating().floatValue());
         txtCoffeeName.setText(coffee.getName());
         txtRoaster.setText(coffee.getRoaster());

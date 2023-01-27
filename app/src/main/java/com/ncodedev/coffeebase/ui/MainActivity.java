@@ -18,34 +18,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.security.User;
 import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
+import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
+import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.utils.Utils.hideProgressBar;
 import static com.ncodedev.coffeebase.utils.Utils.showProgressBar;
-import static com.ncodedev.coffeebase.web.provider.CoffeeApiProvider.createCoffeeApi;
-import static java.lang.Thread.sleep;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
 
     public static final String TAG = "MainActivity";
-    private List<Coffee> coffees = new ArrayList<>();
-    private GoogleSignInClient googleSignInClient;
     private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
     private RecyclerView recyclerView;
     private MaterialToolbar toolbar;
@@ -54,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private TextView userNameTxt;
     private ImageView userPictureImage;
     private ProgressBar progressBar;
+    private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +53,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         initViews();
-        updateUI();
-        setUpNavigationDrawer();
-        setUpNavigationDrawerContent(navigationView);
         getAllCoffees();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(TAG, "No user instance found, initializing LoginActivity");
         if (User.getInstance() == null) {
             startActivity(new Intent(this, LoginActivity.class));
         }
@@ -86,25 +76,53 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         View headerView = navigationView.getHeaderView(0);
         userNameTxt = headerView.findViewById(R.id.userNameTxt);
         userPictureImage = headerView.findViewById(R.id.userPictureImage);
+        setUpNavigationDrawer();
+        setUpNavigationDrawerContent(navigationView);
+        updateUI();
     }
 
-    private void setUpNavigationDrawer() {
-        setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+    private void updateUI() {
+        User user = User.getInstance();
+        userNameTxt.setText(user.getUsername());
+        if (user.getPictureUri() != null) {
+            Picasso.with(this)
+                    .load(user.getPictureUri())
+                    .placeholder(R.drawable.ic_account)
+                    .into(userPictureImage);
+        }
+        hideProgressBar(progressBar, MainActivity.this);
     }
 
-    private void setUpNavigationDrawerContent(NavigationView navigationView) {
-        navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(
-                item -> {
-                    selectDrawerItem(item);
-                    return true;
-                }
-        );
+    private void getAllCoffees() {
+        showProgressBar(progressBar, this);
+        coffeeApiProvider.getAll(this, this);
     }
 
+    @Override
+    public void handleGetList(List<Coffee> coffees) {
+        Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
+        coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
+        recyclerView.setAdapter(coffeeRecyclerViewAdapter);
+        hideProgressBar(progressBar, this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        alertDialogBuilder.setTitle("Exit Application");
+        alertDialogBuilder.setNegativeButton("No", ((dialogInterface, i) -> {
+        }));
+        alertDialogBuilder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }));
+        alertDialogBuilder.create().show();
+    }
+
+
+    //TOP BAR - START ------------------------------------------------------------------------------------------------\\
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -129,17 +147,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String searchBy) {
-                search(searchBy);
+                coffeeApiProvider.search(searchBy, MainActivity.this, MainActivity.this);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(final String searchBy) {
-                new Handler(Looper.getMainLooper()).postDelayed(() -> search(searchBy), 2000);
+                new Handler(Looper.getMainLooper())
+                        .postDelayed(() -> coffeeApiProvider.search(
+                                searchBy,
+                                MainActivity.this,
+                                MainActivity.this), 2000);
                 return true;
             }
         });
         return true;
+    }
+    //TOP BAR - END --------------------------------------------------------------------------------------------------\\
+
+
+    //NAVIGATION DRAWER - START --------------------------------------------------------------------------------------\\
+    private void setUpNavigationDrawer() {
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
+    private void setUpNavigationDrawerContent(NavigationView navigationView) {
+        navigationView.bringToFront();
+        navigationView.setNavigationItemSelectedListener(
+                item -> {
+                    selectDrawerItem(item);
+                    return true;
+                }
+        );
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -162,82 +204,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    //Code 1 to pass logout request to login activity
-    private void signOut() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.putExtra("CODE", 1);
-        startActivity(intent);
-    }
-
-    private void updateUI() {
-        User user = User.getInstance();
-        userNameTxt.setText(user.getUsername());
-        if (user.getPictureUri() != null) {
-            Picasso.with(this)
-                    .load(user.getPictureUri())
-                    .placeholder(R.drawable.ic_account)
-                    .into(userPictureImage);
-        }
-        hideProgressBar(progressBar, MainActivity.this);
-    }
-
-    private void getAllCoffees() {
-        showProgressBar(progressBar, MainActivity.this);
-        Call<List<Coffee>> call = createCoffeeApi().getCoffees();
-        logCall(TAG, call);
-        call.enqueue(new Callback<List<Coffee>>() {
-            @Override
-            public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
-                if (!response.isSuccessful()) {
-                    showToast(MainActivity.this, "Code: " + response.code() + " " + response.message());
-                    return;
-                }
-                coffees = new ArrayList<>(response.body());
-                coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
-                recyclerView.setAdapter(coffeeRecyclerViewAdapter);
-                hideProgressBar(progressBar, MainActivity.this);
-            }
-
-            @Override
-            public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                logCallFail(TAG, call);
-                try {
-                    sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                Log.d(TAG, "Retrying...");
-                call.clone().enqueue(this);
-            }
-        });
-    }
-
-    private void search(String content) {
-        showProgressBar(progressBar, MainActivity.this);
-        Call<List<Coffee>> call = createCoffeeApi().searchCoffees(content);
-        logCall(TAG, call);
-
-        call.enqueue(new Callback<List<Coffee>>() {
-            @Override
-            public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
-                if (!response.isSuccessful()) {
-                    showToast(MainActivity.this, "Code: " + response.code() + " " + response.message());
-                    return;
-                }
-                coffees = new ArrayList<>(response.body());
-                coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
-                recyclerView.setAdapter(coffeeRecyclerViewAdapter);
-                hideProgressBar(progressBar, MainActivity.this);
-            }
-
-            @Override
-            public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                showToast(MainActivity.this, "Something went wrong!");
-                logCallFail(TAG, call);
-            }
-        });
-    }
-
     private void launchEditCoffee() {
         Intent intent = new Intent(MainActivity.this, EditCoffee.class);
         startActivity(intent);
@@ -255,6 +221,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         showToast(this, "Signed in with Google");
     }
 
+    private void signOut() {
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        //Code 1 to pass logout request to login activity
+        intent.putExtra("CODE", 1);
+        startActivity(intent);
+    }
+
     @Override
     public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
     }
@@ -262,19 +235,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(final AdapterView<?> adapterView) {
     }
-
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Exit Application");
-        alertDialogBuilder.setNegativeButton("No", ((dialogInterface, i) -> {
-        }));
-        alertDialogBuilder.setPositiveButton("Yes", ((dialogInterface, i) -> {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-        }));
-        alertDialogBuilder.create().show();
-    }
+    //NAVIGATION DRAWER - END ---------------------------------------------------------------------------------------\\
 }

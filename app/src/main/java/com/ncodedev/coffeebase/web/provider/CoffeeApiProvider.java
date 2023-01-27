@@ -1,159 +1,124 @@
 package com.ncodedev.coffeebase.web.provider;
 
 import android.app.Activity;
-import com.ncodedev.coffeebase.BuildConfig;
 import com.ncodedev.coffeebase.model.domain.Coffee;
-import com.ncodedev.coffeebase.model.security.User;
 import com.ncodedev.coffeebase.web.api.CoffeeApi;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
+import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
+import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class CoffeeApiProvider {
 
     public static final String TAG = "CoffeeApiProvider";
 
-    public Optional<List<Coffee>> getAll(Activity activity) {
-        Call<List<Coffee>> call = ApiProvider.createApi(CoffeeApi.class).getCoffees();
-        logCall(TAG, call);
-        try {
-            final Response<List<Coffee>> response = call.execute();
-            if (response.isSuccessful()) {
-                return Optional.of(response.body());
-            }
-            showToast(activity, response.message());
-            return Optional.empty();
+    private static CoffeeApiProvider instance;
 
-        } catch (IOException e) {
-            logCallFail(TAG, call);
+    public static CoffeeApiProvider getInstance() {
+        if (instance == null) {
+            instance = new CoffeeApiProvider();
         }
-        return Optional.empty();
+        return instance;
     }
 
-    public Optional<Coffee> getOne(Activity activity, int id) {
-        Call<Coffee> call = createCoffeeApi().getSingleCoffee(id);
-        logCall(TAG, call);
-        try {
-            final Response<Coffee> response = call.execute();
-            if (response.isSuccessful()) {
-                return Optional.ofNullable(response.body());
-            }
-            showToast(activity, response.message());
-            return Optional.empty();
-        } catch (IOException e) {
-            logCallFail(TAG, call);
-        }
-        return Optional.empty();
+    public void getAll(CoffeeListResponseListener listener, Activity activity) {
+        Call<List<Coffee>> call = createApi(CoffeeApi.class).getCoffees();
+        handleListResponse(call, listener, activity);
     }
 
-    public void save(Activity activity, Coffee coffee) {
-        Call<Coffee> call = createCoffeeApi().createCoffee(coffee);
+    public void search(String content, CoffeeListResponseListener listener, Activity activity) {
+        Call<List<Coffee>> call = createApi(CoffeeApi.class).searchCoffees(content);
+        handleListResponse(call, listener, activity);
+    }
+
+    public void getOne(int id, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
+        handleCoffeeResponse(call, listener, activity);
+    }
+
+    public void save(Coffee coffee, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee);
+        handleCoffeeResponse(call, listener, activity);
+    }
+
+    public void update(int id, Coffee coffee, Activity activity) {
+        Call<Void> call = createApi(CoffeeApi.class).updateCoffee(id, coffee);
+        handleVoidResponse(call, activity);
+    }
+
+    public void delete(int id, Activity activity) {
+        Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
+        handleVoidResponse(call, activity);
+    }
+
+    public void switchFavourites(int coffeeId, Activity activity) {
+        Call<Void> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
+        handleVoidResponse(call, activity);
+    }
+
+    private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener, Activity activity) {
+        logCall(TAG, call);
+        call.enqueue(new Callback<List<Coffee>>() {
+            @Override
+            public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
+                if (response.isSuccessful()) {
+                    listener.handleGetList(response.body());
+                } else {
+                    showToast(activity, "Error!" + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
+                logCallFail(TAG, call);
+                showToast(activity, "Server is unavailable. Try again later");
+            }
+        });
+    }
+
+    private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
         logCall(TAG, call);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
-                    showToast(activity, "Coffee added!");
-                    return;
+                    listener.handleCoffeeResponse(response.body());
+                } else {
+                    showToast(activity, "Error!" + response.message());
                 }
-                showToast(activity, response.message());
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 logCallFail(TAG, call);
-                showToast(activity, t.getMessage());
+                showToast(activity, "Server is unavailable. Try again later");
             }
         });
     }
 
-    public void update(Activity activity, int id, Coffee coffee) {
-        Call<Void> call = createCoffeeApi().updateCoffee(id, coffee);
+    private void handleVoidResponse(Call<Void> call, Activity activity) {
         logCall(TAG, call);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
-                if (response.isSuccessful()) {
-                    showToast(activity, "Changes saved!");
-                    return;
+                if (!response.isSuccessful()) {
+                    showToast(activity, "Error!" + response.message());
                 }
-                showToast(activity, response.message());
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 logCallFail(TAG, call);
-                showToast(activity, t.getMessage());
+                showToast(activity, "Server is unavailable. Try again later");
             }
         });
     }
-
-    public void delete(Activity activity, int id) {
-        Call<Void> call = createCoffeeApi().deleteCoffee(id);
-            logCall(TAG, call);
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(final Call<Void> call, final Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        showToast(activity, "Coffee deleted");
-                        return;
-                    }
-                    showToast(activity, response.message());
-                }
-
-                @Override
-                public void onFailure(final Call<Void> call, final Throwable t) {
-                    logCallFail(TAG, call);
-                    showToast(activity, t.getMessage());
-                }
-            });
-        }
-
-    public void switchFavourites(Activity activity, int coffeeId) {
-        Call<Void> call = createCoffeeApi().switchFavourite(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(final Call<Void> call, final Response<Void> response) {
-
-            }
-
-            @Override
-            public void onFailure(final Call<Void> call, final Throwable t) {
-                logCallFail(TAG, call);
-                showToast(activity, t.getMessage());
-            }
-        });
-    }
-
-        public static CoffeeApi createCoffeeApi () {
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                    .addInterceptor(chain -> {
-                        Request request = chain.request()
-                                .newBuilder()
-                                .addHeader("Authorization", "Bearer " + User.getInstance().getToken())
-                                .build();
-                        return chain.proceed(request);
-                    });
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(BuildConfig.BaseURL)
-                    .client(httpClient.build())
-                    .build();
-
-            return retrofit.create(CoffeeApi.class);
-        }
-    }
+}

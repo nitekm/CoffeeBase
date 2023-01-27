@@ -84,7 +84,10 @@ public class Coffee {
         this.userId = userId;
         this.tags = tags;
     }
-    public Coffee(final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final String userId, final List<Tag> tags) {
+    public Coffee(final String name, final String origin, final String roaster,
+                  final String processing, final String roastProfile, final String region,
+                  final String continent, final String farm, final Integer cropHeight, final Integer scaRating,
+                  final Double rating, final String userId, final List<Tag> tags) {
         this.name = name;
         this.origin = origin;
         this.roaster = roaster;
@@ -96,7 +99,6 @@ public class Coffee {
         this.cropHeight = cropHeight;
         this.scaRating = scaRating;
         this.rating = rating;
-        this.imageUrl = imageUrl;
         this.userId = userId;
         this.tags = tags;
     }

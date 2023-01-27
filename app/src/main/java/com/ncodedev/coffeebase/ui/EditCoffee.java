@@ -1,28 +1,17 @@
 package com.ncodedev.coffeebase.ui;
 
-import android.Manifest;
-import android.app.Activity;
-import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.*;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
@@ -33,50 +22,44 @@ import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
 import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.ui.utility.ImageHelper;
+import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
+import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
 import petrov.kristiyan.colorpicker.ColorPicker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ncodedev.coffeebase.utils.Logger.logCall;
 import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
-import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkReadStoragePermission;
-import static com.ncodedev.coffeebase.utils.PermissionsUtils.checkWriteStoragePermission;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-import static com.ncodedev.coffeebase.web.provider.CoffeeApiProvider.createCoffeeApi;
 import static com.ncodedev.coffeebase.web.provider.TagApiProvider.createTagApi;
 
-public class EditCoffee extends AppCompatActivity {
-
+public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener {
     private int tagColor = Color.parseColor("#f84c44");
-    private boolean isReadPermissionGranted = false;
-    private boolean isWritePermissionGranted = false;
-    ActivityResultLauncher<String[]> mPermissionResultLauncher;
-    ActivityResultLauncher<Intent> mGetPhotoImage;
-    ActivityResultLauncher<Intent> mGetGalleryImage;
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
-    private Coffee coffee;
     private int coffeeId;
-    private Uri imageUri;
-    private MaterialToolbar toolbar;
     private ImageView imgCoffee;
-    private Button addImageBtn, saveBtn;
+    private Button saveBtn;
     private FloatingActionButton colorPickerBtn;
     private RatingBar coffeeRatingBar;
     private TextInputEditText inputCoffeeName, inputRoaster, inputOrigin, inputRegion, inputFarm, inputCropHeight, inputProcessing, inputScaRating;
     private Spinner roastProfileSpinner, continentSpinner;
     private ChipGroup tagsChipGroup;
     private AutoCompleteTextView tagsTextView;
-    ArrayAdapter<CharSequence> roastProfileAdapter, continentAdapter;
-    private Dialog imageDialog;
-    List<Tag> searchTags = new ArrayList<>();
-    List<Tag> allTags = new ArrayList<>();
+    private ArrayAdapter<CharSequence> roastProfileAdapter, continentAdapter;
+    private List<Tag> searchTags = new ArrayList<>();
+    private List<Tag> allTags = new ArrayList<>();
+    private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
+    private final ImageHelper imageHelper = ImageHelper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,21 +68,20 @@ public class EditCoffee extends AppCompatActivity {
 
         initViews();
         determineContext();
+        handleImage();
         getTags();
-        getPermissions();
-        getCoffeePhotoImage();
-        getCoffeeGalleryImage();
         launchColorPicker();
         handleAddTag();
     }
 
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
-        if (imageUri == null || imageUri.toString().isEmpty()) {
+        if (imgCoffee.getTag() == null || imgCoffee.getTag().toString().isEmpty()) {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }
-        addImageBtn = findViewById(R.id.addImageBtn);
-        addImageBtn.setOnClickListener(view -> showAddImageDialog());
+
+        Button addImageBtn = findViewById(R.id.addImageBtn);
+        addImageBtn.setOnClickListener(view -> imageHelper.showAddImageDialog(this));
         saveBtn = findViewById(R.id.saveBtn);
         colorPickerBtn = findViewById(R.id.colorPickerButton);
         colorPickerBtn.setBackgroundTintList(ColorStateList.valueOf(tagColor));
@@ -119,8 +101,7 @@ public class EditCoffee extends AppCompatActivity {
         tagsTextView.setThreshold(1);
         tagsTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-            }
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {}
 
             @Override
             public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
@@ -128,8 +109,7 @@ public class EditCoffee extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(final Editable editable) {
-            }
+            public void afterTextChanged(final Editable editable) {}
         });
 
         tagsTextView.setOnItemClickListener((adapterView, view, i, l) -> searchTags.stream()
@@ -154,142 +134,40 @@ public class EditCoffee extends AppCompatActivity {
                 android.R.layout.simple_spinner_dropdown_item);
         continentSpinner.setAdapter(continentAdapter);
 
-        toolbar = findViewById(R.id.topAppBarCoffeeActivity);
+        MaterialToolbar toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);
         });
     }
 
-    private void showAddImageDialog() {
-        imageDialog = new Dialog(EditCoffee.this);
-        imageDialog.setContentView(R.layout.imagedialog);
-        ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
-        ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
-        btnPhotoLibrary.setOnClickListener(view -> {
-            mGetGalleryImage.launch(new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
-            imageDialog.hide();
-        });
-        btnPhotoCamera.setOnClickListener(view -> {
-            mGetPhotoImage.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
-            imageDialog.hide();
-        });
-        imageDialog.show();
-    }
-
-    private void getPermissions() {
-        mPermissionResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
-            if (result.get(Manifest.permission.READ_EXTERNAL_STORAGE) != null) {
-                isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
-            }
-            if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
-                isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
-            }
-        });
-    }
-
-    private void getCoffeeGalleryImage() {
-        mGetGalleryImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                imageUri = result.getData().getData();
-
-                final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                EditCoffee.this.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
-                Picasso.with(EditCoffee.this)
-                        .load(imageUri.toString())
-                        .into(imgCoffee);
-                imageDialog.hide();
-
-            } else {
-                showToast(EditCoffee.this, "Permission not granted!");
-            }
-        });
-    }
-
-    private void getCoffeePhotoImage() {
-        mGetPhotoImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                Bundle bundle = result.getData().getExtras();
-                Bitmap bitmap = (Bitmap) bundle.get("data");
-
-                if (isWritePermissionGranted) {
-                    if (saveImageToExternalStorage(UUID.randomUUID().toString(), bitmap)) {
-                        Picasso.with(EditCoffee.this)
-                                .load(imageUri.toString())
-                                .into(imgCoffee);
-                        imageDialog.hide();
-                    }
-                } else {
-                    showToast(EditCoffee.this, "Permission not granted!");
-                }
-            }
-        });
-
-        requestPermission();
-    }
-
-    private void requestPermission() {
-        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
-
-        isReadPermissionGranted = checkReadStoragePermission(this);
-        isWritePermissionGranted = checkWriteStoragePermission(this);
-
-        isWritePermissionGranted = isWritePermissionGranted || minSDK;
-
-        List<String> permissionRequest = new ArrayList<>();
-        if (!isReadPermissionGranted) {
-            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (!isWritePermissionGranted) {
-            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
-        if (!permissionRequest.isEmpty()) {
-            mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
-        }
-    }
-
-    private boolean saveImageToExternalStorage(String imgName, Bitmap bmp) {
-        Uri imageCollection;
-        ContentResolver resolver = getContentResolver();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            imageCollection = MediaStore.Images.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY);
-        } else {
-            imageCollection = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        }
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imgName + ".jpg");
-        contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-        imageUri = resolver.insert(imageCollection, contentValues);
-
-        try {
-            OutputStream outputStream = resolver.openOutputStream(Objects.requireNonNull(imageUri));
-            bmp.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            Objects.requireNonNull(outputStream);
-            return true;
-        } catch (Exception e) {
-            showToast(this, "Image not saved!");
-        }
-        return false;
-    }
-
     private void determineContext() {
         if (isCoffeeEdited()) {
-            getSingleCoffee(coffeeId);
+            coffeeApiProvider.getOne(coffeeId, this, this);
             saveBtn.setOnClickListener(view -> {
                 if (validate()) {
-                    editCoffee(coffeeId);
+                    Coffee coffee = createCoffee();
+                    coffeeApiProvider.update(coffeeId, coffee, this);
+                    Intent intent = new Intent(EditCoffee.this, MainActivity.class);
+                    startActivity(intent);
                 }
             });
         } else {
             saveBtn.setOnClickListener(view -> {
                 if (validate()) {
-                    addCoffee();
+                    Coffee coffee = createCoffee();
+                    coffeeApiProvider.save(coffee, this, this);
+                    Intent intent = new Intent(EditCoffee.this, MainActivity.class);
+                    startActivity(intent);
                 }
             });
         }
+    }
+
+    private void handleImage() {
+        imageHelper.getPermissions(this);
+        imageHelper.getCoffeeGalleryImage(this, imgCoffee);
+        imageHelper.getCoffeePhotoImage(this, imgCoffee);
     }
 
     private boolean isCoffeeEdited() {
@@ -310,6 +188,100 @@ public class EditCoffee extends AppCompatActivity {
             }
             return false;
         });
+    }
+
+    @Override
+    public void handleCoffeeResponse(final Coffee editedCoffee) {
+        coffeeRatingBar.setRating(editedCoffee.getRating().floatValue());
+        inputCoffeeName.setText(editedCoffee.getName());
+        inputRoaster.setText(editedCoffee.getRoaster());
+        inputOrigin.setText(editedCoffee.getOrigin());
+        inputRegion.setText(editedCoffee.getRegion());
+        inputFarm.setText(editedCoffee.getFarm());
+        inputProcessing.setText(editedCoffee.getProcessing());
+
+        if (editedCoffee.getCropHeight() != null) {
+            inputCropHeight.setText(String.valueOf(editedCoffee.getCropHeight()));
+        }
+        if (editedCoffee.getScaRating() != null) {
+            inputScaRating.setText(String.valueOf(editedCoffee.getScaRating()));
+        }
+
+        roastProfileSpinner.post(() -> roastProfileSpinner.setSelection(roastProfileAdapter.getPosition(editedCoffee.getRoastProfile())));
+        continentSpinner.post(() -> continentSpinner.setSelection(continentAdapter.getPosition(editedCoffee.getContinent())));
+
+        List<Tag> tags = editedCoffee.getTags();
+        tags.forEach(tag -> {
+            Chip chip = new Chip(EditCoffee.this);
+            chip.setText(tag.getName());
+            chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
+            chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
+
+            chip.setCloseIconVisible(true);
+            chip.setClickable(true);
+
+            chip.setChipIconVisible(false);
+            chip.setCheckable(false);
+
+            tagsChipGroup.addView(chip);
+        });
+
+
+        Picasso.with(EditCoffee.this)
+                .load(editedCoffee.getImageUrl())
+                .placeholder(R.mipmap.coffeebean)
+                .into(imgCoffee);
+
+    }
+
+    private Coffee createCoffee() {
+        String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
+        String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
+        String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
+        String region = Objects.requireNonNull(inputRegion.getText()).toString();
+        String farm = Objects.requireNonNull(inputFarm.getText()).toString();
+        String processing = Objects.requireNonNull(inputProcessing.getText()).toString();
+        Double rating = (double) coffeeRatingBar.getRating();
+        String roastProfile = roastProfileSpinner.getSelectedItem().toString();
+        String continent = continentSpinner.getSelectedItem().toString();
+
+        Integer cropHeight = null, scaRating = null;
+        if (TextUtils.getTrimmedLength(inputCropHeight.getText()) > 0) {
+            cropHeight = Integer.parseInt(inputCropHeight.getText().toString());
+        }
+        if (TextUtils.getTrimmedLength(inputScaRating.getText()) > 0) {
+            scaRating = Integer.parseInt(inputScaRating.getText().toString());
+        }
+
+        List<Tag> tags = new ArrayList<>();
+        for (int i = 0; i < tagsChipGroup.getChildCount(); i++) {
+            Chip chip = (Chip) tagsChipGroup.getChildAt(i);
+            Tag newTag = new Tag(chip.getText().toString(), String.valueOf(chip.getChipBackgroundColor().getDefaultColor()), User.getInstance().getUserId());
+            Optional<Tag> existingTag = allTags.stream()
+                    .filter(tag -> tag.getName().equalsIgnoreCase(newTag.getName())
+                            && tag.getColor().equalsIgnoreCase(newTag.getColor()))
+                    .findAny();
+            if (existingTag.isPresent()) {
+                tags.add(existingTag.get());
+            } else {
+                tags.add(newTag);
+            }
+        }
+
+        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, User.getInstance().getUserId(), tags);
+        if (imgCoffee.getTag() != null) {
+            createdCoffee.setImageUrl(imgCoffee.getTag().toString());
+        }
+        Log.d(TAG, " Object: " + createdCoffee + "created!");
+        return createdCoffee;
+    }
+
+    private boolean validate() {
+        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
+            showToast(EditCoffee.this, "Name cannot be empty!");
+            return false;
+        }
+        return true;
     }
 
     private void launchColorPicker() {
@@ -351,114 +323,6 @@ public class EditCoffee extends AppCompatActivity {
         chip.setCheckable(false);
 
         tagsChipGroup.addView(chip);
-    }
-
-    private void getSingleCoffee(int coffeeId) {
-        Call<Coffee> call = createCoffeeApi().getSingleCoffee(coffeeId);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Coffee>() {
-            @Override
-            public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
-                coffee = response.body();
-                coffeeRatingBar.setRating(coffee.getRating().floatValue());
-                inputCoffeeName.setText(coffee.getName());
-                inputRoaster.setText(coffee.getRoaster());
-                inputOrigin.setText(coffee.getOrigin());
-                inputRegion.setText(coffee.getRegion());
-                inputFarm.setText(coffee.getFarm());
-                inputProcessing.setText(coffee.getProcessing());
-
-                if (coffee.getCropHeight() != null) {
-                    inputCropHeight.setText(String.valueOf(coffee.getCropHeight()));
-                }
-                if (coffee.getScaRating() != null) {
-                    inputScaRating.setText(String.valueOf(coffee.getScaRating()));
-                }
-
-                roastProfileSpinner.post(() -> roastProfileSpinner.setSelection(roastProfileAdapter.getPosition(coffee.getRoastProfile())));
-                continentSpinner.post(() -> continentSpinner.setSelection(continentAdapter.getPosition(coffee.getContinent())));
-
-                List<Tag> tags = coffee.getTags();
-                tags.forEach(tag -> {
-                    Chip chip = new Chip(EditCoffee.this);
-                    chip.setText(tag.getName());
-                    chip.setChipBackgroundColor(ColorStateList.valueOf(Integer.parseInt(tag.getColor())));
-                    chip.setOnCloseIconClickListener(view -> tagsChipGroup.removeView(chip));
-
-                    chip.setCloseIconVisible(true);
-                    chip.setClickable(true);
-
-                    chip.setChipIconVisible(false);
-                    chip.setCheckable(false);
-
-                    tagsChipGroup.addView(chip);
-                });
-
-
-                Picasso.with(EditCoffee.this)
-                        .load(coffee.getImageUrl())
-                        .placeholder(R.mipmap.coffeebean)
-                        .into(imgCoffee);
-            }
-
-            @Override
-            public void onFailure(final Call<Coffee> call, final Throwable t) {
-                showToast(EditCoffee.this, "Something went wrong");
-                logCallFail(TAG, call);
-            }
-        });
-    }
-
-    private boolean validate() {
-        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
-            showToast(EditCoffee.this, "Name cannot be empty!");
-            return false;
-        }
-        return true;
-    }
-
-    private void editCoffee(int id) {
-        Coffee coffee = createCoffee();
-        Call<Void> call = createCoffeeApi().updateCoffee(id, coffee);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(final Call<Void> call, final Response<Void> response) {
-                showToast(EditCoffee.this, "Changes saved");
-                Intent intent = new Intent(EditCoffee.this, MainActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(final Call<Void> call, final Throwable t) {
-                if (inputCoffeeName.toString().trim().isEmpty()) {
-                    showToast(EditCoffee.this, "Name cannot be empty!");
-                } else {
-                    showToast(EditCoffee.this, "Something went wrong");
-                    logCallFail(TAG, call);
-                }
-            }
-        });
-    }
-
-    private void addCoffee() {
-        Coffee coffee = createCoffee();
-        Call<Coffee> call = createCoffeeApi().createCoffee(coffee);
-        logCall(TAG, call);
-        call.enqueue(new Callback<Coffee>() {
-            @Override
-            public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
-                showToast(EditCoffee.this, "Coffee added!");
-                Intent intent = new Intent(EditCoffee.this, MainActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFailure(final Call<Coffee> call, final Throwable t) {
-                showToast(EditCoffee.this, "Something went wrong");
-                logCallFail(TAG, call);
-            }
-        });
     }
 
     private void searchTags(String name) {
@@ -504,52 +368,4 @@ public class EditCoffee extends AppCompatActivity {
             }
         });
     }
-
-    private Coffee createCoffee() {
-        String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
-        String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
-        String origin = Objects.requireNonNull(inputOrigin.getText()).toString();
-        String region = Objects.requireNonNull(inputRegion.getText()).toString();
-        String farm = Objects.requireNonNull(inputFarm.getText()).toString();
-        String processing = Objects.requireNonNull(inputProcessing.getText()).toString();
-        Double rating = (double) coffeeRatingBar.getRating();
-        String roastProfile = roastProfileSpinner.getSelectedItem().toString();
-        String continent = continentSpinner.getSelectedItem().toString();
-
-        Integer cropHeight = null, scaRating = null;
-        if (TextUtils.getTrimmedLength(inputCropHeight.getText()) > 0) {
-            cropHeight = Integer.parseInt(inputCropHeight.getText().toString());
-        }
-        if (TextUtils.getTrimmedLength(inputScaRating.getText()) > 0) {
-            scaRating = Integer.parseInt(inputScaRating.getText().toString());
-        }
-
-        List<Tag> tags = new ArrayList<>();
-        for (int i = 0; i < tagsChipGroup.getChildCount(); i++) {
-            Chip chip = (Chip) tagsChipGroup.getChildAt(i);
-            Tag newTag = new Tag(chip.getText().toString(), String.valueOf(chip.getChipBackgroundColor().getDefaultColor()), User.getInstance().getUserId());
-            Optional<Tag> existingTag = allTags.stream()
-                    .filter(tag -> tag.getName().equalsIgnoreCase(newTag.getName())
-                            && tag.getColor().equalsIgnoreCase(newTag.getColor()))
-                    .findAny();
-            if (existingTag.isPresent()) {
-                tags.add(existingTag.get());
-            } else {
-                tags.add(newTag);
-            }
-        }
-
-
-        //TODO: chane this v
-        if (imageUri == null) {
-            Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, null, User.getInstance().getUserId(), tags);
-            Log.d(TAG, " Object: " + createdCoffee + "created!");
-            return createdCoffee;
-        }
-
-        Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, imageUri.toString(), User.getInstance().getUserId(), tags);
-        Log.d(TAG, " Object: " + createdCoffee + " created!");
-        return createdCoffee;
-    }
-
 }

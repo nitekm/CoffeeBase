@@ -8,7 +8,7 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiProvider {
+public class RetrofitApiCreator {
     public static <A extends Api> A createApi(Class<A> api) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
