@@ -24,12 +24,11 @@ import com.ncodedev.coffeebase.model.domain.Tag;
 import com.ncodedev.coffeebase.model.security.User;
 import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
+import com.ncodedev.coffeebase.web.listener.TagListResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
+import com.ncodedev.coffeebase.web.provider.TagApiProvider;
 import com.squareup.picasso.Picasso;
 import petrov.kristiyan.colorpicker.ColorPicker;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +36,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-import static com.ncodedev.coffeebase.web.provider.TagApiProvider.createTagApi;
 
-public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener {
+public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
     private int tagColor = Color.parseColor("#f84c44");
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
@@ -59,6 +55,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     private List<Tag> searchTags = new ArrayList<>();
     private List<Tag> allTags = new ArrayList<>();
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
+    private final TagApiProvider tagApiProvider = TagApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
 
     @Override
@@ -69,7 +66,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         initViews();
         determineContext();
         handleImage();
-        getTags();
+        tagApiProvider.getAll(this, this);
         launchColorPicker();
         handleAddTag();
     }
@@ -105,7 +102,10 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
             @Override
             public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-                new Handler(Looper.getMainLooper()).postDelayed(() -> searchTags(charSequence.toString()), 1000);
+                new Handler(Looper.getMainLooper())
+                        .postDelayed(() -> tagApiProvider.search(charSequence.toString(),
+                                        EditCoffee.this,
+                                        EditCoffee. this), 1000);
             }
 
             @Override
@@ -284,6 +284,8 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         return true;
     }
 
+
+//TAGS - START ------------------------------------------------------------------------------------------------------\\
     private void launchColorPicker() {
         colorPickerBtn.setOnClickListener(view -> {
             ColorPicker colorPicker = new ColorPicker(this);
@@ -325,47 +327,21 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         tagsChipGroup.addView(chip);
     }
 
-    private void searchTags(String name) {
-        Call<List<Tag>> call = createTagApi().searchTags(name);
-        logCall(TAG, call);
-
-        call.enqueue(new Callback<List<Tag>>() {
-            @Override
-            public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
-                if (response.body() != null && !response.body().isEmpty()) {
-                    searchTags = response.body();
-                    List<String> tagNames = searchTags.stream()
-                            .map(Tag::getName)
-                            .collect(Collectors.toList());
-                    ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(EditCoffee.this, android.R.layout.simple_list_item_1, tagNames);
-                    tagsTextView.setAdapter(tagAdapter);
-                    tagAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                showToast(EditCoffee.this, "Cannot search tags");
-                logCallFail(TAG, call);
-            }
-        });
+    @Override
+    public void handleGetList(final List<Tag> tags) {
+        allTags = tags;
     }
 
-    private void getTags() {
-        Call<List<Tag>> call = createTagApi().getTags();
-        logCall(TAG, call);
-
-        call.enqueue(new Callback<List<Tag>>() {
-            @Override
-            public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
-                allTags = response.body();
-            }
-
-            @Override
-            public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                showToast(EditCoffee.this, "Cannot get tags");
-                logCallFail(TAG, call);
-            }
-        });
+    @Override
+    public void handleSearchResult(final List<Tag> tags) {
+        searchTags = tags;
+        List<String> tagNames = searchTags.stream()
+                .map(Tag::getName)
+                .collect(Collectors.toList());
+        ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(EditCoffee.this, android.R.layout.simple_list_item_1, tagNames);
+        tagsTextView.setAdapter(tagAdapter);
+        tagAdapter.notifyDataSetChanged();
     }
+
+    //TAGS - END ----------------------------------------------------------------------------------------------------\\
 }

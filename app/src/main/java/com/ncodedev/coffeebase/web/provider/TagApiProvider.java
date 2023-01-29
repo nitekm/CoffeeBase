@@ -1,31 +1,80 @@
 package com.ncodedev.coffeebase.web.provider;
 
-import com.ncodedev.coffeebase.BuildConfig;
-import com.ncodedev.coffeebase.model.security.User;
+import android.app.Activity;
+import com.ncodedev.coffeebase.model.domain.Tag;
 import com.ncodedev.coffeebase.web.api.TagApi;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.ncodedev.coffeebase.web.listener.TagListResponseListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import java.util.List;
+
+import static com.ncodedev.coffeebase.utils.Logger.logCall;
+import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
+import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import static com.ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class TagApiProvider {
 
-    public static TagApi createTagApi() {
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .addInterceptor(chain -> {
-                    Request request = chain.request()
-                            .newBuilder()
-                            .addHeader("Authorization", "Bearer " + User.getInstance().getToken())
-                            .build();
-                    return chain.proceed(request);
-                });
+    public static final String TAG = "TagApiProvider";
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BuildConfig.BaseURL)
-                .client(httpClient.build())
-                .build();
+    private static TagApiProvider instance;
 
-        return retrofit.create(TagApi.class);
+    public static TagApiProvider getInstance() {
+        if (instance == null) {
+            instance = new TagApiProvider();
+        }
+        return instance;
+    }
+
+    public void getAll(TagListResponseListener listener, Activity activity) {
+        Call<List<Tag>> call = createApi(TagApi.class).getTags();
+        handleListResponse(call, listener, activity);
+    }
+
+    public void search(String content, TagListResponseListener listener, Activity activity) {
+        Call<List<Tag>> call = createApi(TagApi.class).searchTags(content);
+        handleSearchResponse(call, listener, activity);
+    }
+
+    private void handleListResponse(Call<List<Tag>> call, TagListResponseListener listener, Activity activity) {
+        logCall(TAG, call);
+        call.enqueue(new Callback<List<Tag>>() {
+            @Override
+            public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
+                if (response.isSuccessful()) {
+                    listener.handleGetList(response.body());
+                } else {
+                    showToast(activity, "Error!" + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<List<Tag>> call, final Throwable t) {
+                logCallFail(TAG, call);
+                showToast(activity, "Server is unavailable. Try again later");
+            }
+        });
+    }
+
+    private void handleSearchResponse(Call<List<Tag>> call, TagListResponseListener listener, Activity activity) {
+        logCall(TAG, call);
+        call.enqueue(new Callback<List<Tag>>() {
+            @Override
+            public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
+                if (response.isSuccessful()) {
+                    listener.handleSearchResult(response.body());
+                } else {
+                    showToast(activity, "Error!" + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<List<Tag>> call, final Throwable t) {
+                logCallFail(TAG, call);
+                showToast(activity, "Server is unavailable. Try again later");
+            }
+        });
     }
 }
