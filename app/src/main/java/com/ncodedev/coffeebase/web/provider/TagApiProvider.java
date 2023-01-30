@@ -10,8 +10,6 @@ import retrofit2.Response;
 
 import java.util.List;
 
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
@@ -39,7 +37,6 @@ public class TagApiProvider {
     }
 
     private void handleListResponse(Call<List<Tag>> call, TagListResponseListener listener, Activity activity) {
-        logCall(TAG, call);
         call.enqueue(new Callback<List<Tag>>() {
             @Override
             public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
@@ -52,14 +49,12 @@ public class TagApiProvider {
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                logCallFail(TAG, call);
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });
     }
 
     private void handleSearchResponse(Call<List<Tag>> call, TagListResponseListener listener, Activity activity) {
-        logCall(TAG, call);
         call.enqueue(new Callback<List<Tag>>() {
             @Override
             public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
@@ -72,7 +67,6 @@ public class TagApiProvider {
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                logCallFail(TAG, call);
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });

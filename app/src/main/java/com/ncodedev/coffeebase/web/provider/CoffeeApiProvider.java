@@ -11,8 +11,6 @@ import retrofit2.Response;
 
 import java.util.List;
 
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
@@ -65,7 +63,6 @@ public class CoffeeApiProvider {
     }
 
     private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener, Activity activity) {
-        logCall(TAG, call);
         call.enqueue(new Callback<List<Coffee>>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
@@ -78,14 +75,12 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                logCallFail(TAG, call);
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });
     }
 
     private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
-        logCall(TAG, call);
         call.enqueue(new Callback<Coffee>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
@@ -98,14 +93,12 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                logCallFail(TAG, call);
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });
     }
 
     private void handleVoidResponse(Call<Void> call, Activity activity) {
-        logCall(TAG, call);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
@@ -116,7 +109,6 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
-                logCallFail(TAG, call);
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });
