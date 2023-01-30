@@ -18,8 +18,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.ncodedev.coffeebase.utils.Logger.logCall;
-import static com.ncodedev.coffeebase.utils.Logger.logCallFail;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.web.provider.SecurityApiProvider.createSecurityApi;
 import static java.lang.Thread.sleep;
@@ -96,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
     private void authenticateWithBackend(GoogleSignInAccount account) {
         Log.d(TAG, "Authenticating with backend server...");
         Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
-        logCall(TAG, call);
         call.enqueue(new Callback<Token>() {
             @Override
             public void onResponse(final Call<Token> call, final Response<Token> response) {
@@ -112,7 +109,6 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(final Call<Token> call, final Throwable t) {
-                logCallFail(TAG, call);
                 try {
                     sleep(5000);
                 } catch (InterruptedException e) {
