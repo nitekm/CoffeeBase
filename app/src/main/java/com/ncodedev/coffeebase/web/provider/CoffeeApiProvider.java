@@ -47,9 +47,9 @@ public class CoffeeApiProvider {
         handleCoffeeResponse(call, listener, activity);
     }
 
-    public void update(int id, Coffee coffee, Activity activity) {
-        Call<Void> call = createApi(CoffeeApi.class).updateCoffee(id, coffee);
-        handleVoidResponse(call, activity);
+    public void update(int id, Coffee coffee, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee);
+        handleCoffeeResponse(call, listener, activity);
     }
 
     public void delete(int id, Activity activity) {
@@ -57,9 +57,9 @@ public class CoffeeApiProvider {
         handleVoidResponse(call, activity);
     }
 
-    public void switchFavourites(int coffeeId, Activity activity) {
-        Call<Void> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
-        handleVoidResponse(call, activity);
+    public void switchFavourites(int coffeeId, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
+        handleCoffeeResponse(call, listener, activity);
     }
 
     private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener, Activity activity) {

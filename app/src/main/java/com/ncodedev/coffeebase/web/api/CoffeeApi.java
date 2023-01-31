@@ -21,10 +21,10 @@ public interface CoffeeApi extends Api {
     Call<Coffee> createCoffee(@Body Coffee coffee);
 
     @PUT("coffees/{id}")
-    Call<Void> updateCoffee(@Path("id") int id, @Body Coffee coffeeToUpdate);
+    Call<Coffee> updateCoffee(@Path("id") int id, @Body Coffee coffeeToUpdate);
 
     @PATCH("coffees/{id}")
-    Call<Void> switchFavourite(@Path("id") int id);
+    Call<Coffee> switchFavourite(@Path("id") int id);
 
     @DELETE("coffees/{id}")
     Call<Void> deleteCoffee(@Path("id") int id);

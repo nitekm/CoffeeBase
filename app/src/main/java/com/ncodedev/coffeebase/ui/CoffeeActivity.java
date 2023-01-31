@@ -83,7 +83,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     private boolean onMenuItemClick(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem:
-                coffeeApiProvider.switchFavourites(coffeeId, this);
+                coffeeApiProvider.switchFavourites(coffeeId, this, this);
                 finish();
                 startActivity(getIntent());
                 Log.d(TAG, "addToFavouritesMenuItem clicked");

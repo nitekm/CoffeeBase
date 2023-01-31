@@ -147,7 +147,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             saveBtn.setOnClickListener(view -> {
                 if (validate()) {
                     Coffee coffee = createCoffee();
-                    coffeeApiProvider.update(coffeeId, coffee, this);
+                    coffeeApiProvider.update(coffeeId, coffee, this, this);
                     Intent intent = new Intent(EditCoffee.this, MainActivity.class);
                     startActivity(intent);
                 }
