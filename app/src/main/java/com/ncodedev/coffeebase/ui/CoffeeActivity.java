@@ -145,7 +145,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         }
 
         Picasso.with(CoffeeActivity.this)
-                .load(coffee.getImageUrl())
+                .load(coffee.getImageResourceUrl())
                 .placeholder(R.mipmap.coffeebean)
                 .into(imgCoffee);
 

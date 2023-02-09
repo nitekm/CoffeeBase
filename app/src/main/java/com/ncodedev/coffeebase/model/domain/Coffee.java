@@ -52,9 +52,9 @@ public class Coffee {
     @SerializedName("rating")
     @Expose
     private Double rating;
-    @SerializedName("imageUrl")
+    @SerializedName("coffeeImageName")
     @Expose
-    private String imageUrl;
+    private String coffeeImageName;
     @SerializedName("favourite")
     @Expose
     private boolean favourite;
@@ -65,8 +65,12 @@ public class Coffee {
     @Expose
     private List<Tag> tags;
 
+    @SerializedName("imageResourceUrl")
+    @Expose
+    private String imageResourceUrl;
 
-    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String imageUrl, final boolean favourite, final String userId, final List<Tag> tags) {
+
+    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String coffeeImageName, final boolean favourite, final String userId, final List<Tag> tags) {
         this.id = id;
         this.name = name;
         this.origin = origin;
@@ -79,7 +83,7 @@ public class Coffee {
         this.cropHeight = cropHeight;
         this.scaRating = scaRating;
         this.rating = rating;
-        this.imageUrl = imageUrl;
+        this.coffeeImageName = coffeeImageName;
         this.favourite = favourite;
         this.userId = userId;
         this.tags = tags;
@@ -199,12 +203,12 @@ public class Coffee {
         this.rating = rating;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getCoffeeImageName() {
+        return coffeeImageName;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setCoffeeImageName(String coffeeImageName) {
+        this.coffeeImageName = coffeeImageName;
     }
 
     public boolean isFavourite() {
@@ -231,6 +235,14 @@ public class Coffee {
         this.tags = tags;
     }
 
+    public String getImageResourceUrl() {
+        return imageResourceUrl;
+    }
+
+    public void setImageResourceUrl(final String imageResourceUrl) {
+        this.imageResourceUrl = imageResourceUrl;
+    }
+
     @Override
     public String toString() {
         return "Coffee{" +
@@ -246,7 +258,7 @@ public class Coffee {
                 ", cropHeight=" + cropHeight +
                 ", scaRating=" + scaRating +
                 ", rating=" + rating +
-                ", imageUrl='" + imageUrl + '\'' +
+                ", imageUrl='" + coffeeImageName + '\'' +
                 ", favourite=" + favourite +
                 ", userId='" + userId + '\'' +
                 ", tags=" + tags +

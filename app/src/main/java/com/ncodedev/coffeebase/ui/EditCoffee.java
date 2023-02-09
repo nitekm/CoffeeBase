@@ -36,8 +36,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
     private int tagColor = Color.parseColor("#f84c44");
     public static final String COFFEE_ID_KEY = "coffeeId";
@@ -145,7 +143,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         if (isCoffeeEdited()) {
             coffeeApiProvider.getOne(coffeeId, this, this);
             saveBtn.setOnClickListener(view -> {
-                if (validate()) {
+                if (validateCoffee()) {
                     Coffee coffee = createCoffee();
                     coffeeApiProvider.update(coffeeId, coffee, this, this);
                     Intent intent = new Intent(EditCoffee.this, MainActivity.class);
@@ -154,7 +152,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             });
         } else {
             saveBtn.setOnClickListener(view -> {
-                if (validate()) {
+                if (validateCoffee()) {
                     Coffee coffee = createCoffee();
                     coffeeApiProvider.save(coffee, this, this);
                     Intent intent = new Intent(EditCoffee.this, MainActivity.class);
@@ -182,9 +180,11 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     private void handleAddTag() {
         tagsTextView.setOnEditorActionListener((textView, actionId, keyEvent) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                addTagChip(tagsTextView.getText().toString(), tagColor);
-                tagsTextView.getText().clear();
-                return true;
+                if (validateTag(tagsTextView.getText().toString())) {
+                    addTagChip(tagsTextView.getText().toString(), tagColor);
+                    tagsTextView.getText().clear();
+                    return true;
+                }
             }
             return false;
         });
@@ -228,7 +228,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
 
         Picasso.with(EditCoffee.this)
-                .load(editedCoffee.getImageUrl())
+                .load(editedCoffee.getCoffeeImageName())
                 .placeholder(R.mipmap.coffeebean)
                 .into(imgCoffee);
 
@@ -270,15 +270,43 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
         Coffee createdCoffee = new Coffee(name, origin, roaster, processing, roastProfile, region, continent, farm, cropHeight, scaRating, rating, User.getInstance().getUserId(), tags);
         if (imgCoffee.getTag() != null) {
-            createdCoffee.setImageUrl(imgCoffee.getTag().toString());
+            createdCoffee.setCoffeeImageName(imgCoffee.getTag().toString());
         }
         Log.d(TAG, " Object: " + createdCoffee + "created!");
         return createdCoffee;
     }
 
-    private boolean validate() {
+    private boolean validateCoffee() {
+        //validate coffee name
         if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
-            showToast(EditCoffee.this, "Name cannot be empty!");
+            inputCoffeeName.setError("Name cannot be empty!");
+            return false;
+        }
+
+        //validate crop height
+        if (TextUtils.isEmpty(inputCropHeight.getText().toString().trim())) {
+            int cropHeight = Integer.parseInt(inputCropHeight.getText().toString().trim());
+            if (cropHeight < 0 || cropHeight > 8849) {
+                inputCropHeight.setError("Crop height must be between 0 and 8849");
+                return false;
+            }
+        }
+
+        //validate SCA Rating
+        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
+            int scaRating = Integer.parseInt(inputScaRating.getText().toString().trim());
+            if (scaRating < 0 || scaRating > 100) {
+                inputScaRating.setError("SCA Rating must be between 0 and 100");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateTag(String tagName) {
+        final String tagNameWithoutHash = tagName.replace('#', ' ');
+        if (TextUtils.isEmpty(tagNameWithoutHash.trim())) {
+            tagsTextView.setError("Tag name cannot be empty");
             return false;
         }
         return true;
