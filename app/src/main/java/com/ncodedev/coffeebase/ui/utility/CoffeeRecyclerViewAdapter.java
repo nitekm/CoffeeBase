@@ -19,6 +19,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import static com.ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
+import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
 
 public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecyclerViewAdapter.ViewHolder> {
 
@@ -49,7 +50,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
             holder.imgFavourite.setVisibility(View.VISIBLE);
         }
         Picasso.with(context)
-                .load(coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
+                .load(getDownloadUrl() + coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
                 .placeholder(R.mipmap.coffeebean)
                 .into(holder.coffeeImg);
         holder.cardView.setOnClickListener(v -> {

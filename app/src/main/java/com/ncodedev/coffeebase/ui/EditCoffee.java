@@ -36,6 +36,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
+
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
     private int tagColor = Color.parseColor("#f84c44");
     public static final String COFFEE_ID_KEY = "coffeeId";
@@ -192,7 +194,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     @Override
     public void handleCoffeeResponse(final Coffee editedCoffee) {
-        coffeeRatingBar.setRating(editedCoffee.getRating().floatValue());
         inputCoffeeName.setText(editedCoffee.getName());
         inputRoaster.setText(editedCoffee.getRoaster());
         inputOrigin.setText(editedCoffee.getOrigin());
@@ -200,12 +201,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         inputFarm.setText(editedCoffee.getFarm());
         inputProcessing.setText(editedCoffee.getProcessing());
 
-        if (editedCoffee.getCropHeight() != null) {
-            inputCropHeight.setText(String.valueOf(editedCoffee.getCropHeight()));
-        }
-        if (editedCoffee.getScaRating() != null) {
-            inputScaRating.setText(String.valueOf(editedCoffee.getScaRating()));
-        }
+        Optional.ofNullable(editedCoffee.getRating()).ifPresent(rating -> coffeeRatingBar.setRating(rating.floatValue()));
+        Optional.ofNullable(editedCoffee.getCropHeight()).ifPresent(cropHeight -> inputCropHeight.setText(String.valueOf(cropHeight)));
+        Optional.ofNullable(editedCoffee.getScaRating()).ifPresent(sca -> inputScaRating.setText(String.valueOf(sca)));
 
         roastProfileSpinner.post(() -> roastProfileSpinner.setSelection(roastProfileAdapter.getPosition(editedCoffee.getRoastProfile())));
         continentSpinner.post(() -> continentSpinner.setSelection(continentAdapter.getPosition(editedCoffee.getContinent())));
@@ -228,7 +226,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
 
         Picasso.with(EditCoffee.this)
-                .load(editedCoffee.getCoffeeImageName())
+                .load(getDownloadUrl() + editedCoffee.getCoffeeImageName())
                 .placeholder(R.mipmap.coffeebean)
                 .into(imgCoffee);
 

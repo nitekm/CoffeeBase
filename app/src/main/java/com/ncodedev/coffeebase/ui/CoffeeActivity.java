@@ -25,6 +25,7 @@ import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
 
@@ -129,9 +130,6 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     @SuppressLint("RestrictedApi")
     @Override
     public void handleCoffeeResponse(final Coffee coffee) {
-        if (coffee.getRating() != null) {
-            coffeeRating.setRating(coffee.getRating().floatValue());
-        }
         txtCoffeeName.setText(coffee.getName());
         txtRoaster.setText(coffee.getRoaster());
         txtOrigin.setText(coffee.getOrigin());
@@ -141,14 +139,9 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         txtRoastProfile.setText(coffee.getRoastProfile());
         txtContinent.setText(coffee.getContinent());
 
-        if (coffee.getCropHeight() != null) {
-            txtCropHeight.setText(String.valueOf(coffee.getCropHeight()));
-        }
-        if (coffee.getScaRating() != null) {
-            txtScaRating.setText(String.valueOf(coffee.getScaRating()));
-        }
-
-        String futureUrl = getDownloadUrl() + coffee.getCoffeeImageName();
+        Optional.ofNullable(coffee.getRating()).ifPresent(rating -> coffeeRating.setRating(rating.floatValue()));
+        Optional.ofNullable(coffee.getCropHeight()).ifPresent(cropHeight -> txtCropHeight.setText(String.valueOf(cropHeight)));
+        Optional.ofNullable(coffee.getScaRating()).ifPresent(sca -> txtScaRating.setText(String.valueOf(sca)));
 
         Picasso.with(CoffeeActivity.this)
                 .load(getDownloadUrl() + coffee.getCoffeeImageName())
