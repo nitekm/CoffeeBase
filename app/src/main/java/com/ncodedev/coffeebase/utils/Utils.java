@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ProgressBar;
+import com.ncodedev.coffeebase.BuildConfig;
 
 public final class Utils {
     private Utils() {}
@@ -18,5 +19,9 @@ public final class Utils {
         progressBar.setVisibility(View.INVISIBLE);
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+    }
+
+    public static String getDownloadUrl() {
+        return BuildConfig.BaseURL + "downloadFile/";
     }
 }

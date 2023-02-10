@@ -26,6 +26,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
+
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
     public static final String COFFEE_ID_KEY = "coffeeId";
@@ -127,7 +129,9 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     @SuppressLint("RestrictedApi")
     @Override
     public void handleCoffeeResponse(final Coffee coffee) {
-        coffeeRating.setRating(coffee.getRating().floatValue());
+        if (coffee.getRating() != null) {
+            coffeeRating.setRating(coffee.getRating().floatValue());
+        }
         txtCoffeeName.setText(coffee.getName());
         txtRoaster.setText(coffee.getRoaster());
         txtOrigin.setText(coffee.getOrigin());
@@ -144,8 +148,10 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
             txtScaRating.setText(String.valueOf(coffee.getScaRating()));
         }
 
+        String futureUrl = getDownloadUrl() + coffee.getCoffeeImageName();
+
         Picasso.with(CoffeeActivity.this)
-                .load(coffee.getImageResourceUrl())
+                .load(getDownloadUrl() + coffee.getCoffeeImageName())
                 .placeholder(R.mipmap.coffeebean)
                 .into(imgCoffee);
 

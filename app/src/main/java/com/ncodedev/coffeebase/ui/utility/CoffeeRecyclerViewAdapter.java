@@ -49,7 +49,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
             holder.imgFavourite.setVisibility(View.VISIBLE);
         }
         Picasso.with(context)
-                .load(coffees.get(holder.getAdapterPosition()).getImageResourceUrl())
+                .load(coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
                 .placeholder(R.mipmap.coffeebean)
                 .into(holder.coffeeImg);
         holder.cardView.setOnClickListener(v -> {
