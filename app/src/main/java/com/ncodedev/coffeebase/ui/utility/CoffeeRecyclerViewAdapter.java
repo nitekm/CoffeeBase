@@ -49,10 +49,16 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         if (coffees.get(holder.getAdapterPosition()).isFavourite()) {
             holder.imgFavourite.setVisibility(View.VISIBLE);
         }
-        Picasso.with(context)
-                .load(getDownloadUrl() + coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
-                .placeholder(R.mipmap.coffeebean)
-                .into(holder.coffeeImg);
+
+        if (coffees.get(holder.getAdapterPosition()).getCoffeeImageName() != null) {
+            Picasso.with(context)
+                    .load(getDownloadUrl() + coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
+                    .placeholder(R.mipmap.coffeebean)
+                    .into(holder.coffeeImg);
+        } else {
+            holder.coffeeImg.setImageResource(R.mipmap.coffeebean);
+        }
+
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CoffeeActivity.class);
             intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId());

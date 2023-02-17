@@ -1,6 +1,7 @@
 package com.ncodedev.coffeebase.web.api;
 
 import com.ncodedev.coffeebase.model.domain.Coffee;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -17,11 +18,16 @@ public interface CoffeeApi extends Api {
     @GET("coffees/{id}")
     Call<Coffee> getSingleCoffee(@Path("id") int id);
 
+    @Multipart
     @POST("coffees")
-    Call<Coffee> createCoffee(@Body Coffee coffee);
+    Call<Coffee> createCoffee(@Part("coffee") Coffee coffee,
+                              @Part MultipartBody.Part image);
 
+    @Multipart
     @PUT("coffees/{id}")
-    Call<Coffee> updateCoffee(@Path("id") int id, @Body Coffee coffeeToUpdate);
+    Call<Coffee> updateCoffee(@Path("id") int id,
+                              @Part("coffee") Coffee coffeeToUpdate,
+                              @Part MultipartBody.Part image);
 
     @PATCH("coffees/{id}")
     Call<Coffee> switchFavourite(@Path("id") int id);

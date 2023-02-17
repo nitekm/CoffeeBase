@@ -143,10 +143,14 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         Optional.ofNullable(coffee.getCropHeight()).ifPresent(cropHeight -> txtCropHeight.setText(String.valueOf(cropHeight)));
         Optional.ofNullable(coffee.getScaRating()).ifPresent(sca -> txtScaRating.setText(String.valueOf(sca)));
 
-        Picasso.with(CoffeeActivity.this)
-                .load(getDownloadUrl() + coffee.getCoffeeImageName())
-                .placeholder(R.mipmap.coffeebean)
-                .into(imgCoffee);
+        if (coffee.getCoffeeImageName() != null) {
+            Picasso.with(CoffeeActivity.this)
+                    .load(getDownloadUrl() + coffee.getCoffeeImageName())
+                    .placeholder(R.mipmap.coffeebean)
+                    .into(imgCoffee);
+        } else {
+            imgCoffee.setImageResource(R.mipmap.coffeebean);
+        }
 
         if (coffee.isFavourite()) {
             favouriteMenuItem.setIcon(getDrawable(R.drawable.ic_favorite_filled));

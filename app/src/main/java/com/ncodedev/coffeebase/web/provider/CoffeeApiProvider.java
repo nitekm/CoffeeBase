@@ -5,17 +5,21 @@ import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.web.api.CoffeeApi;
 import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static com.ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class CoffeeApiProvider {
 
+    Logger logger = Logger.getLogger(CoffeeApiProvider.class.getName());
     public static final String TAG = "CoffeeApiProvider";
 
     private static CoffeeApiProvider instance;
@@ -42,13 +46,13 @@ public class CoffeeApiProvider {
         handleCoffeeResponse(call, listener, activity);
     }
 
-    public void save(Coffee coffee, CoffeeResponseListener listener, Activity activity) {
-        Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee);
+    public void save(Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee, image);
         handleCoffeeResponse(call, listener, activity);
     }
 
-    public void update(int id, Coffee coffee, CoffeeResponseListener listener, Activity activity) {
-        Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee);
+    public void update(int id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+        Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
         handleCoffeeResponse(call, listener, activity);
     }
 
@@ -93,6 +97,7 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
+                logger.log(Level.FINE, t.toString());
                 showToast(activity, "Server is unavailable. Try again later");
             }
         });

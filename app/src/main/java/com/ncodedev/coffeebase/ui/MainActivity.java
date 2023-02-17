@@ -24,6 +24,7 @@ import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.security.User;
 import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
+import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.squareup.picasso.Picasso;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ImageView userPictureImage;
     private ProgressBar progressBar;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
+    private final ImageHelper imageHelper = ImageHelper.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

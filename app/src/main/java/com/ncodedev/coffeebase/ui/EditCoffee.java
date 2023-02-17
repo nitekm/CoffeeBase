@@ -3,6 +3,7 @@ package com.ncodedev.coffeebase.ui;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -28,14 +29,19 @@ import com.ncodedev.coffeebase.web.listener.TagListResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.ncodedev.coffeebase.web.provider.TagApiProvider;
 import com.squareup.picasso.Picasso;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
 
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
@@ -43,6 +49,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
     private int coffeeId;
+    private Uri imageUri;
     private ImageView imgCoffee;
     private Button saveBtn;
     private FloatingActionButton colorPickerBtn;
@@ -147,7 +154,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             saveBtn.setOnClickListener(view -> {
                 if (validateCoffee()) {
                     Coffee coffee = createCoffee();
-                    coffeeApiProvider.update(coffeeId, coffee, this, this);
+                    coffeeApiProvider.update(coffeeId, coffee, getImage(), this, this);
                     Intent intent = new Intent(EditCoffee.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -156,7 +163,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             saveBtn.setOnClickListener(view -> {
                 if (validateCoffee()) {
                     Coffee coffee = createCoffee();
-                    coffeeApiProvider.save(coffee, this, this);
+                    coffeeApiProvider.save(coffee, getImage(), this, this);
                     Intent intent = new Intent(EditCoffee.this, MainActivity.class);
                     startActivity(intent);
                 }
@@ -224,11 +231,14 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             tagsChipGroup.addView(chip);
         });
 
-
-        Picasso.with(EditCoffee.this)
-                .load(getDownloadUrl() + editedCoffee.getCoffeeImageName())
-                .placeholder(R.mipmap.coffeebean)
-                .into(imgCoffee);
+        if (editedCoffee.getCoffeeImageName() != null) {
+            Picasso.with(EditCoffee.this)
+                    .load(getDownloadUrl() + editedCoffee.getCoffeeImageName())
+                    .placeholder(R.mipmap.coffeebean)
+                    .into(imgCoffee);
+        } else {
+            imgCoffee.setImageResource(R.mipmap.coffeebean);
+        }
 
     }
 
@@ -274,16 +284,25 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         return createdCoffee;
     }
 
+    private MultipartBody.Part getImage() {
+        if (imgCoffee.getTag() != null) {
+            File file = new File(getRealPath(this, (Uri) imgCoffee.getTag()));
+            return MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(file, MediaType.parse("multipart/form-data")));
+        }
+        return null;
+    }
     private boolean validateCoffee() {
         //validate coffee name
-        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
+        String coffeeName = inputCoffeeName.getText().toString().trim();
+        if (TextUtils.getTrimmedLength(coffeeName) <= 0) {
             inputCoffeeName.setError("Name cannot be empty!");
             return false;
         }
 
         //validate crop height
-        if (TextUtils.isEmpty(inputCropHeight.getText().toString().trim())) {
-            int cropHeight = Integer.parseInt(inputCropHeight.getText().toString().trim());
+        String stringCropHeight = inputCropHeight.getText().toString().trim();
+        if (TextUtils.getTrimmedLength(stringCropHeight) > 0) {
+            int cropHeight = Integer.parseInt(stringCropHeight);
             if (cropHeight < 0 || cropHeight > 8849) {
                 inputCropHeight.setError("Crop height must be between 0 and 8849");
                 return false;
@@ -291,8 +310,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         }
 
         //validate SCA Rating
-        if (TextUtils.isEmpty(inputCoffeeName.getText().toString().trim())) {
-            int scaRating = Integer.parseInt(inputScaRating.getText().toString().trim());
+        String stringScaRating = inputScaRating.getText().toString().trim();
+        if (TextUtils.getTrimmedLength(stringScaRating) > 0) {
+            int scaRating = Integer.parseInt(stringScaRating);
             if (scaRating < 0 || scaRating > 100) {
                 inputScaRating.setError("SCA Rating must be between 0 and 100");
                 return false;
@@ -368,6 +388,5 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         tagsTextView.setAdapter(tagAdapter);
         tagAdapter.notifyDataSetChanged();
     }
-
     //TAGS - END ----------------------------------------------------------------------------------------------------\\
 }
