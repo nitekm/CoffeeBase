@@ -7,6 +7,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ public class ImageHelper {
     public void showAddImageDialog(Activity activity) {
         imageDialog = new Dialog(activity);
         imageDialog.setContentView(R.layout.imagedialog);
+        imageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
         ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
         btnPhotoLibrary.setOnClickListener(view -> {

@@ -24,4 +24,5 @@ public final class Utils {
     public static String getDownloadUrl() {
         return BuildConfig.BaseURL + "downloadFile/";
     }
+
 }

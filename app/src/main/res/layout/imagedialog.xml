@@ -4,10 +4,10 @@
         android:orientation="horizontal"
         android:padding="35dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/roundcorner_white">
 
     <TableLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
-
 
         <TableRow
                 android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
                     android:background="@drawable/roundcorner"
                     android:id="@+id/btnPhotoLibrary"
                     android:padding="10dp"
-                    android:layout_marginEnd="7dp"/>
+                    android:layout_marginEnd="15dp"/>
 
             <ImageButton
                     android:layout_width="wrap_content"
@@ -30,7 +30,7 @@
                     android:background="@drawable/roundcorner"
                     android:id="@+id/btnPhotoCamera"
                     android:padding="10dp"
-                    android:layout_marginStart="7dp"/>
+                    android:layout_marginStart="15dp"/>
         </TableRow>
 
         <TableRow
@@ -40,14 +40,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="7dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginTop="3dp"
                     android:text="Gallery"/>
 
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="7dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="3dp"
                     android:text="Camera"/>
         </TableRow>
 
