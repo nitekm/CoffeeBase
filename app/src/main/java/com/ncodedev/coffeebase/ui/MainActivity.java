@@ -27,7 +27,6 @@ import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
 import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        imageHelper.setPicassoInstance(this);
 
         initViews();
         getAllCoffees();
@@ -87,10 +87,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         User user = User.getInstance();
         userNameTxt.setText(user.getUsername());
         if (user.getPictureUri() != null) {
-            Picasso.with(this)
-                    .load(user.getPictureUri())
-                    .placeholder(R.drawable.ic_account)
-                    .into(userPictureImage);
+            imageHelper.picassoSetImage(user.getPictureUri(), userPictureImage, R.drawable.ic_account);
         }
         hideProgressBar(progressBar, MainActivity.this);
     }

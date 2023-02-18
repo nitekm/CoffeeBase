@@ -39,7 +39,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
     api 'com.theartofdev.edmodo:android-image-cropper:2.8.+'

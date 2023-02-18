@@ -28,7 +28,6 @@ import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import com.ncodedev.coffeebase.web.listener.TagListResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import com.ncodedev.coffeebase.web.provider.TagApiProvider;
-import com.squareup.picasso.Picasso;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -42,7 +41,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
-import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
+import static com.ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
     private int tagColor = Color.parseColor("#f84c44");
@@ -232,10 +231,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         });
 
         if (editedCoffee.getCoffeeImageName() != null) {
-            Picasso.with(EditCoffee.this)
-                    .load(getDownloadUrl() + editedCoffee.getCoffeeImageName())
-                    .placeholder(R.mipmap.coffeebean)
-                    .into(imgCoffee);
+            imageHelper.picassoSetImage(imageDownloadUrl(editedCoffee.getCoffeeImageName()),
+                    imgCoffee,
+                    R.mipmap.coffeebean);
         } else {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }

@@ -20,14 +20,14 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
+import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Optional;
 
-import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
+import static com.ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
@@ -41,6 +41,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     private RatingBar coffeeRating;
     private ChipGroup tagChipGroup;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
+    private final ImageHelper imageHelper = ImageHelper.getInstance();
 
 
     @Override
@@ -144,10 +145,9 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         Optional.ofNullable(coffee.getScaRating()).ifPresent(sca -> txtScaRating.setText(String.valueOf(sca)));
 
         if (coffee.getCoffeeImageName() != null) {
-            Picasso.with(CoffeeActivity.this)
-                    .load(getDownloadUrl() + coffee.getCoffeeImageName())
-                    .placeholder(R.mipmap.coffeebean)
-                    .into(imgCoffee);
+            imageHelper.picassoSetImage(imageDownloadUrl(coffee.getCoffeeImageName()),
+                    imgCoffee,
+                    R.mipmap.coffeebean);
         } else {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }

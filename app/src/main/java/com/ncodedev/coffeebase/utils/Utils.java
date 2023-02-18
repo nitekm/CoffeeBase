@@ -21,8 +21,8 @@ public final class Utils {
         activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
-    public static String getDownloadUrl() {
-        return BuildConfig.BaseURL + "downloadFile/";
+    public static String imageDownloadUrl(String imageName) {
+        return BuildConfig.BaseURL + "downloadFile/" + imageName;
     }
 
 }

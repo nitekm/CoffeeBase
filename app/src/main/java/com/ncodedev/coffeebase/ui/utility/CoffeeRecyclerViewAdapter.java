@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.ui.CoffeeActivity;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import static com.ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
-import static com.ncodedev.coffeebase.utils.Utils.getDownloadUrl;
+import static com.ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecyclerViewAdapter.ViewHolder> {
 
@@ -27,6 +26,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
 
     private final List<Coffee> coffees;
     private final Context context;
+    private final ImageHelper imageHelper = ImageHelper.getInstance();
 
     public CoffeeRecyclerViewAdapter(final Context context, final List<Coffee> coffees) {
         this.context = context;
@@ -51,10 +51,9 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         }
 
         if (coffees.get(holder.getAdapterPosition()).getCoffeeImageName() != null) {
-            Picasso.with(context)
-                    .load(getDownloadUrl() + coffees.get(holder.getAdapterPosition()).getCoffeeImageName())
-                    .placeholder(R.mipmap.coffeebean)
-                    .into(holder.coffeeImg);
+            imageHelper.picassoSetImage(imageDownloadUrl(coffees.get(holder.getAdapterPosition()).getCoffeeImageName()),
+                    holder.coffeeImg,
+                    R.mipmap.coffeebean);
         } else {
             holder.coffeeImg.setImageResource(R.mipmap.coffeebean);
         }

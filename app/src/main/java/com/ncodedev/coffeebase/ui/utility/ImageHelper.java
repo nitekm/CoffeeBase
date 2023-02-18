@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,13 +14,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import com.ncodedev.coffeebase.R;
+import com.ncodedev.coffeebase.model.security.User;
+import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -47,6 +53,19 @@ public class ImageHelper {
             return new ImageHelper();
         }
         return instance;
+    }
+
+    public void picassoSetImage(String imageUri, ImageView imageView) {
+        Picasso.get()
+                .load(imageUri)
+                .into(imageView);
+    }
+
+    public void picassoSetImage(String imageUri, ImageView imageView, int placeHolder) {
+        Picasso.get()
+                .load(imageUri)
+                .placeholder(placeHolder)
+                .into(imageView);
     }
 
     public void showAddImageDialog(Activity activity) {
@@ -86,9 +105,7 @@ public class ImageHelper {
 
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
                         activity.getContentResolver().takePersistableUriPermission(imageUri, takeFlags);
-                        Picasso.with(activity)
-                                .load(imageUri.toString())
-                                .into(imgCoffee);
+                        picassoSetImage(imageUri.toString(), imgCoffee);
                         imgCoffee.setTag(imageUri);
                         imageDialog.hide();
                     } else {
@@ -106,9 +123,7 @@ public class ImageHelper {
 
                         if (isWritePermissionGranted) {
                             if (saveImageToExternalStorage(UUID.randomUUID().toString(), bitmap, activity)) {
-                                Picasso.with(activity)
-                                        .load(imageUri.toString())
-                                        .into(imgCoffee);
+                                picassoSetImage(imageUri.toString(), imgCoffee);
                                 imgCoffee.setTag(imageUri);
                                 imageDialog.hide();
                             }
@@ -165,5 +180,27 @@ public class ImageHelper {
             showToast(activity, "Image not saved!");
         }
         return false;
+    }
+
+    public void setPicassoInstance(Context context) {
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(chain -> {
+                    Request newRequest = chain.request().newBuilder()
+                            .addHeader("Authorization", "Bearer " + User.getInstance().getToken())
+                            .build();
+                    return chain.proceed(newRequest);
+                })
+                .build();
+
+        Picasso picasso = new Picasso.Builder(context)
+                .downloader(new OkHttp3Downloader(client))
+                .build();
+
+        try {
+            Picasso.setSingletonInstance(picasso);
+        } catch (IllegalStateException e) {
+            Log.d("ImageHelper", "Picasso instance already set, ignoring");
+        }
     }
 }
