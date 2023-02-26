@@ -12,15 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.security.Token;
 import com.ncodedev.coffeebase.model.security.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-import static com.ncodedev.coffeebase.web.provider.SecurityApiProvider.createSecurityApi;
-import static java.lang.Thread.sleep;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -39,20 +33,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = getIntent();
-        final int code = intent.getIntExtra("CODE", -1);
-        if (code == 1) {
-            signOut();
-            getIntent().removeExtra("CODE");
-        } else {
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-            if (account == null) {
-                signIn();
-            } else {
-                setCurrentUser(account);
-                authenticateWithBackend(account);
-            }
-        }
+
+        //code 1 passed by sign out request
+        final int code = getIntent().getIntExtra("CODE", -1);
+
+        signOutOnRequest(code);
+        handleGetLastSignedInAccount();
     }
 
     @Override
@@ -72,55 +58,11 @@ public class LoginActivity extends AppCompatActivity {
         googleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    private void signIn() {
-        Log.d(TAG, "No logged user found! Initializing signIn");
-        Intent intent = googleSignInClient.getSignInIntent();
-        startActivityForResult(intent, 0);
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
-            setCurrentUser(account);
-            authenticateWithBackend(account);
-        } catch (ApiException e) {
-            signIn();
-            showToast(this, "Login failed with code: " + e.getStatusCode());
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+    private void signOutOnRequest(int code) {
+        getIntent().removeExtra("CODE");
+        if (code != 1) {
+            return;
         }
-    }
-
-    private void authenticateWithBackend(GoogleSignInAccount account) {
-        Log.d(TAG, "Authenticating with backend server...");
-        Call<Token> call = createSecurityApi().authenticate(new Token(account.getIdToken()));
-        call.enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(final Call<Token> call, final Response<Token> response) {
-                if (response.body() == null) {
-                    signOut();
-                } else {
-                    User user = User.getInstance();
-                    user.setToken(response.body().getToken());
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(final Call<Token> call, final Throwable t) {
-                try {
-                    sleep(5000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                Log.d(TAG, "Retrying...");
-                call.clone().enqueue(this);
-            }
-        });
-    }
-
-    private void signOut() {
         googleSignInClient.signOut()
                 .addOnCompleteListener(this, task -> {
                     showToast(this, "Successfully logged out!");
@@ -129,12 +71,40 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void setCurrentUser(GoogleSignInAccount account) {
-        Log.d(TAG, "User logged [id: " + account.getId() +
-                " name: " + account.getDisplayName() +
-                " email: " + account.getEmail() +
-                " photoUrl: " + account.getPhotoUrl() + "]");
+    private void handleGetLastSignedInAccount() {
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        if (account == null) {
+            signIn();
+        } else {
+            setCurrentUser(account);
+        }
+    }
 
-        new User(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString());
+    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        try {
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
+            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
+            setCurrentUser(account);
+        } catch (ApiException e) {
+            signIn();
+            showToast(this, "Login failed with code: " + e.getStatusCode());
+            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+        }
+    }
+
+    private void signIn() {
+        Log.d(TAG, "No logged user found! Initializing signIn");
+        Intent intent = googleSignInClient.getSignInIntent();
+        startActivityForResult(intent, 0);
+    }
+
+    private void setCurrentUser(GoogleSignInAccount account) {
+        Log.d(TAG, "User logged [\nid: " + account.getId() +
+                "\nname: " + account.getDisplayName() +
+                "\nemail: " + account.getEmail() +
+                "\nphotoUrl: " + account.getPhotoUrl() +
+                "\ntoken " + account.getIdToken() + "]");
+
+        new User(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString(), account.getIdToken());
     }
 }
