@@ -31,8 +31,6 @@ import com.ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import java.util.List;
 
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
-import static com.ncodedev.coffeebase.utils.Utils.hideProgressBar;
-import static com.ncodedev.coffeebase.utils.Utils.showProgressBar;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
 
@@ -61,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "No user instance found, initializing LoginActivity");
         if (User.getInstance() == null) {
             startActivity(new Intent(this, LoginActivity.class));
         }
@@ -89,11 +86,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (user.getPictureUri() != null) {
             imageHelper.picassoSetImage(user.getPictureUri(), userPictureImage, R.drawable.ic_account);
         }
-        hideProgressBar(progressBar, MainActivity.this);
     }
 
     private void getAllCoffees() {
-        showProgressBar(progressBar, this);
         coffeeApiProvider.getAll(this, this);
     }
 
@@ -102,7 +97,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
         coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
         recyclerView.setAdapter(coffeeRecyclerViewAdapter);
-        hideProgressBar(progressBar, this);
     }
 
     @Override

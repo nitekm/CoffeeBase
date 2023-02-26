@@ -103,8 +103,11 @@ public class LoginActivity extends AppCompatActivity {
                 "\nname: " + account.getDisplayName() +
                 "\nemail: " + account.getEmail() +
                 "\nphotoUrl: " + account.getPhotoUrl() +
-                "\ntoken " + account.getIdToken() + "]");
+                "\ntoken " + account.getIdToken() + "\n]");
 
         new User(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString(), account.getIdToken());
+
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
