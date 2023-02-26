@@ -10,7 +10,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -42,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private NavigationView navigationView;
     private TextView userNameTxt;
     private ImageView userPictureImage;
-    private ProgressBar progressBar;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
 
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void initViews() {
-        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.coffeeRecView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);

@@ -111,8 +111,12 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Delete this coffee?");
         alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {});
-        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> coffeeApiProvider.delete(coffeeId, this));
+        alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
+            coffeeApiProvider.delete(coffeeId, this);
+            startActivity(new Intent(this, MainActivity.class));
+        });
         alertDialogBuilder.create().show();
+
     }
     //TOOLBAR - END -------------------------------------------------------------------------------------------------\\
 
