@@ -23,6 +23,8 @@ import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.domain.Tag;
 import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.model.validator.TagValidator;
+import com.ncodedev.coffeebase.model.validator.Validator;
 import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import com.ncodedev.coffeebase.web.listener.TagListResponseListener;
@@ -104,18 +106,20 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         tagsTextView.setThreshold(1);
         tagsTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {}
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
+            }
 
             @Override
             public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
                 new Handler(Looper.getMainLooper())
                         .postDelayed(() -> tagApiProvider.search(charSequence.toString(),
-                                        EditCoffee.this,
-                                        EditCoffee. this), 1000);
+                                EditCoffee.this,
+                                EditCoffee.this), 1000);
             }
 
             @Override
-            public void afterTextChanged(final Editable editable) {}
+            public void afterTextChanged(final Editable editable) {
+            }
         });
 
         tagsTextView.setOnItemClickListener((adapterView, view, i, l) -> searchTags.stream()
@@ -289,47 +293,19 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         }
         return null;
     }
+
     private boolean validateCoffee() {
-        //validate coffee name
-        String coffeeName = inputCoffeeName.getText().toString().trim();
-        if (TextUtils.getTrimmedLength(coffeeName) <= 0) {
-            inputCoffeeName.setError("Name cannot be empty!");
-            return false;
-        }
-
-        //validate crop height
-        String stringCropHeight = inputCropHeight.getText().toString().trim();
-        if (TextUtils.getTrimmedLength(stringCropHeight) > 0) {
-            int cropHeight = Integer.parseInt(stringCropHeight);
-            if (cropHeight < 0 || cropHeight > 8849) {
-                inputCropHeight.setError("Crop height must be between 0 and 8849");
-                return false;
-            }
-        }
-
-        //validate SCA Rating
-        String stringScaRating = inputScaRating.getText().toString().trim();
-        if (TextUtils.getTrimmedLength(stringScaRating) > 0) {
-            int scaRating = Integer.parseInt(stringScaRating);
-            if (scaRating < 0 || scaRating > 100) {
-                inputScaRating.setError("SCA Rating must be between 0 and 100");
-                return false;
-            }
-        }
-        return true;
+        return Validator.textNotBlank(inputCoffeeName, "Name cannot be empty") &&
+               Validator.numberFromTo(inputCropHeight, 0, 8849, "Crop height must be between 0 and 8849") &&
+               Validator.numberFromTo(inputScaRating, 0, 100, "SCA Rating must be between 0 and 100");
     }
 
     private boolean validateTag(String tagName) {
-        final String tagNameWithoutHash = tagName.replace('#', ' ');
-        if (TextUtils.isEmpty(tagNameWithoutHash.trim())) {
-            tagsTextView.setError("Tag name cannot be empty");
-            return false;
-        }
-        return true;
+        return TagValidator.tagName(tagsTextView, tagName, "Tag name cannot be empty");
     }
 
 
-//TAGS - START ------------------------------------------------------------------------------------------------------\\
+    //TAGS - START ------------------------------------------------------------------------------------------------------\\
     private void launchColorPicker() {
         colorPickerBtn.setOnClickListener(view -> {
             ColorPicker colorPicker = new ColorPicker(this);
