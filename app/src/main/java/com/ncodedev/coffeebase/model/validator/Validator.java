@@ -9,7 +9,7 @@ public class Validator {
         if (TextUtils.getTrimmedLength(text.getText().toString()) > 0) {
             return true;
         }
-        text.setText(errorMessage);
+        text.setError(errorMessage);
         return false;
     }
 
