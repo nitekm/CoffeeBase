@@ -46,4 +46,8 @@ public class User {
     public String getToken() {
         return token;
     }
+
+    public static void clearUserData() {
+        instance = null;
+    }
 }

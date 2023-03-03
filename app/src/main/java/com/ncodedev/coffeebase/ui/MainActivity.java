@@ -10,7 +10,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -23,6 +26,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.ncodedev.coffeebase.R;
 import com.ncodedev.coffeebase.model.domain.Coffee;
 import com.ncodedev.coffeebase.model.security.User;
+import com.ncodedev.coffeebase.service.GoogleSignInClientService;
 import com.ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
 import com.ncodedev.coffeebase.ui.utility.ImageHelper;
 import com.ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
@@ -33,24 +37,23 @@ import java.util.List;
 import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
-
     public static final String TAG = "MainActivity";
-    private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
+
     private RecyclerView recyclerView;
     private MaterialToolbar toolbar;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
     private TextView userNameTxt;
     private ImageView userPictureImage;
-    private ProgressBar progressBar;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
+    private GoogleSignInClientService googleSignInClientService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         imageHelper.setPicassoInstance(this);
+        googleSignInClientService = new GoogleSignInClientService(this);
 
         initViews();
         getAllCoffees();
@@ -59,19 +62,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStart() {
         super.onStart();
-        if (User.getInstance() == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
+        googleSignInClientService.silentSignIn();
     }
 
     private void initViews() {
-        progressBar = findViewById(R.id.progressBar);
         recyclerView = findViewById(R.id.coffeeRecView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigation);
+        NavigationView navigationView = findViewById(R.id.navigation);
         View headerView = navigationView.getHeaderView(0);
         userNameTxt = headerView.findViewById(R.id.userNameTxt);
         userPictureImage = headerView.findViewById(R.id.userPictureImage);
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void handleGetList(List<Coffee> coffees) {
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
-        coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
+        CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
         recyclerView.setAdapter(coffeeRecyclerViewAdapter);
     }
 
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 showAccountInfo();
                 break;
             case R.id.signout:
-                signOut();
+                googleSignInClientService.signOut();
                 break;
             default:
                 break;
@@ -212,13 +212,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void showAccountInfo() {
         showToast(this, "Signed in with Google");
-    }
-
-    private void signOut() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        //Code 1 to pass logout request to login activity
-        intent.putExtra("CODE", 1);
-        startActivity(intent);
     }
 
     @Override

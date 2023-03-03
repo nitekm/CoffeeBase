@@ -7,38 +7,32 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.ncodedev.coffeebase.R;
-import com.ncodedev.coffeebase.model.security.User;
-
-import static com.ncodedev.coffeebase.utils.ToastUtils.showToast;
+import com.ncodedev.coffeebase.service.GoogleSignInClientService;
 
 public class LoginActivity extends AppCompatActivity {
-
     private static final String TAG = "LoginActivity";
 
-    private GoogleSignInClient googleSignInClient;
+    private GoogleSignInClientService googleSignInClientService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.d(TAG, "in loginActivity");
 
-        setUpGoogleSignIn();
-    }
+        googleSignInClientService = new GoogleSignInClientService(this);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        //code 1 passed by sign out request
-        final int code = getIntent().getIntExtra("CODE", -1);
-
-        signOutOnRequest(code);
-        handleGetLastSignedInAccount();
+        //code 2 - standard sign in
+        int code = getIntent().getIntExtra("code", -1);
+        if (code ==  -1) {
+            googleSignInClientService.silentSignInWithRedirect();
+        }
+        if (code == 2) {
+            getIntent().removeExtra("code");
+            signIn();
+        }
     }
 
     @Override
@@ -46,68 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-
-    private void setUpGoogleSignIn() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.server_client_id))
-                .requestEmail()
-                .build();
-        googleSignInClient = GoogleSignIn.getClient(this, gso);
-    }
-
-    private void signOutOnRequest(int code) {
-        getIntent().removeExtra("CODE");
-        if (code != 1) {
-            return;
-        }
-        googleSignInClient.signOut()
-                .addOnCompleteListener(this, task -> {
-                    showToast(this, "Successfully logged out!");
-                    finish();
-                    startActivity(getIntent());
-                });
-    }
-
-    private void handleGetLastSignedInAccount() {
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) {
-            signIn();
-        } else {
-            setCurrentUser(account);
-        }
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            Log.d(TAG, "OAuth2.0 token acquired: " + account.getIdToken());
-            setCurrentUser(account);
-        } catch (ApiException e) {
-            signIn();
-            showToast(this, "Login failed with code: " + e.getStatusCode());
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
+            googleSignInClientService.handleSignInResult(task);
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
     private void signIn() {
         Log.d(TAG, "No logged user found! Initializing signIn");
-        Intent intent = googleSignInClient.getSignInIntent();
+        Intent intent = googleSignInClientService.getGoogleSignInClient().getSignInIntent();
         startActivityForResult(intent, 0);
-    }
-
-    private void setCurrentUser(GoogleSignInAccount account) {
-        Log.d(TAG, "User logged [\nid: " + account.getId() +
-                "\nname: " + account.getDisplayName() +
-                "\nemail: " + account.getEmail() +
-                "\nphotoUrl: " + account.getPhotoUrl() +
-                "\ntoken " + account.getIdToken() + "\n]");
-
-        new User(account.getId(), account.getDisplayName(), account.getEmail(), account.getPhotoUrl().toString(), account.getIdToken());
-
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 }

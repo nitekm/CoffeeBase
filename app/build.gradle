@@ -13,6 +13,7 @@ android {
         versionName "1.0"
         buildConfigField "String", "BaseURL", '\"http://10.0.2.2:8080/"'
 //        buildConfigField "String", "BaseURL", '\"https://coffee-base-api.herokuapp.com/"'
+        buildConfigField "String", "ClientId", '"197200968254-uftl0ec1vual1ikvru1qtk2rialvbcji.apps.googleusercontent.com"'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
