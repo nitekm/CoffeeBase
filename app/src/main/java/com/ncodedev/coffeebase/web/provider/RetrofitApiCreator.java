@@ -9,11 +9,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+
 public class RetrofitApiCreator {
     public static <A extends Api> A createApi(Class<A> api) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         logging.redactHeader("Authorization");
+
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .addInterceptor(logging)
