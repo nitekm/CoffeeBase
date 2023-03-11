@@ -19,7 +19,7 @@
             android:theme="@style/Theme.CoffeeBase"
             android:usesCleartextTraffic="true">
         <activity
-                android:name=".ui.LoginActivity"
+                android:name="ncodedev.coffeebase.ui.LoginActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -28,20 +28,20 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.EditCoffee"
+                android:name="ncodedev.coffeebase.ui.EditCoffee"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.CoffeeActivity"
+                android:name="ncodedev.coffeebase.ui.CoffeeActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.utility.CoffeeCardView"
+                android:name="ncodedev.coffeebase.ui.utility.CoffeeCardView"
                 android:exported="true"/>
         <activity
-                android:name=".ui.MainActivity"
+                android:name="ncodedev.coffeebase.ui.MainActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait">

@@ -17,7 +17,7 @@
             android:layout_gravity="start"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            tools:context=".ui.MainActivity"
+            tools:context="ncodedev.coffeebase.ui.MainActivity"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
