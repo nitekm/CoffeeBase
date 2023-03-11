@@ -21,13 +21,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import ncodedev.coffeebase.R;
-import ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
+import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
+import ncodedev.coffeebase.ui.utility.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void updateUI() {
         User user = User.getInstance();
+        if (user == null) {
+            googleSignInClientService.silentSignIn();
+            return;
+        }
         userNameTxt.setText(user.getUsername());
         if (user.getPictureUri() != null) {
             imageHelper.picassoSetImage(user.getPictureUri(), userPictureImage, R.drawable.ic_account);

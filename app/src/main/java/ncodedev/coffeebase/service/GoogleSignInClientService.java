@@ -3,8 +3,6 @@ package ncodedev.coffeebase.service;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import ncodedev.coffeebase.ui.LoginActivity;
-import ncodedev.coffeebase.ui.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -13,6 +11,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.ui.LoginActivity;
+import ncodedev.coffeebase.ui.MainActivity;
 
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
@@ -48,9 +48,7 @@ public class GoogleSignInClientService {
                 showToast(context, "Welcome back");
                 context.startActivity(new Intent(context, MainActivity.class));
             });
-            silentSignInTask.addOnFailureListener(task -> {
-                signOut();
-            });
+            silentSignInTask.addOnFailureListener(task -> signOut());
         }
     }
 
@@ -59,12 +57,8 @@ public class GoogleSignInClientService {
         if (silentSignInTask.isSuccessful()) {
             setCurrentUser(silentSignInTask.getResult());
         } else {
-            silentSignInTask.addOnSuccessListener(task -> {
-                handleSignInResult(silentSignInTask);
-            });
-            silentSignInTask.addOnFailureListener(task -> {
-                signOut();
-            });
+            silentSignInTask.addOnSuccessListener(task -> handleSignInResult(silentSignInTask));
+            silentSignInTask.addOnFailureListener(task -> signOut());
         }
     }
 
