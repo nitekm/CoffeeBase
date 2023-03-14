@@ -12,18 +12,23 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
-import android.widget.*;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
-import ncodedev.coffeebase.R;
-import ncodedev.coffeebase.model.validator.TagValidator;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.domain.Tag;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
@@ -50,7 +55,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
     private int coffeeId;
-    private Uri imageUri;
+    private boolean isCoffeeEdited;
     private ImageView imgCoffee;
     private Button saveBtn;
     private FloatingActionButton colorPickerBtn;
@@ -88,6 +93,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         Button addImageBtn = findViewById(R.id.addImageBtn);
         addImageBtn.setOnClickListener(view -> imageHelper.showAddImageDialog(this));
         saveBtn = findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(view -> saveCoffee());
         colorPickerBtn = findViewById(R.id.colorPickerButton);
         colorPickerBtn.setBackgroundTintList(ColorStateList.valueOf(tagColor));
         colorPickerBtn.setSupportBackgroundTintList(ColorStateList.valueOf(tagColor));
@@ -152,26 +158,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     private void determineContext() {
-        if (isCoffeeEdited()) {
-            coffeeApiProvider.getOne(coffeeId, this, this);
-            saveBtn.setOnClickListener(view -> {
-                if (validateCoffee()) {
-                    Coffee coffee = createCoffee();
-                    coffeeApiProvider.update(coffeeId, coffee, getImage(), this, this);
-                    Intent intent = new Intent(EditCoffee.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            saveBtn.setOnClickListener(view -> {
-                if (validateCoffee()) {
-                    Coffee coffee = createCoffee();
-                    coffeeApiProvider.save(coffee, getImage(), this, this);
-                    Intent intent = new Intent(EditCoffee.this, MainActivity.class);
-                    startActivity(intent);
-                }
-            });
-        }
+        Intent intent = getIntent();
+        coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
+        isCoffeeEdited = coffeeId != -1;
     }
 
     private void handleImage() {
@@ -180,13 +169,20 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         imageHelper.getCoffeePhotoImage(this, imgCoffee);
     }
 
-    private boolean isCoffeeEdited() {
-        Intent intent = getIntent();
-        if (null != intent) {
-            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
-            return coffeeId != -1;
+    private void saveCoffee() {
+        if (!validateCoffee()) {
+            return;
         }
-        return false;
+
+        saveBtn.setEnabled(false);
+        Coffee coffee = createCoffee();
+
+        if (isCoffeeEdited) {
+            coffeeApiProvider.update(coffeeId, coffee, getImage(), this, this);
+        } else {
+            coffeeApiProvider.save(coffee, getImage(), this, this);
+        }
+        new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 1000);
     }
 
     private void handleAddTag() {
@@ -296,8 +292,8 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     private boolean validateCoffee() {
         return Validator.textNotBlank(inputCoffeeName, "Name cannot be empty") &&
-               Validator.numberFromTo(inputCropHeight, 0, 8849, "Crop height must be between 0 and 8849") &&
-               Validator.numberFromTo(inputScaRating, 0, 100, "SCA Rating must be between 0 and 100");
+                Validator.numberFromTo(inputCropHeight, 0, 8849, "Crop height must be between 0 and 8849") &&
+                Validator.numberFromTo(inputScaRating, 0, 100, "SCA Rating must be between 0 and 100");
     }
 
     private boolean validateTag(String tagName) {
