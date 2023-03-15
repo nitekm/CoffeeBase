@@ -82,10 +82,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void updateUI() {
         User user = User.getInstance();
-        if (user == null) {
-            googleSignInClientService.silentSignIn();
-            return;
-        }
         userNameTxt.setText(user.getUsername());
         if (user.getPictureUri() != null) {
             imageHelper.picassoSetImage(user.getPictureUri(), userPictureImage, R.drawable.ic_account);

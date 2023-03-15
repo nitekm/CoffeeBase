@@ -37,6 +37,7 @@ public class GoogleSignInClientService {
     }
 
     public void silentSignInWithRedirect() {
+
         final Task<GoogleSignInAccount> silentSignInTask = googleSignInClient.silentSignIn();
         if (silentSignInTask.isSuccessful()) {
             setCurrentUser(silentSignInTask.getResult());
@@ -55,7 +56,7 @@ public class GoogleSignInClientService {
     public void silentSignIn() {
         final Task<GoogleSignInAccount> silentSignInTask = googleSignInClient.silentSignIn();
         if (silentSignInTask.isSuccessful()) {
-            setCurrentUser(silentSignInTask.getResult());
+            handleSignInResult(silentSignInTask);
         } else {
             silentSignInTask.addOnSuccessListener(task -> handleSignInResult(silentSignInTask));
             silentSignInTask.addOnFailureListener(task -> signOut());
