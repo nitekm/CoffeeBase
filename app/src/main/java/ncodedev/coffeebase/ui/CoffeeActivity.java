@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -113,7 +115,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         alertDialogBuilder.setNegativeButton("No", (dialogInterface, i) -> {});
         alertDialogBuilder.setPositiveButton("Yes", (dialogInterface, i) -> {
             coffeeApiProvider.delete(coffeeId, this);
-            startActivity(new Intent(this, MainActivity.class));
+            new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 750);
         });
         alertDialogBuilder.create().show();
 

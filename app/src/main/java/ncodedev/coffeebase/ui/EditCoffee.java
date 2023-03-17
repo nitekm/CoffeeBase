@@ -161,6 +161,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         Intent intent = getIntent();
         coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
         isCoffeeEdited = coffeeId != -1;
+        if (isCoffeeEdited) {
+            coffeeApiProvider.getOne(coffeeId, this, this);
+        }
     }
 
     private void handleImage() {
@@ -182,7 +185,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         } else {
             coffeeApiProvider.save(coffee, getImage(), this, this);
         }
-        new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 1000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 750);
     }
 
     private void handleAddTag() {
