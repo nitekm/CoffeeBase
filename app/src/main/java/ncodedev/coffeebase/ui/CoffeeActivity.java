@@ -56,6 +56,8 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         showCoffeeInfo();
     }
 
+
+
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
         txtCoffeeName = findViewById(R.id.txtCoffeeName);

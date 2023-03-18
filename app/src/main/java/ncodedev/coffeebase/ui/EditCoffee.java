@@ -185,7 +185,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         } else {
             coffeeApiProvider.save(coffee, getImage(), this, this);
         }
-        new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 750);
+        new Handler(Looper.getMainLooper()).postDelayed(
+                () -> startActivity(new Intent(this, MainActivity.class)), 1150
+        );
     }
 
     private void handleAddTag() {
