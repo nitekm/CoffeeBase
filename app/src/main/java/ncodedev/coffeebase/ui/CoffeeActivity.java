@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -116,8 +114,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         alertDialogBuilder.setTitle(R.string.delete_coffee_question);
         alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});
         alertDialogBuilder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            coffeeApiProvider.delete(coffeeId, this);
-            new Handler(Looper.getMainLooper()).postDelayed(() -> startActivity(new Intent(this, MainActivity.class)), 750);
+            coffeeApiProvider.delete(coffeeId, this, this);
         });
         alertDialogBuilder.create().show();
 
@@ -177,5 +174,13 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
 
             tagChipGroup.addView(chip);
         });
+    }
+
+    @Override
+    public void handleSaveResponse(Coffee coffee) {}
+
+    @Override
+    public void handleDeleteResponse() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 }

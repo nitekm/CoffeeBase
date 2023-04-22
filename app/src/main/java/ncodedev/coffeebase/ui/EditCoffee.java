@@ -177,9 +177,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         } else {
             coffeeApiProvider.save(coffee, getImage(), this, this);
         }
-        new Handler(Looper.getMainLooper()).postDelayed(
-                () -> startActivity(new Intent(this, MainActivity.class)), 1150
-        );
     }
 
     private void handleAddTag() {
@@ -234,8 +231,15 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         } else {
             imgCoffee.setImageResource(R.mipmap.coffeebean);
         }
-
     }
+
+    @Override
+    public void handleSaveResponse(Coffee coffee) {
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+    @Override
+    public void handleDeleteResponse() {}
 
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
