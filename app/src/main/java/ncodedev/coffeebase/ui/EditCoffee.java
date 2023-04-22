@@ -12,12 +12,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-import android.widget.Spinner;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
@@ -41,10 +36,7 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
@@ -296,13 +288,13 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     private boolean validateCoffee() {
-        return Validator.textNotBlank(inputCoffeeName, "Name cannot be empty") &&
-                Validator.numberFromTo(inputCropHeight, 0, 8849, "Crop height must be between 0 and 8849") &&
-                Validator.numberFromTo(inputScaRating, 0, 100, "SCA Rating must be between 0 and 100");
+        return Validator.textNotBlank(inputCoffeeName, getString(R.string.constraint_coffee_name_not_empty)) &&
+                Validator.numberFromTo(inputCropHeight, 0, 8849, getString(R.string.constraint_crop_height)) &&
+                Validator.numberFromTo(inputScaRating, 0, 100, getString(R.string.constraint_sca_rating));
     }
 
     private boolean validateTag(String tagName) {
-        return TagValidator.tagName(tagsTextView, tagName, "Tag name cannot be empty");
+        return TagValidator.tagName(tagsTextView, tagName, getString(R.string.constraint_tag_name_not_empty));
     }
 
 
