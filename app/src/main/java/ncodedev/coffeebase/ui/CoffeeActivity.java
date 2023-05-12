@@ -19,16 +19,20 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.domain.Tag;
+import ncodedev.coffeebase.ui.utility.CoffeeActivityViewAdjuster;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static ncodedev.coffeebase.ui.utility.CoffeeActivityViewAdjuster.*;
 import static ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
@@ -45,6 +49,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
 
+    private final List<TextInputLayout> inputLayouts = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +60,6 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         setToolbar();
         showCoffeeInfo();
     }
-
-
 
     private void initViews() {
         imgCoffee = findViewById(R.id.imgCoffee);
@@ -74,6 +77,16 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         favouriteMenuItem = findViewById(R.id.favouritesMenuItem);
         tagChipGroup = findViewById(R.id.displayChipGroup);
+
+        inputLayouts.add(findViewById(R.id.roasterOutputLayout));
+        inputLayouts.add(findViewById(R.id.roastProfileOutputLayout));
+        inputLayouts.add(findViewById(R.id.continentOutputLayout));
+        inputLayouts.add(findViewById(R.id.originOutputLayout));
+        inputLayouts.add(findViewById(R.id.regionOutputLayout));
+        inputLayouts.add(findViewById(R.id.farmOutputLayout));
+        inputLayouts.add(findViewById(R.id.cropHeightOutputLayout));
+        inputLayouts.add(findViewById(R.id.processingOutputLayout));
+        inputLayouts.add(findViewById(R.id.scaScoreOutputLayout));
     }
 
 
@@ -177,5 +190,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
 
             tagChipGroup.addView(chip);
         });
+
+        hideBlankTextViewsAndAdjustConstraints(inputLayouts, tagChipGroup.getId());
     }
 }
