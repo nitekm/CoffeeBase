@@ -39,7 +39,7 @@ public class CoffeeActivityViewAdjuster {
 
     private static boolean isBlankOrDefault(String text) {
         return text.isEmpty() ||
-                text.equalsIgnoreCase("Continent") ||
-                text.equalsIgnoreCase("Roast Profile");
+                text.equalsIgnoreCase(String.valueOf(R.string.continent)) ||
+                text.equalsIgnoreCase(String.valueOf(R.string.roast_profile));
     }
 }
