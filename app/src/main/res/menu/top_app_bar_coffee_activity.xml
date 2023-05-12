@@ -2,17 +2,17 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:android="http://schemas.android.com/apk/res/android">
 
-      <item android:title="Add to Favourites"
+      <item android:title="@string/add_to_favourites"
             android:icon="@drawable/ic_favorite"
             android:id="@+id/favouritesMenuItem"
             app:showAsAction="ifRoom"/>
 
-      <item android:title="Edit Coffee"
+      <item android:title="@string/edit_coffee"
             android:icon="@drawable/ic_edit"
             android:id="@+id/editMenuItem"
             app:showAsAction="ifRoom"/>
 
-      <item android:title="Delete Coffee"
+      <item android:title="@string/delete_coffee"
             android:icon="@drawable/ic_delete"
             android:id="@+id/deleteMenuItem"
             app:showAsAction="ifRoom"/>

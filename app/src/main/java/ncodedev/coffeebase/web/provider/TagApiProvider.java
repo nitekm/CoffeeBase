@@ -10,6 +10,8 @@ import retrofit2.Response;
 
 import java.util.List;
 
+import static ncodedev.coffeebase.R.string.error;
+import static ncodedev.coffeebase.R.string.server_unavailable;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
@@ -43,13 +45,13 @@ public class TagApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleGetList(response.body());
                 } else {
-                    showToast(activity, "Error!" + response.message());
+                    showToast(activity, activity.getString(error) + response.message());
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                showToast(activity, "Server is unavailable. Try again later");
+                showToast(activity, activity.getString(server_unavailable));
             }
         });
     }
@@ -61,13 +63,13 @@ public class TagApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleSearchResult(response.body());
                 } else {
-                    showToast(activity, "Error!" + response.message());
+                    showToast(activity, activity.getString(error) + response.message());
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                showToast(activity, "Server is unavailable. Try again later");
+                showToast(activity, activity.getString(server_unavailable));
             }
         });
     }

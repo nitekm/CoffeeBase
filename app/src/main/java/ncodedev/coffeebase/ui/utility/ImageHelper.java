@@ -3,10 +3,7 @@ package ncodedev.coffeebase.ui.utility;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,20 +17,19 @@ import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import ncodedev.coffeebase.R;
-import ncodedev.coffeebase.utils.PermissionsUtils;
-import ncodedev.coffeebase.model.security.User;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
+import ncodedev.coffeebase.R;
+import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.utils.PermissionsUtils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
+import static ncodedev.coffeebase.R.string.image_not_saved;
+import static ncodedev.coffeebase.R.string.permission_not_granted;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class ImageHelper {
@@ -108,7 +104,7 @@ public class ImageHelper {
                         imgCoffee.setTag(imageUri);
                         imageDialog.hide();
                     } else {
-                        showToast(activity, "Permission not granted!");
+                        showToast(activity, activity.getString(permission_not_granted));
                     }
                 });
     }
@@ -127,7 +123,7 @@ public class ImageHelper {
                                 imageDialog.hide();
                             }
                         } else {
-                            showToast(activity, "Permission not granted!");
+                            showToast(activity, activity.getString(permission_not_granted));
                         }
                     }
                 });
@@ -176,7 +172,7 @@ public class ImageHelper {
             Objects.requireNonNull(outputStream);
             return true;
         } catch (Exception e) {
-            showToast(activity, "Image not saved!");
+            showToast(activity, activity.getString(image_not_saved));
         }
         return false;
     }

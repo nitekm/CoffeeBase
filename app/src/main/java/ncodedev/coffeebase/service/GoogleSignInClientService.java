@@ -3,10 +3,7 @@ package ncodedev.coffeebase.service;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.*;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.BuildConfig;
@@ -14,6 +11,9 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.ui.LoginActivity;
 import ncodedev.coffeebase.ui.MainActivity;
 
+import static ncodedev.coffeebase.R.string.login_failed;
+import static ncodedev.coffeebase.R.string.successfully_logged_out;
+import static ncodedev.coffeebase.R.string.welcome_back;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class GoogleSignInClientService {
@@ -41,12 +41,12 @@ public class GoogleSignInClientService {
         final Task<GoogleSignInAccount> silentSignInTask = googleSignInClient.silentSignIn();
         if (silentSignInTask.isSuccessful()) {
             setCurrentUser(silentSignInTask.getResult());
-            showToast(context, "Welcome back");
+            showToast(context, context.getString(welcome_back));
             context.startActivity(new Intent(context, MainActivity.class));
         } else {
             silentSignInTask.addOnSuccessListener(task -> {
                 handleSignInResult(silentSignInTask);
-                showToast(context, "Welcome back");
+                showToast(context, context.getString(welcome_back));
                 context.startActivity(new Intent(context, MainActivity.class));
             });
             silentSignInTask.addOnFailureListener(task -> signOut());
@@ -65,7 +65,7 @@ public class GoogleSignInClientService {
 
     public void signOut() {
         googleSignInClient.signOut().addOnCompleteListener(context, task -> {
-            showToast(context, "Successfully logged out!");
+            showToast(context, context.getString(successfully_logged_out));
             User.clearUserData();
             context.finish();
             startLoginActivityWithSignIn();
@@ -79,7 +79,7 @@ public class GoogleSignInClientService {
             setCurrentUser(account);
         } catch (ApiException e) {
             startLoginActivityWithSignIn();
-            showToast(context, "Login failed");
+            showToast(context, context.getString(login_failed));
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
         }
     }

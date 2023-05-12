@@ -17,7 +17,7 @@
                 android:id="@+id/topAppBarCoffeeActivity"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="Coffee"
+                app:title="@string/coffee"
                 app:navigationIcon="@drawable/ic_arrow_back"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
@@ -53,7 +53,7 @@
                         android:scaleType="centerCrop"/>
 
                 <Button
-                        android:text="Change Image"
+                        android:text="@string/change_image"
                         android:layout_width="170dp"
                         android:layout_height="45dp"
                         android:id="@+id/addImageBtn"
@@ -70,7 +70,7 @@
                         android:orientation="horizontal"/>
 
                 <TextView
-                        android:text="Rating"
+                        android:text="@string/rating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/txtRating"
@@ -100,7 +100,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Coffee Name"
+                        android:hint="@string/coffee_name"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -125,7 +125,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Roaster"
+                        android:hint="@string/roaster"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -174,7 +174,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Origin"
+                        android:hint="@string/origin"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -199,7 +199,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Region"
+                        android:hint="@string/region"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -225,7 +225,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Farm"
+                        android:hint="@string/farm"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -250,7 +250,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Crop Height"
+                        android:hint="@string/crop_height"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -275,7 +275,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="Processing"
+                        android:hint="@string/processing"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -300,7 +300,7 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
-                        android:hint="SCA Rating"
+                        android:hint="@string/sca_score"
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -341,7 +341,7 @@
                         android:ems="10"/>
 
                 <TextView
-                        android:text="Tag "
+                        android:text="@string/tag"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/textView"
@@ -374,7 +374,7 @@
 
                     <com.google.android.material.chip.ChipGroup
                             android:id="@+id/tagsChipGroup"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -387,7 +387,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-            android:text="Save"
+            android:text="@string/save"
             android:layout_width="325dp"
             android:layout_height="wrap_content"
             android:id="@+id/saveBtn"

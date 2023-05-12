@@ -6,14 +6,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
@@ -102,10 +96,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onBackPressed() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Exit Application");
-        alertDialogBuilder.setNegativeButton("No", ((dialogInterface, i) -> {
+        alertDialogBuilder.setTitle(R.string.exit_app);
+        alertDialogBuilder.setNegativeButton(R.string.no, ((dialogInterface, i) -> {
         }));
-        alertDialogBuilder.setPositiveButton("Yes", ((dialogInterface, i) -> {
+        alertDialogBuilder.setPositiveButton(R.string.yes, ((dialogInterface, i) -> {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -136,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         };
         menu.findItem(R.id.searchMenuItem).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
-        searchView.setQueryHint("Search...");
+        searchView.setQueryHint("...");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String searchBy) {
@@ -204,14 +198,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void showAbout() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle("Developed by NCode");
-        alertDialogBuilder.setNegativeButton("Dismiss", (dialogInterface, i) -> {
+        alertDialogBuilder.setTitle(R.string.developed_by_ncode);
+        alertDialogBuilder.setNegativeButton(R.string.dismiss, (dialogInterface, i) -> {
         });
         alertDialogBuilder.create().show();
     }
 
     private void showAccountInfo() {
-        showToast(this, "Signed in with Google");
+        showToast(this, getString(R.string.signed_in_with_google));
     }
 
     @Override
