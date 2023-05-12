@@ -6,6 +6,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import ncodedev.coffeebase.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CoffeeActivityViewAdjuster {
     private static boolean isPrevHidden = false;
@@ -16,7 +17,7 @@ public class CoffeeActivityViewAdjuster {
                 adjustConstraints(layout, lastPresentElementId);
             }
 
-            String layoutText = layout.getEditText().getText().toString();
+            String layoutText = Objects.requireNonNull(layout.getEditText()).getText().toString();
             if (isBlankOrDefault(layoutText)) {
                 hideBlank(layout);
             } else {
