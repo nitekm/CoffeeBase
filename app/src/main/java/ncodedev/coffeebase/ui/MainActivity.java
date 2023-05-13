@@ -1,10 +1,13 @@
 package ncodedev.coffeebase.ui;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -197,11 +200,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void showAbout() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-        alertDialogBuilder.setTitle(R.string.developed_by_ncode);
-        alertDialogBuilder.setNegativeButton(R.string.dismiss, (dialogInterface, i) -> {
-        });
-        alertDialogBuilder.create().show();
+        Dialog aboutDialog = new Dialog(this);
+        aboutDialog.setContentView(R.layout.about_dialog);
+
+        String aboutContentFormatted = getString(R.string.about_content);
+        Spanned spannedAboutContent = Html.fromHtml(aboutContentFormatted);
+
+        TextView aboutContentTxt = aboutDialog.findViewById(R.id.aboutContentTxt);
+        aboutContentTxt.setText(spannedAboutContent);
+
+        aboutDialog.show();
     }
 
     private void showAccountInfo() {
