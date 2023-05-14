@@ -1,6 +1,6 @@
 <resources>
 
-<!--    app specific-->
+    <!--    app specific-->
     <string name="app_name" translatable="false">CoffeeBase</string>
     <string name="title_activity_navigation_drawer" translatable="false">navigationDrawer</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
@@ -11,7 +11,7 @@
     <string name="action_settings" translatable="false">Settings</string>
     <string name="server_client_id" translatable="false">197200968254-uftl0ec1vual1ikvru1qtk2rialvbcji.apps.googleusercontent.com</string>
 
-<!--    translatable-->
+    <!--    translatable-->
     <string name="coffee_name">Coffee Name</string>
     <string name="roaster">Roaster</string>
     <string name="roast_profile">Roast Profile</string>
@@ -88,6 +88,7 @@
 
     &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
     </string>
+    <string name="subscription">Subscription</string>
 
 
     <!--    dropdowns-->

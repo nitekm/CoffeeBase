@@ -177,20 +177,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @SuppressLint("NonConstantResourceId")
     private void selectDrawerItem(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.addCoffee:
-                launchEditCoffee();
-                break;
-            case R.id.about:
-                showAbout();
-                break;
-            case R.id.account:
-                showAccountInfo();
-                break;
-            case R.id.signout:
-                googleSignInClientService.signOut();
-                break;
-            default:
-                break;
+            case R.id.addCoffee -> launchEditCoffee();
+            case R.id.about -> showAbout();
+            case R.id.account -> showAccountInfo();
+            case R.id.signout -> googleSignInClientService.signOut();
+            default -> {}
         }
     }
 
@@ -213,7 +204,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void showAccountInfo() {
-        showToast(this, getString(R.string.signed_in_with_google));
+        Intent intent = new Intent(this, AccountActivity.class);
+        startActivity(intent);
     }
 
     @Override
