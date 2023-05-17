@@ -13,8 +13,8 @@ android {
         applicationId "ncodedev.coffeebase"
         minSdk 26
         targetSdk 31
-        versionCode 7
-        versionName "1.3.0"
+        versionCode 8
+        versionName "1.4.0_temp"
 //        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
         buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
         buildConfigField("String", "ClientId", apikeyProperties['CLIENT_ID'])

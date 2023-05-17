@@ -24,7 +24,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/accountTxt"
             android:layout_marginTop="20dp"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="20dp"
             android:layout_width="70dp"
             android:layout_height="70dp"
             app:cardCornerRadius="250dp"
@@ -50,28 +50,28 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:text="@string/username"
             android:textStyle="bold"
             android:textSize="17sp"
             android:id="@+id/accountUserNameTxt"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="45dp"
-            app:layout_constraintTop_toBottomOf="@+id/accountUserPictureImageCircle"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
+            app:layout_constraintTop_toTopOf="@+id/accountUserPictureImageCircle"
+            app:layout_constraintStart_toEndOf="@+id/accountUserPictureImageCircle"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:text="@string/signed_in_with_google"
             android:textSize="13sp"
             android:id="@+id/accountSignedWithTxt"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="45dp"
+            android:layout_marginStart="10dp"
             app:layout_constraintTop_toBottomOf="@+id/accountUserNameTxt"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/accountUserPictureImageCircle"
             app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
@@ -81,7 +81,7 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:id="@+id/subscriptionTxt"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="10dp"
             app:layout_constraintTop_toBottomOf="@id/accountSignedWithTxt"
             app:layout_constraintStart_toStartOf="parent"
@@ -91,7 +91,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/guideline3"
-            app:layout_constraintGuide_begin="250dp"
+            app:layout_constraintGuide_begin="189dp"
             android:orientation="horizontal"/>
 
     <Button
@@ -103,7 +103,7 @@
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:id="@+id/sub1Btn"
-            android:text="Subscription #1" />
+            android:text="@string/subscription1"/>
 
     <Button
             android:layout_width="350dp"
@@ -114,7 +114,7 @@
             android:layout_marginTop="15dp"
             android:textColor="@color/white"
             android:id="@+id/sub2Btn"
-            android:text="Subscription #2" />
+            android:text="@string/subscription2"/>
 
 
 

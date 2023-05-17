@@ -4,40 +4,48 @@ import android.content.Context;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.android.billingclient.BuildConfig;
 import com.android.billingclient.api.*;
+import ncodedev.coffeebase.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class CoffeeBaseStore {
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
+public class SubscriptionProductGetter {
 
     private final static String TAG = "CoffeeBaseStore";
 
     private final Context context;
     private final BillingClient billingClient;
 
-    public CoffeeBaseStore(Context context) {
+    public SubscriptionProductGetter(Context context) {
         this.context = context;
         billingClient = initializeBillingClient(context);
     }
 
     private BillingClient initializeBillingClient(Context context) {
         return BillingClient.newBuilder(context)
-                .setListener(purchasesUpdatedListener)
+                .setListener(createPurchasesUpdatedListener())
                 .enablePendingPurchases()
                 .build();
     }
 
-    private final PurchasesUpdatedListener purchasesUpdatedListener = (billingResult, list) -> {
-        //TODO
-    };
+    private PurchasesUpdatedListener createPurchasesUpdatedListener() {
+        return ((billingResult, list) -> handlePurchasesUpdatedResponse(billingResult));
+    }
 
-    public void getAvailableProducts(CoffeeBaseStoreResponseListener listener) {
+    private void handlePurchasesUpdatedResponse(BillingResult billingResult) {
+        if (billingResultOK(billingResult)) {
+            showToast(context, context.getString(R.string.thank_you) + " <3");
+        }
+    }
+
+    public void getAvailableProducts(SubscriptionResponseListener listener) {
         getProductsFromGooglePlay(listener);
     }
 
-    private void getProductsFromGooglePlay(CoffeeBaseStoreResponseListener listener) {
+    private void getProductsFromGooglePlay(SubscriptionResponseListener listener) {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
             public void onBillingServiceDisconnected() {
@@ -54,7 +62,7 @@ public class CoffeeBaseStore {
         });
     }
 
-    private void getAvailableSubscriptions(CoffeeBaseStoreResponseListener listener) {
+    private void getAvailableSubscriptions(SubscriptionResponseListener listener) {
         billingClient.queryProductDetailsAsync(
                 prepareParams(),
                 (billingResult, productDetailsList) -> {
@@ -65,11 +73,11 @@ public class CoffeeBaseStore {
     }
 
     private QueryProductDetailsParams prepareParams() {
-        String projectId = "109227410439";
+        String productId = "coffeebase_subscription_basic";
         return QueryProductDetailsParams.newBuilder()
                 .setProductList(
                         List.of(QueryProductDetailsParams.Product.newBuilder()
-                                .setProductId(projectId)
+                                .setProductId(productId)
                                 .setProductType(BillingClient.ProductType.SUBS)
                                 .build()))
                 .build();
@@ -83,5 +91,9 @@ public class CoffeeBaseStore {
                     "\nAnd message: " + billingResult.getDebugMessage());
             return false;
         }
+    }
+
+    public BillingClient getBillingClient() {
+        return billingClient;
     }
 }

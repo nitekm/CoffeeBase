@@ -64,6 +64,10 @@
     <string name="light">Light</string>
     <string name="omniroast">Omniroast</string>
     <string name="dark">Dark</string>
+    <string name="subscription">Subscription</string>
+    <string name="thank_you">Thank You!!!</string>
+    <string name="subscription1">Monthly - 1.99$</string>
+    <string name="subscription2">Monthly - 4.99$</string>
 
     <!-- about-->
     <string name="about_content" formatted="false">
@@ -88,8 +92,6 @@
 
     &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
     </string>
-    <string name="subscription">Subscription</string>
-
 
     <!--    dropdowns-->
     <string-array name="continents">
