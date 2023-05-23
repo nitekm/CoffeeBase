@@ -1,31 +1,26 @@
 package ncodedev.coffeebase.ui;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.*;
 import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
+import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.security.User;
-import ncodedev.coffeebase.subscription.SubscriptionBasePlan;
-import ncodedev.coffeebase.subscription.SubscriptionProcessor;
-import ncodedev.coffeebase.subscription.SubscriptionProductGetter;
-import ncodedev.coffeebase.subscription.SubscriptionResponseListener;
+import ncodedev.coffeebase.subscription.*;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_1_99;
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_4_99;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class AccountActivity extends AppCompatActivity implements SubscriptionResponseListener {
 
@@ -34,7 +29,8 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
     private Button sub1Btn, sub2Btn;
     private TextView accountUserNameTxt;
     private final ImageHelper imageHelper = ImageHelper.getInstance();
-    private SubscriptionProductGetter subscriptionProductGetter;
+
+    private BillingClientSetup billingClientSetup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +52,47 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
         if (user.getPictureUri() != null) {
             imageHelper.picassoSetImage(user.getPictureUri(), accountUserPictureImage, R.drawable.ic_account);
         }
+
+        MaterialToolbar toolbar = findViewById(R.id.topAppBarCoffeeActivity);
+        toolbar.setNavigationOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        });
+
+        billingClientSetup = new BillingClientSetup(this);
     }
 
     private void fetchProducts() {
-        subscriptionProductGetter = new SubscriptionProductGetter(this);
-        subscriptionProductGetter.getAvailableProducts(this);
+        var subscriptionProduct = new SubscriptionProduct(this, billingClientSetup.getBillingClient());
+        subscriptionProduct.connectAndGetAvailableProducts(this);
+    }
+
+    private void fetchPurchases() {
+        var purchasedSubscriptionsProvider = new PurchasedSubscriptionsProvider(this, billingClientSetup.getBillingClient());
+        purchasedSubscriptionsProvider.connectAndGetPurchasedSubscriptions(this);
+    }
+
+    @Override
+    public void handlePurchasesList(List<Purchase> purchases) {
+        if (purchases.isEmpty()) {
+            Log.e(TAG, "Empty PurchaseList returned from google API");
+            return;
+        }
+
+//        purchases.stream()
+//                .filter(purchase -> purchase.getPurchaseState() == 1)
+//                .map(purchase -> purchase.getProducts().get(0))
+//                .forEach(this::blockButtonAndSetText);
+    }
+
+    private void blockButtonAndSetText(String purchaseName) {
+        if (purchaseName.equals(MONTHLY_1_99.getValue())) {
+            sub1Btn.setEnabled(false);
+            sub1Btn.setText(R.string.purchased);
+        } else if (purchaseName.equals(MONTHLY_4_99.getValue())) {
+            sub2Btn.setEnabled(false);
+            sub2Btn.setText(R.string.purchased);
+        }
     }
 
     @Override
@@ -69,6 +101,7 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
             Log.e(TAG, "Empty ProductDetailsList returned from google API");
             return;
         }
+        fetchPurchases();
         initButtonClickListeners(productDetailsList);
     }
 
@@ -92,7 +125,7 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
     }
 
     private void processSubscription(ProductDetails productDetails, String offerToken) {
-        SubscriptionProcessor subscriptionProcessor = new SubscriptionProcessor(subscriptionProductGetter.getBillingClient());
-        subscriptionProcessor.processSubscriptionPurchase(this, productDetails, offerToken);
+        SubscriptionPurchase subscriptionPurchase = new SubscriptionPurchase(billingClientSetup.getBillingClient());
+        subscriptionPurchase.processSubscriptionPurchase(this, productDetails, offerToken);
     }
 }

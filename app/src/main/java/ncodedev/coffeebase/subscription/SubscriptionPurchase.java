@@ -1,7 +1,6 @@
 package ncodedev.coffeebase.subscription;
 
 import android.app.Activity;
-import android.content.Context;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams;
@@ -10,13 +9,14 @@ import com.android.billingclient.api.ProductDetails;
 
 import java.util.Collections;
 
+import static ncodedev.coffeebase.subscription.BillingClientUtils.billingResultOK;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
-public class SubscriptionProcessor {
+public class SubscriptionPurchase {
 
     private final BillingClient billingClient;
 
-    public SubscriptionProcessor(BillingClient billingClient) {
+    public SubscriptionPurchase(BillingClient billingClient) {
         this.billingClient = billingClient;
     }
 
@@ -41,7 +41,7 @@ public class SubscriptionProcessor {
     }
 
     private void handleLaunchBillingFlowResult(Activity context, BillingResult billingResult) {
-        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+        if (billingResultOK(billingResult)) {
             return;
         }
 

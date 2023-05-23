@@ -7,6 +7,23 @@
         android:layout_height="match_parent"
         tools:context=".ui.AccountActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appBarLayout"
+            tools:ignore="MissingConstraints">
+
+        <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarCoffeeActivity"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/account"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -16,7 +33,7 @@
             android:id="@+id/accountTxt"
             android:layout_marginTop="5dp"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appBarLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -81,9 +98,9 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:id="@+id/subscriptionTxt"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toBottomOf="@id/accountSignedWithTxt"
+            app:layout_constraintTop_toBottomOf="@id/guideline3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -99,7 +116,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline3"
+            app:layout_constraintTop_toBottomOf="@id/subscriptionTxt"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:id="@+id/sub1Btn"

@@ -92,6 +92,7 @@
 
     &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
     </string>
+    <string name="purchased">purchased</string>
 
     <!--    dropdowns-->
     <string-array name="continents">
