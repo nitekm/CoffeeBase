@@ -9,6 +9,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.util.concurrent.TimeUnit;
+
 
 public class RetrofitApiCreator {
     public static <A extends Api> A createApi(Class<A> api) {
@@ -18,6 +20,8 @@ public class RetrofitApiCreator {
 
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .callTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .addInterceptor(chain -> {
                     Request request = chain.request()

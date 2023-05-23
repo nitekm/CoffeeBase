@@ -1,6 +1,7 @@
 package ncodedev.coffeebase.web.provider;
 
 import android.app.Activity;
+import android.util.Log;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.web.api.CoffeeApi;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
@@ -21,7 +22,6 @@ import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class CoffeeApiProvider {
 
-    Logger logger = Logger.getLogger(CoffeeApiProvider.class.getName());
     public static final String TAG = "CoffeeApiProvider";
 
     private static CoffeeApiProvider instance;
@@ -34,6 +34,7 @@ public class CoffeeApiProvider {
     }
 
     public void getAll(CoffeeListResponseListener listener, Activity activity) {
+
         Call<List<Coffee>> call = createApi(CoffeeApi.class).getCoffees();
         handleListResponse(call, listener, activity);
     }
@@ -69,7 +70,7 @@ public class CoffeeApiProvider {
     }
 
     private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener, Activity activity) {
-        call.enqueue(new Callback<List<Coffee>>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
                 if (response.isSuccessful()) {
@@ -81,13 +82,15 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                showToast(activity, activity.getString(server_unavailable));
+//                showToast(activity, activity.getString(server_unavailable));
+                Log.d(TAG, "Retrying call");
+                getAll(listener, activity);
             }
         });
     }
 
     private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
-        call.enqueue(new Callback<Coffee>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
@@ -99,14 +102,14 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                logger.log(Level.FINE, t.toString());
+                Log.d(TAG, t.toString());
                 showToast(activity, activity.getString(server_unavailable));
             }
         });
     }
 
     void handleSaveResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
-        call.enqueue(new Callback<Coffee>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
@@ -118,14 +121,14 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                logger.log(Level.FINE, t.toString());
+                Log.d(TAG, t.toString());
                 showToast(activity, activity.getString(server_unavailable));
             }
         });
     }
 
     private void handleDeleteResponse(Call<Void> call, CoffeeResponseListener listener, Activity activity) {
-        call.enqueue(new Callback<Void>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 if (response.isSuccessful()) {
@@ -137,6 +140,7 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
+                Log.i(TAG, t.toString());
                 showToast(activity, activity.getString(server_unavailable));
             }
         });

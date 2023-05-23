@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private DrawerLayout drawerLayout;
     private TextView userNameTxt;
     private ImageView userPictureImage;
+    private ProgressBar progressBar;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         userPictureImage = headerView.findViewById(R.id.userPictureImage);
         setUpNavigationDrawer();
         setUpNavigationDrawerContent(navigationView);
+        progressBar = findViewById(R.id.progressBar);
         updateUI();
     }
 
@@ -86,11 +88,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void getAllCoffees() {
+        progressBar.setVisibility(View.VISIBLE);
         coffeeApiProvider.getAll(this, this);
     }
 
     @Override
     public void handleGetList(List<Coffee> coffees) {
+        progressBar.setVisibility(View.INVISIBLE);
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
         CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);
         recyclerView.setAdapter(coffeeRecyclerViewAdapter);
