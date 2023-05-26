@@ -20,8 +20,8 @@ public class RetrofitApiCreator {
 
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .callTimeout(30, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .callTimeout(15, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .addInterceptor(chain -> {
                     Request request = chain.request()

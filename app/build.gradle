@@ -13,10 +13,10 @@ android {
         applicationId "ncodedev.coffeebase"
         minSdk 26
         targetSdk 31
-        versionCode 9
-        versionName "1.4.1_temp"
-        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
-//        buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
+        versionCode 10
+        versionName "1.4.0"
+//        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
+        buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
         buildConfigField("String", "ClientId", apikeyProperties['CLIENT_ID'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
