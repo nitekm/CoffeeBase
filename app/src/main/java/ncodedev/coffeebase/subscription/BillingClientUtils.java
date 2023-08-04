@@ -8,7 +8,6 @@ public class BillingClientUtils {
 
     private final static String TAG = "BillingClientUtils";
 
-
     public static boolean billingResultOK(BillingResult billingResult) {
         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
             return true;

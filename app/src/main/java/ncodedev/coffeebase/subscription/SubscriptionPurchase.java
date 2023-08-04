@@ -6,7 +6,12 @@ import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.ProductDetails;
+import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails;
+import ncodedev.coffeebase.model.domain.Subscription;
+import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
+import ncodedev.coffeebase.web.provider.SubscriptionApiProvider;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static ncodedev.coffeebase.subscription.BillingClientUtils.billingResultOK;
@@ -20,8 +25,8 @@ public class SubscriptionPurchase {
         this.billingClient = billingClient;
     }
 
-    public void processSubscriptionPurchase(Activity context, ProductDetails productDetails, String offerToken) {
-        var productDetailsParams = prepareProductDetailsParams(productDetails, offerToken);
+    public void processSubscriptionPurchase(Activity context, ProductDetails productDetails, SubscriptionOfferDetails offerDetails) {
+        var productDetailsParams = prepareProductDetailsParams(productDetails, offerDetails.getOfferToken());
         var billingFlowParams = prepareBillingFlowParams(productDetailsParams);
         var billingResult = billingClient.launchBillingFlow(context, billingFlowParams);
         handleLaunchBillingFlowResult(context, billingResult);
@@ -40,11 +45,11 @@ public class SubscriptionPurchase {
                 .build();
     }
 
-    private void handleLaunchBillingFlowResult(Activity context, BillingResult billingResult) {
+    private void handleLaunchBillingFlowResult(Activity context,
+                                               BillingResult billingResult) {
         if (billingResultOK(billingResult)) {
             return;
         }
-
         showToast(context, billingResult.getDebugMessage());
     }
 }
