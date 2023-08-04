@@ -3,19 +3,16 @@ package ncodedev.coffeebase.model.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class Subscription {
-    @SerializedName("planId")
+    @SerializedName("productId")
     @Expose
     private String productId;
 
-    @SerializedName("offerToken")
+    @SerializedName("purchaseToken")
     @Expose
     private String purchaseToken;
 
-    @SerializedName("productName")
+    @SerializedName("active")
     @Expose
     private boolean active;
 

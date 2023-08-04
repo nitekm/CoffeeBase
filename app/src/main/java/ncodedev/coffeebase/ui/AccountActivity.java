@@ -22,7 +22,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_1_99;
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_4_99;
@@ -83,8 +82,9 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
             Log.e(TAG, "Empty PurchaseList returned from google API");
             return;
         }
-        purchases.forEach(this::savePurchase);
+//        purchases.forEach(this::savePurchase);
     }
+
 
     private void savePurchase(Purchase purchase) {
         final String productId = purchase.getProducts().get(0);
