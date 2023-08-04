@@ -12,15 +12,11 @@ import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails;
 import com.android.billingclient.api.Purchase;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
-import ncodedev.coffeebase.model.domain.Subscription;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.subscription.*;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.web.provider.SubscriptionApiProvider;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_1_99;
@@ -80,25 +76,8 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
     public void handlePurchasesList(List<Purchase> purchases) {
         if (purchases.isEmpty()) {
             Log.e(TAG, "Empty PurchaseList returned from google API");
-            return;
         }
-//        purchases.forEach(this::savePurchase);
     }
-
-
-    private void savePurchase(Purchase purchase) {
-        final String productId = purchase.getProducts().get(0);
-        final Date purchaseDate = new Date(purchase.getPurchaseTime());
-        final String formattedPurchasedDate =
-                SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(purchaseDate);
-        final boolean active = purchase.getPurchaseState() == 1;
-
-        final Subscription subscription = new Subscription(
-                productId, purchase.getPurchaseToken(), active, formattedPurchasedDate
-        );
-        subscriptionApiProvider.saveSubscription(subscription, this);
-    }
-
 
     @Override
     public void handleProductDetailsList(List<ProductDetails> productDetailsList) {
