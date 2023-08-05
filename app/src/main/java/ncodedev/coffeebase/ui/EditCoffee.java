@@ -5,8 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -36,7 +34,10 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
@@ -99,24 +100,22 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         inputCropHeight = findViewById(R.id.inputCropHeight);
         inputProcessing = findViewById(R.id.inputProcessing);
         inputScaRating = findViewById(R.id.inputScaRating);
+
         tagsChipGroup = findViewById(R.id.tagsChipGroup);
         tagsTextView = findViewById(R.id.tagsTextView);
         tagsTextView.setThreshold(1);
         tagsTextView.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-            }
+            public void beforeTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {}
 
             @Override
-            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {
-                new Handler(Looper.getMainLooper())
-                        .postDelayed(() -> tagApiProvider.search(charSequence.toString(),
-                                EditCoffee.this,
-                                EditCoffee.this), 1000);
-            }
+            public void onTextChanged(final CharSequence charSequence, final int i, final int i1, final int i2) {}
 
             @Override
             public void afterTextChanged(final Editable editable) {
+                tagApiProvider.search(editable.toString(),
+                                EditCoffee.this,
+                                EditCoffee.this);
             }
         });
 
@@ -239,7 +238,8 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     @Override
-    public void handleDeleteResponse() {}
+    public void handleDeleteResponse() {
+    }
 
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
