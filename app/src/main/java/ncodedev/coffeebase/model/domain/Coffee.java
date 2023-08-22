@@ -3,9 +3,10 @@ package ncodedev.coffeebase.model.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Coffee {
+public class Coffee implements Serializable {
 
     @SerializedName("id")
     @Expose

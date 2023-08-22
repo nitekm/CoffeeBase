@@ -237,10 +237,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    @Override
-    public void handleDeleteResponse() {
-    }
-
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
@@ -301,7 +297,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         return TagValidator.tagName(tagsTextView, tagName, getString(R.string.constraint_tag_name_not_empty));
     }
 
-
     //TAGS - START ------------------------------------------------------------------------------------------------------\\
     private void launchColorPicker() {
         colorPickerBtn.setOnClickListener(view -> {
@@ -360,4 +355,10 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         tagAdapter.notifyDataSetChanged();
     }
     //TAGS - END ----------------------------------------------------------------------------------------------------\\
+
+
+    @Override
+    public void handleDeleteResponse() {
+
+    }
 }

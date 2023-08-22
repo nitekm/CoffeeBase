@@ -108,5 +108,10 @@
         <item>@string/omniroast</item>
         <item>@string/dark</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="COFFEE_INFO">INFO</string>
+    <string name="brews">BREWS</string>
+    <string name="title_activity_brew_card_view">BrewCardView</string>
 
 </resources>
