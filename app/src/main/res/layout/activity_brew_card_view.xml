@@ -38,7 +38,7 @@
             <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:src="@mipmap/ic_launcher"/>
+                    android:src="@drawable/ic_dripper"/>
 
             <TextView
                     android:id="@+id/methodNameTxt"
@@ -58,7 +58,7 @@
                 android:layout_centerHorizontal="true">
 
             <RelativeLayout
-                    android:id="@+id/waterLayout"
+                    android:id="@+id/timeLayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -66,9 +66,34 @@
                 <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@drawable/ic_hourglass"/>
 
                 <TextView
+                        android:id="@+id/brewTimeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Time"
+                        android:textSize="15sp"
+                        android:layout_marginStart="30dp"
+                        android:layout_gravity="start"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                    android:id="@+id/waterLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginStart="25dp"
+                    android:layout_toEndOf="@id/timeLayout">
+
+                <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_water_drop"/>
+
+                <TextView
+                        android:id="@+id/waterAmountTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Water"
@@ -81,16 +106,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginStart="30dp"
+                    android:layout_marginStart="25dp"
                     android:gravity="center_vertical"
                     android:layout_toEndOf="@id/waterLayout">
 
                 <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:src="@mipmap/ic_launcher"/>
+                        android:src="@drawable/ic_coffee_beans"/>
 
                 <TextView
+                        android:id="@+id/coffeeAmountTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Weight"
