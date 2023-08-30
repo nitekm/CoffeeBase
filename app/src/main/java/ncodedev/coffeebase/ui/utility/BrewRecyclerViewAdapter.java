@@ -12,9 +12,12 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.ui.BrewActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+
+import static ncodedev.coffeebase.ui.BrewActivity.BREW_ID_KEY;
 
 public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerViewAdapter.ViewHolder> {
 

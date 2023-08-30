@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import ncodedev.coffeebase.R;
 
-public class Brews extends Fragment {
+public class BrewsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

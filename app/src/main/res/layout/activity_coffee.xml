@@ -17,7 +17,7 @@
                 android:id="@+id/topAppBarCoffeeActivity"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="Coffee"
+                app:title="@string/coffee"
                 app:menu="@menu/top_app_bar_coffee_activity"
                 app:navigationIcon="@drawable/ic_arrow_back"
                 app:layout_scrollFlags="scroll|enterAlways|snap"
