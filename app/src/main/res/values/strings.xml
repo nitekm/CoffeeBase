@@ -124,5 +124,10 @@
     <string name="water">Water</string>
     <string name="filter">Filter</string>
     <string name="comment">Comment</string>
+    <string name="water_amount">Water Amount</string>
+    <string name="water_temp">Water temperature</string>
+    <string name="coffee_weight">Coffee weight</string>
+    <string name="grinder_setting">Grinder setting</string>
+    <string name="time">Time</string>
 
 </resources>

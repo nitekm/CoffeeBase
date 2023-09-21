@@ -60,77 +60,96 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:hint="@string/water"
-            android:layout_height="wrap_content"
+    <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_water_drop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/methodOutputLayout"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/waterOutputLayout">
+            android:layout_marginStart="50dp"
+            android:id="@+id/waterDropImg"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/txtWaterTemp"/>
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:focusable="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:id="@+id/txtWaterAmount"/>
-
-        </LinearLayout>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:hint="@string/coffee"
+    <TextView
+            android:id="@+id/waterAmountTxt"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/water_amount"
+            app:layout_constraintStart_toEndOf="@id/waterDropImg"
+            app:layout_constraintTop_toBottomOf="@id/methodOutputLayout"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="25dp"
+            android:textSize="17sp"/>
+
+    <TextView
+            android:id="@+id/waterTempTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/water_temp"
+            app:layout_constraintStart_toEndOf="@id/waterDropImg"
+            app:layout_constraintTop_toBottomOf="@id/waterAmountTxt"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="25dp"
+            android:textSize="17sp"/>
+
+    <ImageView
+            android:id="@+id/coffeeGrainsImg"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_coffee_beans"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/waterOutputLayout"
+            app:layout_constraintTop_toBottomOf="@id/waterDropImg"
             android:layout_marginTop="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/coffeeOutputLayout">
+            android:layout_marginStart="50dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+    <TextView
+            android:id="@+id/coffeeWeightTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/coffee_weight"
+            app:layout_constraintStart_toEndOf="@id/coffeeGrainsImg"
+            app:layout_constraintTop_toBottomOf="@id/waterDropImg"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="25dp"
+            android:textSize="17sp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:focusable="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/txtCoffeeWeight"/>
+    <TextView
+            android:id="@+id/grinderSettingTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grinder_setting"
+            app:layout_constraintStart_toEndOf="@id/coffeeGrainsImg"
+            app:layout_constraintTop_toBottomOf="@id/coffeeWeightTxt"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="25dp"
+            android:textSize="17sp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:focusable="false"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:id="@+id/txtCoffeeGrindSetting"/>
+    <ImageView
+            android:id="@+id/timeImg"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_hourglass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/coffeeGrainsImg"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="50dp"
+            app:layout_constraintHorizontal_bias="0.0"/>
 
-        </LinearLayout>
-
-    </com.google.android.material.textfield.TextInputLayout>
+    <TextView
+            android:id="@+id/timeTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time"
+            app:layout_constraintStart_toEndOf="@id/timeImg"
+            app:layout_constraintTop_toBottomOf="@id/coffeeGrainsImg"
+            android:layout_marginTop="30dp"
+            android:layout_marginStart="30dp"
+            android:textSize="20sp"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -138,7 +157,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/coffeeOutputLayout"
+            app:layout_constraintTop_toBottomOf="@id/timeImg"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
