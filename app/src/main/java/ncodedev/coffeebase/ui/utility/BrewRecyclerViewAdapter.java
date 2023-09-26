@@ -16,6 +16,7 @@ import ncodedev.coffeebase.ui.BrewActivity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ncodedev.coffeebase.ui.BrewActivity.BREW_ID_KEY;
 
@@ -23,12 +24,12 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
 
     public static final String TAG = "BrewRecyclerViewAdapter";
 
-    private final List<Brew> brews;
     private final Context context;
+    private final List<Brew> brews;
 
-    public BrewRecyclerViewAdapter(List<Brew> brews, Context context) {
-        this.brews = brews;
+    public BrewRecyclerViewAdapter(Context context, List<Brew> brews) {
         this.context = context;
+        this.brews = brews;
     }
 
     @NonNull
@@ -44,11 +45,19 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull @NotNull BrewRecyclerViewAdapter.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Called");
-        holder.brewNameTxt.setText(brews.get(holder.getAdapterPosition()).getName());
-        holder.methodNameTxt.setText(brews.get(holder.getAdapterPosition()).getMethod());
-        holder.waterAmountTxt.setText(brews.get(holder.getAdapterPosition()).getWaterAmountInMl());
-        holder.coffeeAmountTxt.setText(brews.get(holder.getAdapterPosition()).getCoffeeWeightInGrams());
-        holder.brewTimeTxt.setText(brews.get(holder.getAdapterPosition()).getTotalTime());
+        Optional.ofNullable(brews.get(holder.getAdapterPosition()).getName())
+                .ifPresent(holder.brewNameTxt::setText);
+        Optional.ofNullable(brews.get(holder.getAdapterPosition()).getMethod())
+                .ifPresent(holder.methodNameTxt::setText);
+        Optional.ofNullable(brews.get(holder.getAdapterPosition()).getWaterAmountInMl())
+                .map(String::valueOf)
+                .ifPresent(holder.waterAmountTxt::setText);
+        Optional.ofNullable(brews.get(holder.getAdapterPosition()).getCoffeeWeightInGrams())
+                .map(String::valueOf)
+                .ifPresent(holder.coffeeAmountTxt::setText);
+        Optional.ofNullable(brews.get(holder.getAdapterPosition()).getTotalTime())
+                .map(String::valueOf)
+                .ifPresent(holder.brewTimeTxt::setText);
 
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BrewActivity.class);

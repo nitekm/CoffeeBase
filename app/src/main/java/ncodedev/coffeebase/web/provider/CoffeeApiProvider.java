@@ -12,8 +12,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static ncodedev.coffeebase.R.string.error;
 import static ncodedev.coffeebase.R.string.server_unavailable;
@@ -82,7 +80,7 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-//                showToast(activity, activity.getString(server_unavailable));
+                showToast(activity, activity.getString(server_unavailable));
                 Log.d(TAG, "Retrying call");
                 getAll(listener, activity);
             }

@@ -10,7 +10,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
-            android:layout_width="393dp"
+            android:layout_width="325dp"
             android:layout_height="match_parent"
             android:padding="15dp"
             android:background="@drawable/dotted_border"
@@ -44,7 +44,7 @@
                     android:id="@+id/methodNameTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Method Name"
+                    android:text="Method"
                     android:textSize="15sp"
                     android:layout_marginStart="30dp"
                     android:layout_gravity="start"/>
@@ -72,7 +72,7 @@
                         android:id="@+id/brewTimeTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Time"
+                        android:text="0"
                         android:textSize="15sp"
                         android:layout_marginStart="30dp"
                         android:layout_gravity="start"/>
@@ -96,7 +96,7 @@
                         android:id="@+id/waterAmountTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Water"
+                        android:text="0"
                         android:textSize="15sp"
                         android:layout_marginStart="30dp"
                         android:layout_gravity="start"/>
@@ -119,7 +119,7 @@
                         android:id="@+id/coffeeAmountTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Weight"
+                        android:text="0"
                         android:textSize="15sp"
                         android:layout_marginStart="30dp"
                         android:layout_gravity="start"/>

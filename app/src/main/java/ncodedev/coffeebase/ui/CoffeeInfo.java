@@ -35,7 +35,7 @@ public class CoffeeInfo extends Fragment {
     private ChipGroup tagChipGroup;
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private final List<TextInputLayout> inputLayouts = new ArrayList<>();
-    private Coffee coffee;
+    private final Coffee coffee;
 
     public CoffeeInfo(Coffee coffee) {
         this.coffee = coffee;
@@ -69,12 +69,12 @@ public class CoffeeInfo extends Fragment {
         inputLayouts.add(view.findViewById(R.id.processingOutputLayout));
         inputLayouts.add(view.findViewById(R.id.scaScoreOutputLayout));
 
-        supplementCoffeeData(coffee);
+        loadCoffeeData(coffee);
 
         return view;
     }
     
-    public void supplementCoffeeData(final Coffee coffee) {
+    private void loadCoffeeData(final Coffee coffee) {
         txtCoffeeName.setText(coffee.getName());
         txtRoaster.setText(coffee.getRoaster());
         txtOrigin.setText(coffee.getOrigin());

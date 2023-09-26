@@ -129,5 +129,6 @@
     <string name="coffee_weight">Coffee weight</string>
     <string name="grinder_setting">Grinder setting</string>
     <string name="time">Time</string>
+    <string name="how_was_it">How was it?</string>
 
 </resources>
