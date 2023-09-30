@@ -18,9 +18,11 @@ public class BrewsFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private final List<Brew> brews;
+    private final Integer coffeeId;
 
-    public BrewsFragment(List<Brew> brews) {
+    public BrewsFragment(List<Brew> brews, Integer coffeeId) {
         this.brews = brews;
+        this.coffeeId = coffeeId;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class BrewsFragment extends Fragment {
     }
 
     private void loadBrewsInfo(List<Brew> brews) {
-        BrewRecyclerViewAdapter brewRecyclerViewAdapter = new BrewRecyclerViewAdapter(getContext(), brews);
+        BrewRecyclerViewAdapter brewRecyclerViewAdapter = new BrewRecyclerViewAdapter(getContext(), brews, coffeeId);
         recyclerView.setAdapter(brewRecyclerViewAdapter);
     }
 }

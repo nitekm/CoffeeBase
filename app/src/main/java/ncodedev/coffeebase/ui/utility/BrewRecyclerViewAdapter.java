@@ -18,18 +18,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-import static ncodedev.coffeebase.ui.BrewActivity.BREW_ID_KEY;
+import static ncodedev.coffeebase.ui.BrewActivity.BREW;
+import static ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
 
 public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerViewAdapter.ViewHolder> {
 
     public static final String TAG = "BrewRecyclerViewAdapter";
-
     private final Context context;
     private final List<Brew> brews;
+    private final Integer coffeeId;
 
-    public BrewRecyclerViewAdapter(Context context, List<Brew> brews) {
+    public BrewRecyclerViewAdapter(Context context, List<Brew> brews, Integer coffeeId) {
         this.context = context;
         this.brews = brews;
+        this.coffeeId = coffeeId;
     }
 
     @NonNull
@@ -61,7 +63,8 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
 
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, BrewActivity.class);
-            intent.putExtra(BREW_ID_KEY, brews.get(holder.getAdapterPosition()).getId());
+            intent.putExtra(COFFEE_ID_KEY, coffeeId);
+            intent.putExtra(BREW, brews.get(holder.getAdapterPosition()));
             context.startActivity(intent);
         });
     }

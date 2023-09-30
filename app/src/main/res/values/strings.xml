@@ -130,5 +130,6 @@
     <string name="grinder_setting">Grinder setting</string>
     <string name="time">Time</string>
     <string name="how_was_it">How was it?</string>
+    <string name="detach_brew_question">Do you want to remove brew from this coffee?\nIt will still be available on other coffees.</string>
 
 </resources>

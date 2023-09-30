@@ -16,7 +16,6 @@ import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.ui.utility.CoffeeTabPagerAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
-import ncodedev.coffeebase.web.provider.BrewApiProvider;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
@@ -28,7 +27,6 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
-    private final BrewApiProvider brewApiProvider = BrewApiProvider.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +109,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     public void handleCoffeeResponse(Coffee coffee) {
         CoffeeTabPagerAdapter pagerAdapter = new CoffeeTabPagerAdapter(getSupportFragmentManager());
         pagerAdapter.addTabFragment(new CoffeeInfo(coffee), getString(R.string.COFFEE_INFO));
-        pagerAdapter.addTabFragment(new BrewsFragment(coffee.getBrews()), getString(R.string.brews));
+        pagerAdapter.addTabFragment(new BrewsFragment(coffee.getBrews(), coffeeId), getString(R.string.brews));
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
@@ -127,4 +125,8 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
 
     @Override
     public void handleSaveResponse(Coffee coffee) {}
+
+    public Integer getCoffeeId() {
+        return coffeeId;
+    }
 }
