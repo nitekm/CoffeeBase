@@ -5,19 +5,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.ui.utility.Unit;
 import ncodedev.coffeebase.web.listener.BrewResponseListener;
 import ncodedev.coffeebase.web.provider.BrewApiProvider;
 
 import java.util.Optional;
 
 import static ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
+import static ncodedev.coffeebase.ui.utility.Unit.*;
 
 public class BrewActivity extends AppCompatActivity implements BrewResponseListener {
 
@@ -28,8 +31,8 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
     private Integer coffeeId;
 
     private TextView txtBrewName, txtMethod, coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTemperatureTxt,
-            timeTxt, txtFilter;
-    private Toolbar toolbar;
+            timeTxt, txtFilter, txtComment;
+    private MaterialToolbar toolbar;
     private final BrewApiProvider brewApiProvider = BrewApiProvider.getInstance();
 
 
@@ -52,6 +55,9 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         waterTemperatureTxt = findViewById(R.id.waterTempTxt);
         timeTxt = findViewById(R.id.timeTxt);
         txtFilter = findViewById(R.id.txtFilter);
+        txtComment = findViewById(R.id.txtComment);
+        //remove later when comment will be added
+        txtComment.setVisibility(View.INVISIBLE);
 
         toolbar = findViewById(R.id.topAppBarBrewActivity);
         toolbar.setNavigationOnClickListener(view -> {
@@ -78,11 +84,23 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         Optional.ofNullable(brew.getName()).ifPresent(txtBrewName::setText);
         Optional.ofNullable(brew.getMethod()).ifPresent(txtMethod::setText);
         Optional.ofNullable(brew.getFilter()).ifPresent(txtFilter::setText);
-        Optional.ofNullable(brew.getCoffeeWeightInGrams()).ifPresent(coffeeWeightTxt::setText);
-        Optional.ofNullable(brew.getGrinderSetting()).ifPresent(grinderSettingTxt::setText);
-        Optional.ofNullable(brew.getWaterAmountInMl()).ifPresent(waterAmountTxt::setText);
-        Optional.ofNullable(brew.getWaterTemp()).ifPresent(waterTemperatureTxt::setText);
-        Optional.ofNullable(brew.getTotalTime()).ifPresent(timeTxt::setText);
+        Optional.ofNullable(brew.getCoffeeWeightInGrams()).map(String::valueOf).ifPresent(coffeeWeight -> setTextAndUnit(coffeeWeight, coffeeWeightTxt, GRAM));
+        Optional.ofNullable(brew.getGrinderSetting()).map(String::valueOf).ifPresent(grinderSetting -> setTextAndUnit(grinderSetting, grinderSettingTxt, CLICK));
+        Optional.ofNullable(brew.getWaterAmountInMl()).map(String::valueOf).ifPresent(waterAmount -> setTextAndUnit(waterAmount, waterAmountTxt, ML));
+        Optional.ofNullable(brew.getWaterTemp()).map(String::valueOf).ifPresent(waterTemp -> setTextAndUnit(waterTemp, waterTemperatureTxt, TEMP));
+        Optional.ofNullable(brew.getTotalTime()).map(String::valueOf).ifPresent(time -> setTextAndUnit(time, timeTxt, TIME));
+    }
+
+    private void setTextAndUnit(String text, TextView textView, Unit unit) {
+        String textToSet = "";
+        switch(unit) {
+            case GRAM -> textToSet = text + " " + getString(R.string.gram);
+            case CLICK -> textToSet = text + " " + getString(R.string.click);
+            case ML -> textToSet = text + " " + getString(R.string.mililiters);
+            case TEMP -> textToSet = text + " " + "°C";
+            case TIME -> textToSet = text + " " + getString(R.string.minutes);
+        }
+        textView.setText(textToSet);
     }
 
     //TOOLBAR - START -----------------------------------------------------------------------------------------------\\

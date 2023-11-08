@@ -125,8 +125,4 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
 
     @Override
     public void handleSaveResponse(Coffee coffee) {}
-
-    public Integer getCoffeeId() {
-        return coffeeId;
-    }
 }
