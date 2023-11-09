@@ -12,4 +12,5 @@
     <color name="coffeeBrownVariant">#996633</color>
     <color name="secondaryCoffee">#F5AF32</color>
     <color name="secondaryCoffeeVariant">#D3BD00</color>
+    <color name="grey">#DDD6D4</color>
 </resources>

@@ -135,5 +135,6 @@
     <string name="click">clicks</string>
     <string name="mililiters">ml</string>
     <string name="minutes">minutes</string>
+    <string name="title_activity_edit_brew">EditBrewActivity</string>
 
 </resources>
