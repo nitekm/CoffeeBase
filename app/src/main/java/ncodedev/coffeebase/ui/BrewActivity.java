@@ -62,6 +62,7 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         toolbar = findViewById(R.id.topAppBarBrewActivity);
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(this, CoffeeActivity.class);
+            intent.putExtra(COFFEE_ID_KEY, coffeeId);
             startActivity(intent);
         });
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
