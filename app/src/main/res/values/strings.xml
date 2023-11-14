@@ -136,5 +136,12 @@
     <string name="mililiters">ml</string>
     <string name="minutes">minutes</string>
     <string name="title_activity_edit_brew">EditBrewActivity</string>
+    <string name="aeropress">aeropress</string>
+    <string name="auto_drip">pour-over machine</string>
+    <string name="chemex">chemex</string>
+    <string name="espresso">espresso machine</string>
+    <string name="french_press">french press</string>
+    <string name="mokka_pot">mokka pot</string>
+    <string name="v60">V60</string>
 
 </resources>
