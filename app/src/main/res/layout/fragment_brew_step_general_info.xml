@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="15dp"
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -43,7 +44,7 @@
     <GridView
             android:id="@+id/methodGrid"
             android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="130dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:stretchMode="columnWidth"
@@ -51,6 +52,7 @@
             android:verticalSpacing="8dp"
             android:gravity="center"
             android:numColumns="auto_fit"
-            android:columnWidth="100dp"/>
+            android:columnWidth="100dp"
+            android:choiceMode="singleChoice"/>
 
 </FrameLayout>
