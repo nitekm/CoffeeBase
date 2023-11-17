@@ -4,31 +4,80 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import ncodedev.coffeebase.R;
+import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.validator.Validator;
+import ncodedev.coffeebase.process.brewsteps.BrewStepHelper;
+import ncodedev.coffeebase.ui.utility.BrewMapper;
+import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewStepGeneralInfo extends Fragment {
+public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepResponseListener {
 
-    private TextView brewMethodDisplayTxt;
+    private TextView brewNameTxt, brewMethodDisplayTxt;
+    private ImageButton prevStepButton, nextStepButton;
+    private Brew brew;
 
-    public BrewStepGeneralInfo() {}
+    public BrewStepGeneralInfoFragment(ImageButton prevStepButton, ImageButton nextStepButton) {
+        this.prevStepButton = prevStepButton;
+        this.nextStepButton = nextStepButton;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_brew_step_general_info, container, false);
 
+        initViews(view);
+        setupStep();
+        return view;
+    }
+
+    private void initViews(View view) {
         GridView brewMethodGrid = view.findViewById(R.id.methodGrid);
         brewMethodDisplayTxt = view.findViewById(R.id.methodNameDisplayTxt);
         brewMethodGrid.setAdapter(new MethodSelector(brewMethodDisplayTxt));
-        return view;
+        brewNameTxt = view.findViewById(R.id.inputBrewName);
+    }
+
+    private void setupStep() {
+        BrewStepHelper brewStepHelper = new BrewStepHelper();
+        brewStepHelper.init(new Brew(), this, this.getActivity());
+        prevStepButton.setVisibility(View.INVISIBLE);
+        prevStepButton.setClickable(false);
+
+        nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt, brewMethodDisplayTxt, brewStepHelper));
+    }
+
+    private void executeFinishStep(TextView brewNameTxt, TextView brewMethodDisplayTxt, BrewStepHelper brewStepHelper) {
+        if (!validateBrew()) {
+            return;
+        }
+        Brew brewWithGeneralInfo = BrewMapper.mapGeneralInfo(brew, brewNameTxt.getText().toString(), brewMethodDisplayTxt.getText().toString());
+        brewStepHelper.finish(brewWithGeneralInfo, this, this.getActivity());
+    }
+
+    private boolean validateBrew() {
+        return Validator.textNotBlank(brewNameTxt, getString(R.string.constraint_brew_name_not_empty));
+    }
+
+    @Override
+    public void handleInitBrewStepResponse(Brew brew) {
+        this.brew =  brew;
+        brewNameTxt.setText(brew.getName());
+        brewMethodDisplayTxt.setText(brew.getMethod());
+    }
+
+    @Override
+    public void handleFinishBrewStepResponse(Brew brew) {
+        FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.step_container, new BrewStepIngredientsFragment(brew, prevStepButton, nextStepButton));
+        transaction.commit();
     }
 
     private class MethodSelector extends BaseAdapter {
@@ -45,7 +94,7 @@ public class BrewStepGeneralInfo extends Fragment {
                 R.drawable.ic_v60,
         };
 
-        public MethodSelector(TextView brewMethodDisplayTxt) {
+        private MethodSelector(TextView brewMethodDisplayTxt) {
             this.brewMethodDisplayTxt = brewMethodDisplayTxt;
         }
 
@@ -88,7 +137,8 @@ public class BrewStepGeneralInfo extends Fragment {
                 case 1 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.auto_drip));
                 case 2 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.chemex));
                 case 3 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.espresso));
-                case 4 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.french_press));
+                case 4 ->
+                        imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.french_press));
                 case 5 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.mokka_pot));
                 case 6 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.v60));
             }

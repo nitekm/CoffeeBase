@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+        android:id="@+id/pourOverCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="12dp"
+        app:cardCornerRadius="20dp"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+            android:layout_width="325dp"
+            android:layout_height="match_parent"
+            android:padding="15dp"
+            android:background="@drawable/dotted_border"
+            android:layout_gravity="center_horizontal">
+
+        <TextView
+                android:id="@+id/pourNumberTxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pour Number"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_centerHorizontal="true"/>
+
+        <RelativeLayout
+                android:id="@+id/waterLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/pourNumberTxt"
+                android:layout_centerHorizontal="true">
+
+            <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_water_drop"/>
+
+            <TextView
+                    android:id="@+id/pourWaterAmountTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="pour water amount"
+                    android:textSize="15sp"
+                    android:layout_marginStart="30dp"
+                    android:layout_gravity="start"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/waterLayout"
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true">
+
+            <RelativeLayout
+                    android:id="@+id/timeLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_hourglass"/>
+
+                <TextView
+                        android:id="@+id/pourTimeTxt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="30dp"
+                        android:layout_gravity="start"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seconds"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="50dp"
+                        android:layout_gravity="start"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

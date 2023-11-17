@@ -56,6 +56,8 @@ public class Brew implements Serializable {
     @Expose
     private String userId;
 
+    public Brew() {}
+
     public Brew(Long id, String name, String method, Integer waterAmountInMl, Integer waterTemp,
                 Integer coffeeWeightInGrams, Integer grinderSetting, String filter, String status,
                 Integer totalTime, Set<PourOver> pourOvers, String userId) {

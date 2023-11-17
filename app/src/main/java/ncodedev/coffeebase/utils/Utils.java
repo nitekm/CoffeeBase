@@ -8,5 +8,4 @@ public final class Utils {
     public static String imageDownloadUrl(String imageName) {
         return BuildConfig.BaseURL + "downloadFile/" + imageName;
     }
-
 }

@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
@@ -14,8 +12,6 @@ public class EditBrewActivity extends AppCompatActivity {
 
     private MaterialToolbar toolbar;
     private ProgressBar progressBar;
-    private FragmentManager fragmentManager;
-    private Fragment currentStepFragment;
     private ImageButton btnPrevStep, btnNextStep;
 
     @Override
@@ -33,11 +29,8 @@ public class EditBrewActivity extends AppCompatActivity {
         btnPrevStep = findViewById(R.id.btnPrevStep);
         btnNextStep = findViewById(R.id.btnNextStep);
 
-        fragmentManager = getSupportFragmentManager();
-        currentStepFragment = new BrewStepGeneralInfo();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.step_container, currentStepFragment);
-        transaction.addToBackStack(null);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.step_container, new BrewStepGeneralInfoFragment(btnPrevStep, btnNextStep));
         transaction.commit();
     }
 }

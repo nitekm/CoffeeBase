@@ -143,5 +143,19 @@
     <string name="french_press">french press</string>
     <string name="mokka_pot">mokka pot</string>
     <string name="v60">V60</string>
+    <string name="constraint_brew_name_not_empty">Brew name cannot be empty</string>
+    <string name="coffee_weight_in_grams">Coffee weight (grams)</string>
+    <string name="grinder_setting_in_clicks">Grinder setting (clicks)</string>
+    <string name="water_amount_in_ml">Water amount (ml)</string>
+    <string name="water_temp_in_celsius">Water temperature (Celsius)</string>
+    <string name="constraint_coffee_weight">Coffee weight can be between 1 to 250</string>
+    <string name="constraint_grinder_setting">Grinder setting can be between 1 to 100</string>
+    <string name="constraint_water_amount">Water amount can be between 1 to 5000</string>
+    <string name="constraint_water_temp">Water temperature can be between 1 to 100</string>
+    <string name="seconds">seconds</string>
+    <string name="pour">pour</string>
+    <string name="add_pour">Add Pour</string>
+    <string name="water_ml_in_pour">Mililiters of water in pour</string>
+    <string name="pour_time_seconds">Pour time in seconds</string>
 
 </resources>

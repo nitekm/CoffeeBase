@@ -34,6 +34,11 @@ public class PourOver implements Serializable {
         this.userId = userId;
     }
 
+    public PourOver(Integer time, Integer waterAmountInMl) {
+        this.time = time;
+        this.waterAmountInMl = waterAmountInMl;
+    }
+
     public Long getId() {
         return id;
     }
