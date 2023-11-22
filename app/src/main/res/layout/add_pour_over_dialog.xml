@@ -18,6 +18,9 @@
         <EditText
                 android:layout_marginStart="15dp"
                 android:id="@+id/waterAmountInPourTxt"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/water_ml_in_pour"/>
@@ -36,6 +39,9 @@
         <EditText
                 android:layout_marginStart="15dp"
                 android:id="@+id/pourTimeTxt"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/pour_time_seconds"/>

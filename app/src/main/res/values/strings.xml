@@ -117,7 +117,7 @@
     <string name="title_activity_brew_card_view">BrewCardView</string>
     <string name="title_activity_brew">BrewActivity</string>
     <string name="brew">Brew</string>
-    <string name="edit_brew">Edit brew</string>
+    <string name="add_brew_recipe">Add brew recipe</string>
     <string name="delete_brew">Delete brew</string>
     <string name="brew_name">Brew Name</string>
     <string name="method">Method</string>
@@ -157,5 +157,6 @@
     <string name="add_pour">Add Pour</string>
     <string name="water_ml_in_pour">Mililiters of water in pour</string>
     <string name="pour_time_seconds">Pour time in seconds</string>
+    <string name="brew_created">New brew recipe has been created!</string>
 
 </resources>

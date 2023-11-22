@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:stretchMode="columnWidth"
             android:horizontalSpacing="8dp"
-            android:verticalSpacing="8dp"
+            android:verticalSpacing="5dp"
             android:gravity="center"
             android:numColumns="auto_fit"
             android:columnWidth="100dp"

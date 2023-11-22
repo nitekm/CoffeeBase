@@ -26,15 +26,12 @@ public class PourOver implements Serializable {
     @Expose
     private String userId;
 
-    public PourOver(Long id, Integer time, Integer waterAmountInMl, String comment, String userId) {
-        this.id = id;
-        this.time = time;
-        this.waterAmountInMl = waterAmountInMl;
-        this.comment = comment;
-        this.userId = userId;
-    }
+    @SerializedName("brew")
+    @Expose(serialize = false)
+    private Brew brew;
 
-    public PourOver(Integer time, Integer waterAmountInMl) {
+    public PourOver(Brew brew, Integer time, Integer waterAmountInMl) {
+        this.brew = brew;
         this.time = time;
         this.waterAmountInMl = waterAmountInMl;
     }
@@ -77,5 +74,13 @@ public class PourOver implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Brew getBrew() {
+        return brew;
+    }
+
+    public void setBrew(Brew brew) {
+        this.brew = brew;
     }
 }

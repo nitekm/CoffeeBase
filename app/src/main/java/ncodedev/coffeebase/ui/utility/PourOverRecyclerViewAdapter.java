@@ -4,7 +4,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -40,9 +39,10 @@ public class PourOverRecyclerViewAdapter extends RecyclerView.Adapter<PourOverRe
     public void onBindViewHolder(@NonNull @NotNull PourOverRecyclerViewAdapter.ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: Called");
         holder.pourOverNumber.setText(String.valueOf(holder.getAdapterPosition() + 1));
-        Optional.ofNullable(pourOvers.get(holder.getAdapterPosition()).getWaterAmountInMl())
+        Optional.of(pourOvers.get(holder.getAdapterPosition()).getWaterAmountInMl())
+                .map(String::valueOf)
                 .ifPresent(holder.waterAmountTxt::setText);
-        Optional.ofNullable(pourOvers.get(holder.getAdapterPosition()).getTime())
+        Optional.of(pourOvers.get(holder.getAdapterPosition()).getTime())
                 .map(String::valueOf)
                 .ifPresent(holder.pourTimeTxt::setText);
     }
@@ -54,13 +54,11 @@ public class PourOverRecyclerViewAdapter extends RecyclerView.Adapter<PourOverRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
-        private final ImageButton btnAddPourOver;
         private final TextView pourOverNumber, waterAmountTxt, pourTimeTxt;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             cardView = itemView.findViewById(R.id.pourOverCardView);
-            btnAddPourOver = itemView.findViewById(R.id.btnAddPourOver);
             pourOverNumber = itemView.findViewById(R.id.pourNumberTxt);
             waterAmountTxt = itemView.findViewById(R.id.pourWaterAmountTxt);
             pourTimeTxt = itemView.findViewById(R.id.pourTimeTxt);

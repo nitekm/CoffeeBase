@@ -21,11 +21,14 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
 
     private TextView brewNameTxt, brewMethodDisplayTxt;
     private ImageButton prevStepButton, nextStepButton;
+    private ProgressBar progressBar;
     private Brew brew;
 
-    public BrewStepGeneralInfoFragment(ImageButton prevStepButton, ImageButton nextStepButton) {
+    public BrewStepGeneralInfoFragment(Brew brew, ImageButton prevStepButton, ImageButton nextStepButton, ProgressBar progressBar) {
+        this.brew = brew;
         this.prevStepButton = prevStepButton;
         this.nextStepButton = nextStepButton;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -47,11 +50,14 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
 
     private void setupStep() {
         BrewStepHelper brewStepHelper = new BrewStepHelper();
-        brewStepHelper.init(new Brew(), this, this.getActivity());
+        brewStepHelper.init(brew, this, this.getActivity());
+
         prevStepButton.setVisibility(View.INVISIBLE);
         prevStepButton.setClickable(false);
 
         nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt, brewMethodDisplayTxt, brewStepHelper));
+
+        progressBar.setProgress(1);
     }
 
     private void executeFinishStep(TextView brewNameTxt, TextView brewMethodDisplayTxt, BrewStepHelper brewStepHelper) {
@@ -76,7 +82,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
     @Override
     public void handleFinishBrewStepResponse(Brew brew) {
         FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.step_container, new BrewStepIngredientsFragment(brew, prevStepButton, nextStepButton));
+        transaction.replace(R.id.step_container, new BrewStepIngredientsFragment(brew, prevStepButton, nextStepButton, progressBar));
         transaction.commit();
     }
 
@@ -118,7 +124,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(getContext());
-                imageView.setLayoutParams(new GridView.LayoutParams(195, 195));
+                imageView.setLayoutParams(new GridView.LayoutParams(175, 175));
                 imageView.setPadding(10, 10, 10, 10);
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             } else {

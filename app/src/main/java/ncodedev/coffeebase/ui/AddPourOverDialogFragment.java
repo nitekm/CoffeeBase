@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import ncodedev.coffeebase.R;
+import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.PourOver;
 import ncodedev.coffeebase.ui.utility.PourOverRecyclerViewAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -20,8 +21,10 @@ public class AddPourOverDialogFragment extends DialogFragment {
     private List<PourOver> pourOvers;
     private PourOverRecyclerViewAdapter pourOverRecyclerViewAdapter;
     private TextView waterAmount, timeInSeconds;
+    private Brew brew;
 
-    public AddPourOverDialogFragment(List<PourOver> pourOvers, PourOverRecyclerViewAdapter pourOverRecyclerViewAdapter) {
+    public AddPourOverDialogFragment(Brew brew, List<PourOver> pourOvers, PourOverRecyclerViewAdapter pourOverRecyclerViewAdapter) {
+        this.brew = brew;
         this.pourOvers = pourOvers;
         this.pourOverRecyclerViewAdapter = pourOverRecyclerViewAdapter;
     }
@@ -39,7 +42,7 @@ public class AddPourOverDialogFragment extends DialogFragment {
         dialogBuilder.setView(view)
                 .setTitle(R.string.add_pour)
                 .setPositiveButton("OK", (dialog, which) -> {
-                    pourOvers.add(createPourOver(Integer.getInteger(waterAmount.getText().toString()), Integer.getInteger(timeInSeconds.getText().toString())));
+                    pourOvers.add(createPourOver(Integer.parseInt(waterAmount.getText().toString()), Integer.parseInt(timeInSeconds.getText().toString())));
                     pourOverRecyclerViewAdapter.notifyItemInserted(pourOvers.size()-1);
                 })
                 .setNegativeButton(R.string.colorpicker_dialog_cancel, (dialog, which) -> dialog.cancel());
@@ -48,6 +51,6 @@ public class AddPourOverDialogFragment extends DialogFragment {
     }
 
     private PourOver createPourOver(Integer waterAmount, Integer timeInSeconds) {
-        return new PourOver(timeInSeconds, waterAmount);
+        return new PourOver(new Brew(brew.getId()), timeInSeconds, waterAmount);
     }
 }

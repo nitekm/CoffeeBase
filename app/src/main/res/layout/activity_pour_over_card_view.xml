@@ -44,9 +44,18 @@
                     android:id="@+id/pourWaterAmountTxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="pour water amount"
+                    android:text="0"
                     android:textSize="15sp"
                     android:layout_marginStart="30dp"
+                    android:layout_gravity="start"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mililiters"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="50dp"
                     android:layout_gravity="start"/>
         </RelativeLayout>
 

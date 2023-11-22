@@ -10,7 +10,7 @@
 
         <item
                 android:id="@+id/addBrew"
-                android:title="@string/edit_brew"
+                android:title="@string/add_brew_recipe"
                 android:icon="@drawable/ic_add_circle"/>
 
         <item

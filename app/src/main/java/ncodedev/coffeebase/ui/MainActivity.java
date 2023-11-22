@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void launchEditBrew() {
-        Intent intent = new Intent(this, EditBrewActivity.class);
+        Intent intent = new Intent(this, AddBrewActivity.class);
         startActivity(intent);
     }
 

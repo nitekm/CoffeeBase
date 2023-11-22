@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 public class Brew implements Serializable {
 
@@ -50,7 +50,7 @@ public class Brew implements Serializable {
 
     @SerializedName("pourOvers")
     @Expose
-    private Set<PourOver> pourOvers;
+    private List<PourOver> pourOvers;
 
     @SerializedName("userId")
     @Expose
@@ -58,9 +58,13 @@ public class Brew implements Serializable {
 
     public Brew() {}
 
+    public Brew(Long id) {
+        this.id = id;
+    }
+
     public Brew(Long id, String name, String method, Integer waterAmountInMl, Integer waterTemp,
                 Integer coffeeWeightInGrams, Integer grinderSetting, String filter, String status,
-                Integer totalTime, Set<PourOver> pourOvers, String userId) {
+                Integer totalTime, List<PourOver> pourOvers, String userId) {
         this.id = id;
         this.name = name;
         this.method = method;
@@ -155,11 +159,11 @@ public class Brew implements Serializable {
         this.totalTime = totalTime;
     }
 
-    public Set<PourOver> getPourOvers() {
+    public List<PourOver> getPourOvers() {
         return pourOvers;
     }
 
-    public void setPourOvers(Set<PourOver> pourOvers) {
+    public void setPourOvers(List<PourOver> pourOvers) {
         this.pourOvers = pourOvers;
     }
 

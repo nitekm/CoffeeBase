@@ -2,7 +2,9 @@ package ncodedev.coffeebase.ui.utility;
 
 import android.text.TextUtils;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.domain.PourOver;
 
+import java.util.List;
 import java.util.Optional;
 
 public class BrewMapper {
@@ -30,6 +32,11 @@ public class BrewMapper {
                 .map(Integer::parseInt)
                 .ifPresent(brew::setWaterTemp);
         brew.setFilter(filterTxt);
+        return brew;
+    }
+
+    public static Brew mapPours(Brew brew, List<PourOver> pourOvers) {
+        brew.setPourOvers(pourOvers);
         return brew;
     }
 }

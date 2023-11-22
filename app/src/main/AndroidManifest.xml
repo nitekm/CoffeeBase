@@ -22,7 +22,7 @@
                 android:name=".ui.utility.PourOverCardView"
                 android:exported="false"/>
         <activity
-                android:name=".ui.EditBrewActivity"
+                android:name=".ui.AddBrewActivity"
                 android:exported="false"
                 android:label="@string/title_activity_edit_brew"
                 android:theme="@style/Theme.CoffeeBase"

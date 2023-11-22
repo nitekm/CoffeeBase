@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -22,12 +23,14 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
     private Brew brew;
     private TextView coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTempTxt, filterTxt;
     private ImageButton prevStepButton, nextStepButton;
+    private ProgressBar progressBar;
 
 
-    public BrewStepIngredientsFragment(Brew brew, ImageButton prevStepButton, ImageButton nextStepButton) {
+    public BrewStepIngredientsFragment(Brew brew, ImageButton prevStepButton, ImageButton nextStepButton, ProgressBar progressBar) {
         this.brew = brew;
         this.prevStepButton = prevStepButton;
         this.nextStepButton = nextStepButton;
+        this.progressBar = progressBar;
     }
 
     @Override
@@ -53,12 +56,19 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
     private void setupStep() {
         BrewStepHelper brewStepHelper = new BrewStepHelper();
         brewStepHelper.init(brew, this, this.getActivity());
+
+        prevStepButton.setVisibility(View.VISIBLE);
         prevStepButton.setOnClickListener(view -> {
             FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.step_container, new BrewStepGeneralInfoFragment(prevStepButton, nextStepButton));
+            transaction.replace(R.id.step_container, new BrewStepGeneralInfoFragment(brew, prevStepButton, nextStepButton, progressBar));
             transaction.commit();
         });
+
         nextStepButton.setOnClickListener(v -> executeFinishStep(coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTempTxt, filterTxt, brewStepHelper));
+        nextStepButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back));
+        nextStepButton.setRotation(180);
+
+        progressBar.setProgress(2);
     }
 
     private void executeFinishStep(TextView coffeeWeightTxt, TextView grinderSettingTxt, TextView waterAmountTxt, TextView waterTempTxt, TextView filterTxt, BrewStepHelper brewStepHelper) {
@@ -86,17 +96,17 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
     @Override
     public void handleInitBrewStepResponse(Brew brew) {
         this.brew =  brew;
-        Optional.ofNullable(brew.getCoffeeWeightInGrams()).ifPresent(coffeeWeightTxt::setText);
-        Optional.ofNullable(brew.getGrinderSetting()).ifPresent(grinderSettingTxt::setText);
-        Optional.ofNullable(brew.getWaterAmountInMl()).ifPresent(waterAmountTxt::setText);
-        Optional.ofNullable(brew.getWaterTemp()).ifPresent(waterTempTxt::setText);
+        Optional.ofNullable(brew.getCoffeeWeightInGrams()).map(String::valueOf).ifPresent(coffeeWeightTxt::setText);
+        Optional.ofNullable(brew.getGrinderSetting()).map(String::valueOf).ifPresent(grinderSettingTxt::setText);
+        Optional.ofNullable(brew.getWaterAmountInMl()).map(String::valueOf).ifPresent(waterAmountTxt::setText);
+        Optional.ofNullable(brew.getWaterTemp()).map(String::valueOf).ifPresent(waterTempTxt::setText);
         filterTxt.setText(brew.getFilter());
     }
 
     @Override
     public void handleFinishBrewStepResponse(Brew brew) {
         FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.step_container, new BrewStepPourOver(brew, prevStepButton, nextStepButton));
+        transaction.replace(R.id.step_container, new BrewStepPourOver(brew, prevStepButton, nextStepButton, progressBar));
         transaction.commit();
     }
 }
