@@ -10,7 +10,7 @@ public class Coffee implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Long id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -70,7 +70,7 @@ public class Coffee implements Serializable {
     @Expose
     private List<Brew> brews;
 
-    public Coffee(final Integer id, final String name, final String origin, final String roaster,
+    public Coffee(final Long id, final String name, final String origin, final String roaster,
                   final String processing, final String roastProfile, final String region, final String continent,
                   final String farm, final Integer cropHeight, final Integer scaRating, final Double rating,
                   final String coffeeImageName, final boolean favourite, final String userId, final List<Tag> tags,
@@ -112,11 +112,11 @@ public class Coffee implements Serializable {
         this.tags = tags;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

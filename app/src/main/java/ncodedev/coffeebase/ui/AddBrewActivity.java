@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.domain.process.BrewStatus;
 
 public class AddBrewActivity extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class AddBrewActivity extends AppCompatActivity {
         btnNextStep = findViewById(R.id.btnNextStep);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.step_container, new BrewStepGeneralInfoFragment(new Brew(), btnPrevStep, btnNextStep, progressBar));
+        transaction.replace(R.id.step_container, new BrewStepGeneralInfoFragment(new Brew(BrewStatus.STARTED), btnPrevStep, btnNextStep, progressBar));
         transaction.commit();
     }
 }

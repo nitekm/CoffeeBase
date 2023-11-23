@@ -3,6 +3,7 @@ package ncodedev.coffeebase.web.provider;
 import android.app.Activity;
 import android.util.Log;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.domain.process.BrewActionDTO;
 import ncodedev.coffeebase.web.api.BrewApi;
 import ncodedev.coffeebase.web.listener.BrewListResponseListener;
 import ncodedev.coffeebase.web.listener.BrewResponseListener;
@@ -46,9 +47,15 @@ public class BrewApiProvider {
         handleFinishBrewStepResponse(call, listener, activity);
     }
 
-    public void detachBrewFromCoffee(long brewId, int coffeeId, BrewResponseListener listener, Activity activity) {
-        Call<Void> call = createApi(BrewApi.class).detachBrewFromCoffee(brewId, coffeeId);
-        handleDetachResponse(call, listener, activity);
+    public void linkBrewWithCoffee(BrewActionDTO brewActionDTO, BrewResponseListener listener, Activity activity) {
+        Call<Void> call = createApi(BrewApi.class).linkBrewWithCoffee(brewActionDTO);
+        handleVoidResponse(call, listener, activity);
+
+    }
+
+    public void detachBrewFromCoffee(BrewActionDTO brewActionDTO, BrewResponseListener listener, Activity activity) {
+        Call<Void> call = createApi(BrewApi.class).detachBrewFromCoffee(brewActionDTO);
+        handleVoidResponse(call, listener, activity);
     }
 
     private void handleListResponse(Call<List<Brew>> call, BrewListResponseListener listener, Activity activity) {
@@ -108,7 +115,7 @@ public class BrewApiProvider {
         });
     }
 
-    private void handleDetachResponse(Call<Void> call, BrewResponseListener listener, Activity activity) {
+    private void handleVoidResponse(Call<Void> call, BrewResponseListener listener, Activity activity) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {

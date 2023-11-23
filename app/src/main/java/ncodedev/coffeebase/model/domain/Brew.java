@@ -2,6 +2,7 @@ package ncodedev.coffeebase.model.domain;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import ncodedev.coffeebase.model.domain.process.BrewStatus;
 
 import java.io.Serializable;
 import java.util.List;
@@ -40,13 +41,13 @@ public class Brew implements Serializable {
     @Expose
     private String filter;
 
-    @SerializedName("status")
-    @Expose
-    private String status;
-
     @SerializedName("totalTime")
     @Expose
     private Integer totalTime;
+
+    @SerializedName("status")
+    @Expose
+    private BrewStatus brewStatus;
 
     @SerializedName("pourOvers")
     @Expose
@@ -56,27 +57,12 @@ public class Brew implements Serializable {
     @Expose
     private String userId;
 
-    public Brew() {}
-
     public Brew(Long id) {
         this.id = id;
     }
 
-    public Brew(Long id, String name, String method, Integer waterAmountInMl, Integer waterTemp,
-                Integer coffeeWeightInGrams, Integer grinderSetting, String filter, String status,
-                Integer totalTime, List<PourOver> pourOvers, String userId) {
-        this.id = id;
-        this.name = name;
-        this.method = method;
-        this.waterAmountInMl = waterAmountInMl;
-        this.waterTemp = waterTemp;
-        this.coffeeWeightInGrams = coffeeWeightInGrams;
-        this.grinderSetting = grinderSetting;
-        this.filter = filter;
-        this.status = status;
-        this.totalTime = totalTime;
-        this.pourOvers = pourOvers;
-        this.userId = userId;
+    public Brew(BrewStatus brewStatus) {
+        this.brewStatus = brewStatus;
     }
 
     public Long getId() {
@@ -143,20 +129,20 @@ public class Brew implements Serializable {
         this.filter = filter;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Integer getTotalTime() {
         return totalTime;
     }
 
     public void setTotalTime(Integer totalTime) {
         this.totalTime = totalTime;
+    }
+
+    public BrewStatus getBrewStatus() {
+        return brewStatus;
+    }
+
+    public void setBrewStatus(BrewStatus brewStatus) {
+        this.brewStatus = brewStatus;
     }
 
     public List<PourOver> getPourOvers() {

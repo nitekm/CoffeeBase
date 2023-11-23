@@ -16,7 +16,7 @@ public interface CoffeeApi extends Api {
     Call<List<Coffee>> searchCoffees(@Query("content") String content);
 
     @GET("coffees/{id}")
-    Call<Coffee> getSingleCoffee(@Path("id") int id);
+    Call<Coffee> getSingleCoffee(@Path("id") long id);
 
     @Multipart
     @POST("coffees")
@@ -25,14 +25,14 @@ public interface CoffeeApi extends Api {
 
     @Multipart
     @PUT("coffees/{id}")
-    Call<Coffee> updateCoffee(@Path("id") int id,
+    Call<Coffee> updateCoffee(@Path("id") long id,
                               @Part("coffee") Coffee coffeeToUpdate,
                               @Part MultipartBody.Part image);
 
     @PATCH("coffees/{id}")
-    Call<Coffee> switchFavourite(@Path("id") int id);
+    Call<Coffee> switchFavourite(@Path("id") long id);
 
     @DELETE("coffees/{id}")
-    Call<Void> deleteCoffee(@Path("id") int id);
+    Call<Void> deleteCoffee(@Path("id") long id);
 
 }

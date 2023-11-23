@@ -42,7 +42,7 @@ public class CoffeeApiProvider {
         handleListResponse(call, listener, activity);
     }
 
-    public void getOne(int id, CoffeeResponseListener listener, Activity activity) {
+    public void getOne(long id, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
         handleCoffeeResponse(call, listener, activity);
     }
@@ -57,12 +57,12 @@ public class CoffeeApiProvider {
         handleSaveResponse(call, listener, activity);
     }
 
-    public void delete(int id, CoffeeResponseListener listener, Activity activity) {
+    public void delete(long id, CoffeeResponseListener listener, Activity activity) {
         Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
         handleDeleteResponse(call, listener, activity);
     }
 
-    public void switchFavourites(int coffeeId, CoffeeResponseListener listener, Activity activity) {
+    public void switchFavourites(long coffeeId, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
         handleCoffeeResponse(call, listener, activity);
     }

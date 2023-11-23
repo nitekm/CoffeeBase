@@ -21,7 +21,7 @@ import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
     public static final String COFFEE_ID_KEY = "coffeeId";
-    private int coffeeId;
+    private long coffeeId;
     private MaterialToolbar toolbar;
     private ActionMenuItemView favouriteMenuItem;
     private ViewPager viewPager;
@@ -48,7 +48,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     private void showCoffeeInfo() {
         Intent intent = getIntent();
         if (null != intent) {
-            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
+            coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
             if (coffeeId != -1) {
                 coffeeApiProvider.getOne(coffeeId, this, this);
             }
@@ -92,7 +92,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         }
     }
 
-    private void showDeleteDialog(int coffeeId) {
+    private void showDeleteDialog(long coffeeId) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.delete_coffee_question);
         alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});

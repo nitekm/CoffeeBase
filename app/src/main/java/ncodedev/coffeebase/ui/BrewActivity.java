@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.domain.process.BrewActionDTO;
+import ncodedev.coffeebase.model.domain.process.BrewActionType;
 import ncodedev.coffeebase.ui.utility.Unit;
 import ncodedev.coffeebase.web.listener.BrewResponseListener;
 import ncodedev.coffeebase.web.provider.BrewApiProvider;
@@ -28,7 +30,7 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
 
     public static String BREW = "brew";
     private Brew brew;
-    private Integer coffeeId;
+    private Long coffeeId;
 
     private TextView txtBrewName, txtMethod, coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTemperatureTxt,
             timeTxt, txtFilter, txtComment;
@@ -73,7 +75,7 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         if (null != intent) {
             //tutaj tez musisz zgetować i ustawić coffeeId do dalszych metod
             brew = intent.getSerializableExtra(BREW, Brew.class);
-            coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
+            coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
 
            if (brew != null) {
                loadBrewData(brew);
@@ -113,12 +115,12 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         return true;
     }
 
-    private void showDeleteDialog(long brewId, int coffeeId) {
+    private void showDeleteDialog(long brewId, long coffeeId) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(R.string.detach_brew_question);
         alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});
         alertDialogBuilder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            brewApiProvider.detachBrewFromCoffee(brewId, coffeeId, this, this);
+            brewApiProvider.detachBrewFromCoffee(new BrewActionDTO(BrewActionType.DETACH, coffeeId, brewId), this, this);
         });
         alertDialogBuilder.create().show();
 

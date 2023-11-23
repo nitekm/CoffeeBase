@@ -18,9 +18,9 @@ public class BrewsFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private final List<Brew> brews;
-    private final Integer coffeeId;
+    private final Long coffeeId;
 
-    public BrewsFragment(List<Brew> brews, Integer coffeeId) {
+    public BrewsFragment(List<Brew> brews, Long coffeeId) {
         this.brews = brews;
         this.coffeeId = coffeeId;
     }

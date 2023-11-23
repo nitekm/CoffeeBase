@@ -26,9 +26,9 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
     public static final String TAG = "BrewRecyclerViewAdapter";
     private final Context context;
     private final List<Brew> brews;
-    private final Integer coffeeId;
+    private final Long coffeeId;
 
-    public BrewRecyclerViewAdapter(Context context, List<Brew> brews, Integer coffeeId) {
+    public BrewRecyclerViewAdapter(Context context, List<Brew> brews, Long coffeeId) {
         this.context = context;
         this.brews = brews;
         this.coffeeId = coffeeId;
