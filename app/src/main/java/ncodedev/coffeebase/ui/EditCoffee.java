@@ -47,7 +47,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     private int tagColor = Color.parseColor("#f84c44");
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
-    private int coffeeId;
+    private long coffeeId;
     private boolean isCoffeeEdited;
     private ImageView imgCoffee;
     private Button saveBtn;
@@ -150,8 +150,8 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     private void determineContext() {
         Intent intent = getIntent();
-        coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
-        isCoffeeEdited = coffeeId != -1;
+        coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
+        isCoffeeEdited = coffeeId != -1L;
         if (isCoffeeEdited) {
             coffeeApiProvider.getOne(coffeeId, this, this);
         }

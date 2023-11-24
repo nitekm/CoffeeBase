@@ -6,20 +6,36 @@
              xmlns:app="http://schemas.android.com/apk/res-auto"
              tools:context=".ui.BrewsFragment">
 
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/brewRecView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"/>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/brewRecView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="16dp"/>
+
+            <ImageButton
+                    app:layout_constraintTop_toBottomOf="@id/brewRecView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/btnAddBrewToCoffee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:background="@drawable/roundcorner"
+                    android:src="@drawable/ic_add_circle_big"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </androidx.core.widget.NestedScrollView>
 </FrameLayout>

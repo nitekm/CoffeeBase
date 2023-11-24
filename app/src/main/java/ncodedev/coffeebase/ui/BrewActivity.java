@@ -120,7 +120,7 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         alertDialogBuilder.setTitle(R.string.detach_brew_question);
         alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});
         alertDialogBuilder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            brewApiProvider.detachBrewFromCoffee(new BrewActionDTO(BrewActionType.DETACH, coffeeId, brewId), this, this);
+            brewApiProvider.executeAction(new BrewActionDTO(BrewActionType.DETACH, coffeeId, brewId), this);
         });
         alertDialogBuilder.create().show();
 
@@ -129,7 +129,10 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
 
 
     @Override
-    public void handleDetachBrewFromCoffee() {
-        startActivity(new Intent(this, CoffeeActivity.class));
+    public void handleExecuteActionResult() {
+        Intent intent = new Intent(this, CoffeeActivity.class);
+        intent.putExtra(COFFEE_ID_KEY, coffeeId);
+        startActivity(intent);
+
     }
 }

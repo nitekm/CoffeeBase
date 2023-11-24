@@ -18,9 +18,7 @@ public interface BrewApi extends Api {
     Call<Brew> init(@Body Brew brew);
     @POST("brews/step/finish")
     Call<Brew> finish(@Body Brew brew);
-    @PATCH("brews/link")
-    Call<Void> linkBrewWithCoffee(@Body BrewActionDTO brewActionDTO);
     @PATCH("brews/execute-action")
-    Call<Void> detachBrewFromCoffee(@Body BrewActionDTO brewActionDTO);
+    Call<Void> executeAction(@Body BrewActionDTO brewActionDTO);
 
 }

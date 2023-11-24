@@ -158,5 +158,6 @@
     <string name="water_ml_in_pour">Mililiters of water in pour</string>
     <string name="pour_time_seconds">Pour time in seconds</string>
     <string name="brew_created">New brew recipe has been created!</string>
+    <string name="add_brew_to_coffee">Add brew recipe to coffee</string>
 
 </resources>

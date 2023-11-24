@@ -47,15 +47,9 @@ public class BrewApiProvider {
         handleFinishBrewStepResponse(call, listener, activity);
     }
 
-    public void linkBrewWithCoffee(BrewActionDTO brewActionDTO, BrewResponseListener listener, Activity activity) {
-        Call<Void> call = createApi(BrewApi.class).linkBrewWithCoffee(brewActionDTO);
-        handleVoidResponse(call, listener, activity);
-
-    }
-
-    public void detachBrewFromCoffee(BrewActionDTO brewActionDTO, BrewResponseListener listener, Activity activity) {
-        Call<Void> call = createApi(BrewApi.class).detachBrewFromCoffee(brewActionDTO);
-        handleVoidResponse(call, listener, activity);
+    public void executeAction(BrewActionDTO brewActionDTO, BrewResponseListener listener) {
+        Call<Void> call = createApi(BrewApi.class).executeAction(brewActionDTO);
+        handleVoidResponse(call, listener);
     }
 
     private void handleListResponse(Call<List<Brew>> call, BrewListResponseListener listener, Activity activity) {
@@ -115,21 +109,21 @@ public class BrewApiProvider {
         });
     }
 
-    private void handleVoidResponse(Call<Void> call, BrewResponseListener listener, Activity activity) {
+    private void handleVoidResponse(Call<Void> call, BrewResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 if (response.isSuccessful()) {
-                    listener.handleDetachBrewFromCoffee();
+                    listener.handleExecuteActionResult();
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+//                    showToast(activity, activity.getString(error) + response.message());
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 Log.i(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+//                showToast(activity, activity.getString(server_unavailable));
             }
         });
     }

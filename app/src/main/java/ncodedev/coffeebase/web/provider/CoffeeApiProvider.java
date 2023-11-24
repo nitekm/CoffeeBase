@@ -52,7 +52,7 @@ public class CoffeeApiProvider {
         handleSaveResponse(call, listener, activity);
     }
 
-    public void update(int id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
         handleSaveResponse(call, listener, activity);
     }
