@@ -159,5 +159,7 @@
     <string name="pour_time_seconds">Pour time in seconds</string>
     <string name="brew_created">New brew recipe has been created!</string>
     <string name="add_brew_to_coffee">Add brew recipe to coffee</string>
+    <string name="constraint_pour_water_amount">Water amount can be between 1 to 1500</string>
+    <string name="constraint_pourover_time">Time can be between 1 to 600</string>
 
 </resources>
