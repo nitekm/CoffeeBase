@@ -24,6 +24,7 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
+import ncodedev.coffeebase.ui.utility.TagAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.listener.TagListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
@@ -120,7 +120,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         });
 
         tagsTextView.setOnItemClickListener((adapterView, view, i, l) -> searchTags.stream()
-                .filter(tag -> tag.getName().equalsIgnoreCase(adapterView.getItemAtPosition(i).toString()))
+                .filter(tag -> filterTagsByNameAndColor(adapterView, i, tag))
                 .findAny()
                 .ifPresent(tag -> {
                     addTagChip(tag.getName(), Integer.parseInt(tag.getColor()));
@@ -146,6 +146,13 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
             Intent intent = new Intent(EditCoffee.this, MainActivity.class);
             startActivity(intent);
         });
+    }
+
+    private boolean filterTagsByNameAndColor(AdapterView<?> adapterView, int position, Tag tag) {
+        Tag clickedTag = (Tag) adapterView.getItemAtPosition(position);
+        return tag.getName().equalsIgnoreCase(clickedTag.getName()) &&
+                tag.getColor().equalsIgnoreCase(clickedTag.getColor());
+
     }
 
     private void determineContext() {
@@ -347,10 +354,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     @Override
     public void handleSearchResult(final List<Tag> tags) {
         searchTags = tags;
-        List<String> tagNames = searchTags.stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList());
-        ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(EditCoffee.this, android.R.layout.simple_list_item_1, tagNames);
+        TagAdapter tagAdapter = new TagAdapter(this, tags);
         tagsTextView.setAdapter(tagAdapter);
         tagAdapter.notifyDataSetChanged();
     }
