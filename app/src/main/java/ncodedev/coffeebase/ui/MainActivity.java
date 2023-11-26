@@ -9,7 +9,10 @@ import android.os.Looper;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -30,8 +33,6 @@ import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 import java.util.List;
-
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
     public static final String TAG = "MainActivity";
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void selectDrawerItem(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.addCoffee -> launchEditCoffee();
+            case R.id.addBrew -> launchEditBrew();
             case R.id.about -> showAbout();
             case R.id.account -> showAccountInfo();
             case R.id.signout -> googleSignInClientService.signOut();
@@ -191,6 +193,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void launchEditCoffee() {
         Intent intent = new Intent(MainActivity.this, EditCoffee.class);
+        startActivity(intent);
+    }
+
+    private void launchEditBrew() {
+        Intent intent = new Intent(this, AddBrewActivity.class);
         startActivity(intent);
     }
 

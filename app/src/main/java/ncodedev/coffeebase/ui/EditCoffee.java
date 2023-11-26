@@ -24,6 +24,7 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
+import ncodedev.coffeebase.ui.utility.TagAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.listener.TagListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -38,7 +39,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
@@ -47,7 +47,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     private int tagColor = Color.parseColor("#f84c44");
     public static final String COFFEE_ID_KEY = "coffeeId";
     private static final String TAG = "EditCoffee";
-    private int coffeeId;
+    private long coffeeId;
     private boolean isCoffeeEdited;
     private ImageView imgCoffee;
     private Button saveBtn;
@@ -120,7 +120,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         });
 
         tagsTextView.setOnItemClickListener((adapterView, view, i, l) -> searchTags.stream()
-                .filter(tag -> tag.getName().equalsIgnoreCase(adapterView.getItemAtPosition(i).toString()))
+                .filter(tag -> filterTagsByNameAndColor(adapterView, i, tag))
                 .findAny()
                 .ifPresent(tag -> {
                     addTagChip(tag.getName(), Integer.parseInt(tag.getColor()));
@@ -148,10 +148,17 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         });
     }
 
+    private boolean filterTagsByNameAndColor(AdapterView<?> adapterView, int position, Tag tag) {
+        Tag clickedTag = (Tag) adapterView.getItemAtPosition(position);
+        return tag.getName().equalsIgnoreCase(clickedTag.getName()) &&
+                tag.getColor().equalsIgnoreCase(clickedTag.getColor());
+
+    }
+
     private void determineContext() {
         Intent intent = getIntent();
-        coffeeId = intent.getIntExtra(COFFEE_ID_KEY, -1);
-        isCoffeeEdited = coffeeId != -1;
+        coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
+        isCoffeeEdited = coffeeId != -1L;
         if (isCoffeeEdited) {
             coffeeApiProvider.getOne(coffeeId, this, this);
         }
@@ -237,10 +244,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         startActivity(new Intent(this, MainActivity.class));
     }
 
-    @Override
-    public void handleDeleteResponse() {
-    }
-
     private Coffee createCoffee() {
         String name = Objects.requireNonNull(inputCoffeeName.getText()).toString();
         String roaster = Objects.requireNonNull(inputRoaster.getText()).toString();
@@ -301,7 +304,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         return TagValidator.tagName(tagsTextView, tagName, getString(R.string.constraint_tag_name_not_empty));
     }
 
-
     //TAGS - START ------------------------------------------------------------------------------------------------------\\
     private void launchColorPicker() {
         colorPickerBtn.setOnClickListener(view -> {
@@ -352,12 +354,15 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     @Override
     public void handleSearchResult(final List<Tag> tags) {
         searchTags = tags;
-        List<String> tagNames = searchTags.stream()
-                .map(Tag::getName)
-                .collect(Collectors.toList());
-        ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(EditCoffee.this, android.R.layout.simple_list_item_1, tagNames);
+        TagAdapter tagAdapter = new TagAdapter(this, tags);
         tagsTextView.setAdapter(tagAdapter);
         tagAdapter.notifyDataSetChanged();
     }
     //TAGS - END ----------------------------------------------------------------------------------------------------\\
+
+
+    @Override
+    public void handleDeleteResponse() {
+
+    }
 }

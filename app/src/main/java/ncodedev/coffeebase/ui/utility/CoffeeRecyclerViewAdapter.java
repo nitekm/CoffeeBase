@@ -63,7 +63,6 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
             intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId());
             context.startActivity(intent);
         });
-
     }
 
     @Override

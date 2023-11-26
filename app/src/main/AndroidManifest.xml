@@ -18,6 +18,25 @@
             android:theme="@style/Theme.CoffeeBase"
             android:usesCleartextTraffic="true">
         <activity
+                android:name=".ui.utility.PourOverCardView"
+                android:exported="false"/>
+        <activity
+                android:name=".ui.AddBrewActivity"
+                android:exported="false"
+                android:label="@string/title_activity_edit_brew"
+                android:theme="@style/Theme.CoffeeBase"
+                android:windowSoftInputMode="adjustPan"/>
+        <activity
+                android:name=".ui.BrewActivity"
+                android:exported="false"
+                android:label="@string/title_activity_brew"
+                android:theme="@style/Theme.CoffeeBase"/>
+        <activity
+                android:name=".ui.utility.BrewCardView"
+                android:exported="false"
+                android:label="@string/title_activity_brew_card_view"
+                android:theme="@style/Theme.CoffeeBase"/>
+        <activity
                 android:name=".ui.AccountActivity"
                 android:exported="false"/>
         <activity
@@ -27,31 +46,28 @@
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
                 android:name=".ui.EditCoffee"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
-
         <activity
                 android:name=".ui.CoffeeActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
-
         <activity
                 android:name=".ui.utility.CoffeeCardView"
                 android:exported="true"/>
-
         <activity
                 android:name=".ui.MainActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
-                android:screenOrientation="portrait" />
-
+                android:screenOrientation="portrait"/>
     </application>
+
 </manifest>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.BrewActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/appBarLayout"
+            tools:ignore="MissingConstraints">
+
+        <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBarBrewActivity"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/brew"
+                app:menu="@menu/top_app_bar_brew_activity"
+                app:navigationIcon="@drawable/ic_arrow_back"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/brewNestedScrollView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:text="@string/brew_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtBrewName"
+                    android:textSize="27sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="70dp"
+                    android:gravity="center"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:hint="@string/method"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtBrewName"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/methodOutputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/txtMethod"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                    android:id="@+id/coffeeGrainsImg"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/ic_coffee_beans"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/methodOutputLayout"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginStart="75dp"
+                    app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                    android:id="@+id/coffeeWeightTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/coffee_weight"
+                    app:layout_constraintStart_toEndOf="@id/coffeeGrainsImg"
+                    app:layout_constraintTop_toBottomOf="@id/methodOutputLayout"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="25dp"
+                    android:textSize="15sp"/>
+
+            <TextView
+                    android:id="@+id/grinderSettingTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grinder_setting"
+                    app:layout_constraintStart_toEndOf="@id/coffeeGrainsImg"
+                    app:layout_constraintTop_toBottomOf="@id/coffeeWeightTxt"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="25dp"
+                    android:textSize="15sp"/>
+
+            <ImageView
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/ic_water_drop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/coffeeGrainsImg"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="75dp"
+                    android:id="@+id/waterDropImg"
+                    app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                    android:id="@+id/waterAmountTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/water_amount"
+                    app:layout_constraintStart_toEndOf="@id/waterDropImg"
+                    app:layout_constraintTop_toBottomOf="@id/coffeeGrainsImg"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="25dp"
+                    android:textSize="15sp"/>
+
+            <TextView
+                    android:id="@+id/waterTempTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/water_temp"
+                    app:layout_constraintStart_toEndOf="@id/waterDropImg"
+                    app:layout_constraintTop_toBottomOf="@id/waterAmountTxt"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="25dp"
+                    android:textSize="15sp"/>
+
+            <ImageView
+                    android:id="@+id/timeImg"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:src="@drawable/ic_hourglass"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/waterDropImg"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="75dp"
+                    app:layout_constraintHorizontal_bias="0.0"/>
+
+            <TextView
+                    android:id="@+id/timeTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/time"
+                    app:layout_constraintStart_toEndOf="@id/timeImg"
+                    app:layout_constraintTop_toBottomOf="@id/waterDropImg"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginStart="30dp"
+                    android:textSize="17sp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:hint="@string/filter"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/timeImg"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/filterOutputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/txtFilter"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/filterOutputLayout"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:id="@+id/commentOutputLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:focusable="false"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        android:id="@+id/txtComment"
+                        android:scrollbars="vertical"
+                        android:layout_marginBottom="30dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

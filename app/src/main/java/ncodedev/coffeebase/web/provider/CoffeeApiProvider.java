@@ -12,8 +12,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static ncodedev.coffeebase.R.string.error;
 import static ncodedev.coffeebase.R.string.server_unavailable;
@@ -44,7 +42,7 @@ public class CoffeeApiProvider {
         handleListResponse(call, listener, activity);
     }
 
-    public void getOne(int id, CoffeeResponseListener listener, Activity activity) {
+    public void getOne(long id, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
         handleCoffeeResponse(call, listener, activity);
     }
@@ -54,17 +52,17 @@ public class CoffeeApiProvider {
         handleSaveResponse(call, listener, activity);
     }
 
-    public void update(int id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
         handleSaveResponse(call, listener, activity);
     }
 
-    public void delete(int id, CoffeeResponseListener listener, Activity activity) {
+    public void delete(long id, CoffeeResponseListener listener, Activity activity) {
         Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
         handleDeleteResponse(call, listener, activity);
     }
 
-    public void switchFavourites(int coffeeId, CoffeeResponseListener listener, Activity activity) {
+    public void switchFavourites(long coffeeId, CoffeeResponseListener listener, Activity activity) {
         Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
         handleCoffeeResponse(call, listener, activity);
     }
@@ -82,7 +80,7 @@ public class CoffeeApiProvider {
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-//                showToast(activity, activity.getString(server_unavailable));
+                showToast(activity, activity.getString(server_unavailable));
                 Log.d(TAG, "Retrying call");
                 getAll(listener, activity);
             }

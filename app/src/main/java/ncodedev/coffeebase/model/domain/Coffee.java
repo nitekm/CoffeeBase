@@ -3,13 +3,14 @@ package ncodedev.coffeebase.model.domain;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Coffee {
+public class Coffee implements Serializable {
 
     @SerializedName("id")
     @Expose
-    private Integer id;
+    private Long id;
     @SerializedName("name")
     @Expose
     private String name;
@@ -65,7 +66,15 @@ public class Coffee {
     @Expose
     private List<Tag> tags;
 
-    public Coffee(final Integer id, final String name, final String origin, final String roaster, final String processing, final String roastProfile, final String region, final String continent, final String farm, final Integer cropHeight, final Integer scaRating, final Double rating, final String coffeeImageName, final boolean favourite, final String userId, final List<Tag> tags) {
+    @SerializedName("brews")
+    @Expose
+    private List<Brew> brews;
+
+    public Coffee(final Long id, final String name, final String origin, final String roaster,
+                  final String processing, final String roastProfile, final String region, final String continent,
+                  final String farm, final Integer cropHeight, final Integer scaRating, final Double rating,
+                  final String coffeeImageName, final boolean favourite, final String userId, final List<Tag> tags,
+                  final List<Brew> brews) {
         this.id = id;
         this.name = name;
         this.origin = origin;
@@ -82,6 +91,7 @@ public class Coffee {
         this.favourite = favourite;
         this.userId = userId;
         this.tags = tags;
+        this.brews = brews;
     }
     public Coffee(final String name, final String origin, final String roaster,
                   final String processing, final String roastProfile, final String region,
@@ -102,11 +112,11 @@ public class Coffee {
         this.tags = tags;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -230,6 +240,14 @@ public class Coffee {
         this.tags = tags;
     }
 
+    public List<Brew> getBrews() {
+        return brews;
+    }
+
+    public void setBrews(List<Brew> brews) {
+        this.brews = brews;
+    }
+
     @Override
     public String toString() {
         return "Coffee{" +
@@ -248,7 +266,8 @@ public class Coffee {
                 ", imageUrl='" + coffeeImageName + '\'' +
                 ", favourite=" + favourite +
                 ", userId='" + userId + '\'' +
-                ", tags=" + tags +
+                ", tags=" + tags + '\'' +
+                ", brews=" + brews +
                 '}';
     }
 }
