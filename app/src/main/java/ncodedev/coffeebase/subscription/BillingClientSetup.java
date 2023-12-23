@@ -1,6 +1,5 @@
 package ncodedev.coffeebase.subscription;
 
-import android.app.Activity;
 import android.content.Context;
 import com.android.billingclient.api.*;
 import ncodedev.coffeebase.R;
@@ -71,7 +70,7 @@ public class BillingClientSetup {
         final Subscription subscription = new Subscription(
                 productId, purchase.getPurchaseToken(), active, formattedPurchasedDate
         );
-        SubscriptionApiProvider.getInstance().saveSubscription(subscription, (Activity) context);
+        SubscriptionApiProvider.getInstance().saveSubscription(subscription);
     }
 
     public BillingClient getBillingClient() {

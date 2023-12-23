@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static ncodedev.coffeebase.ui.EditCoffee.COFFEE_ID_KEY;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class DisplayAllBrewsDialog extends DialogFragment implements BrewResponseListener {
 
@@ -57,5 +58,10 @@ public class DisplayAllBrewsDialog extends DialogFragment implements BrewRespons
         Intent intent = new Intent(this.getActivity(), CoffeeActivity.class);
         intent.putExtra(COFFEE_ID_KEY, coffeeId);
         startActivity(intent);
+    }
+
+    @Override
+    public void handleError() {
+        showToast(getActivity(), getString(R.string.error));
     }
 }
