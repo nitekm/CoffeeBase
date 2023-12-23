@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui.utility;
+package ncodedev.coffeebase.ui.brewstep;
 
 import android.text.TextUtils;
 import ncodedev.coffeebase.model.domain.Brew;

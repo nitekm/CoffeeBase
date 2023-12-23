@@ -8,4 +8,6 @@ public interface CoffeeResponseListener {
     void handleSaveResponse(Coffee coffee);
 
     void handleDeleteResponse();
+    void handleError();
+
 }

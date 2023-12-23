@@ -23,6 +23,7 @@ import java.util.Optional;
 
 import static ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
 import static ncodedev.coffeebase.ui.utility.Unit.*;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewActivity extends AppCompatActivity implements BrewResponseListener {
 
@@ -73,7 +74,6 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
     private void showBrewInfo() {
         Intent intent = getIntent();
         if (null != intent) {
-            //tutaj tez musisz zgetować i ustawić coffeeId do dalszych metod
             brew = intent.getSerializableExtra(BREW, Brew.class);
             coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
 
@@ -133,6 +133,10 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         Intent intent = new Intent(this, CoffeeActivity.class);
         intent.putExtra(COFFEE_ID_KEY, coffeeId);
         startActivity(intent);
+    }
 
+    @Override
+    public void handleError() {
+        showToast(this, getString(R.string.error));
     }
 }

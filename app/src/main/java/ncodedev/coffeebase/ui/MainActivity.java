@@ -9,10 +9,7 @@ import android.os.Looper;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
+import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
-        coffeeApiProvider.getAll(this, this);
+        coffeeApiProvider.getAll(this);
     }
 
     @Override
@@ -142,17 +139,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String searchBy) {
-                coffeeApiProvider.search(searchBy, MainActivity.this, MainActivity.this);
+                coffeeApiProvider.search(searchBy, MainActivity.this);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(final String searchBy) {
                 new Handler(Looper.getMainLooper())
-                        .postDelayed(() -> coffeeApiProvider.search(
-                                searchBy,
-                                MainActivity.this,
-                                MainActivity.this), 2000);
+                        .postDelayed(() -> coffeeApiProvider.search(searchBy, MainActivity.this), 2000);
                 return true;
             }
         });
@@ -227,4 +221,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public void onNothingSelected(final AdapterView<?> adapterView) {
     }
     //NAVIGATION DRAWER - END ---------------------------------------------------------------------------------------\\
+
+
+    @Override
+    public void handleError() { }
 }

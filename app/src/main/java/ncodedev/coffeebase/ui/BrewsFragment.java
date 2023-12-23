@@ -16,6 +16,8 @@ import ncodedev.coffeebase.web.provider.BrewApiProvider;
 
 import java.util.List;
 
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
 public class BrewsFragment extends Fragment implements BrewListResponseListener {
 
     private RecyclerView recyclerView;
@@ -37,7 +39,7 @@ public class BrewsFragment extends Fragment implements BrewListResponseListener 
         loadBrewsInfo(brews);
 
         addBrewBtn = view.findViewById(R.id.btnAddBrewToCoffee);
-        addBrewBtn.setOnClickListener(v -> brewApiProvider.getAll(this, getActivity()));
+        addBrewBtn.setOnClickListener(v -> brewApiProvider.getAll(this));
 
         return view;
     }
@@ -58,5 +60,10 @@ public class BrewsFragment extends Fragment implements BrewListResponseListener 
     public void handleGetList(List<Brew> allBrews) {
         DisplayAllBrewsDialog displayAllBrewsDialog = new DisplayAllBrewsDialog(allBrews, coffeeId);
         displayAllBrewsDialog.show(getChildFragmentManager(), "DisplayAllBrewsDialogFragment");
+    }
+
+    @Override
+    public void handleError() {
+        showToast(getActivity(), getString(R.string.error));
     }
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BrewListResponseListener {
     void handleGetList(List<Brew> brews);
+    void handleError();
+
 }

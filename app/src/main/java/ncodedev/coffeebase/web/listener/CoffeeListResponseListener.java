@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface CoffeeListResponseListener {
     void handleGetList(List<Coffee> coffees);
+    void handleError();
 }

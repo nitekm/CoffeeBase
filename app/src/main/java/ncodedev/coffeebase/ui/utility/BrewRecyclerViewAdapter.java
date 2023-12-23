@@ -26,6 +26,7 @@ import java.util.Optional;
 
 import static ncodedev.coffeebase.ui.BrewActivity.BREW;
 import static ncodedev.coffeebase.ui.CoffeeActivity.COFFEE_ID_KEY;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerViewAdapter.ViewHolder> implements BrewResponseListener {
 
@@ -33,7 +34,7 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
     private final Context context;
     private final List<Brew> brews;
     private final Long coffeeId;
-    private String calledFrom;
+    private final String calledFrom;
     private final BrewApiProvider brewApiProvider = BrewApiProvider.getInstance();
 
     public BrewRecyclerViewAdapter(Context context, List<Brew> brews, Long coffeeId, String calledFrom) {
@@ -63,6 +64,11 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
         Intent intent = new Intent(context, CoffeeActivity.class);
         intent.putExtra(COFFEE_ID_KEY, coffeeId);
         context.startActivity(intent);
+    }
+
+    @Override
+    public void handleError() {
+        showToast(context, context.getString(R.string.error));
     }
 
     @Override

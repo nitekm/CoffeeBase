@@ -10,6 +10,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.process.BrewStatus;
+import ncodedev.coffeebase.ui.brewstep.BrewStepGeneralInfoFragment;
 
 public class AddBrewActivity extends AppCompatActivity {
 

@@ -18,6 +18,8 @@ import ncodedev.coffeebase.ui.utility.CoffeeTabPagerAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
     public static final String COFFEE_ID_KEY = "coffeeId";
@@ -50,7 +52,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         if (null != intent) {
             coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
             if (coffeeId != -1) {
-                coffeeApiProvider.getOne(coffeeId, this, this);
+                coffeeApiProvider.getOne(coffeeId, this);
             }
         }
     }
@@ -64,11 +66,11 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
-    @SuppressLint("NonConstantResourceId")
+    @SuppressLint({"NonConstantResourceId", "UnsafeIntentLaunch"})
     private boolean onMenuItemClick(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.favouritesMenuItem -> {
-                coffeeApiProvider.switchFavourites(coffeeId, this, this);
+                coffeeApiProvider.switchFavourites(coffeeId, this);
                 finish();
                 startActivity(getIntent());
                 Log.d(TAG, "addToFavouritesMenuItem clicked");
@@ -97,7 +99,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
         alertDialogBuilder.setTitle(R.string.delete_coffee_question);
         alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});
         alertDialogBuilder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
-            coffeeApiProvider.delete(coffeeId, this, this);
+            coffeeApiProvider.delete(coffeeId, this);
         });
         alertDialogBuilder.create().show();
 
@@ -125,4 +127,9 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
 
     @Override
     public void handleSaveResponse(Coffee coffee) {}
+
+    @Override
+    public void handleError() {
+        showToast(this, getString(R.string.error));
+    }
 }

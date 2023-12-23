@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui;
+package ncodedev.coffeebase.ui.brewstep;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,13 +12,13 @@ import androidx.fragment.app.FragmentTransaction;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.validator.Validator;
-import ncodedev.coffeebase.process.brewsteps.BrewStepHelper;
-import ncodedev.coffeebase.ui.utility.BrewMapper;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.Optional;
 
-public class BrewStepIngredientsFragment extends Fragment implements BrewStepResponseListener {
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
+public class BrewStepIngredientsFragment extends Fragment implements BrewStepResponseListener, BrewStep {
 
     private Brew brew;
     private TextView coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTempTxt, filterTxt;
@@ -45,7 +45,8 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
         return view;
     }
 
-    private void initViews(View view) {
+    @Override
+    public void initViews(View view) {
         coffeeWeightTxt = view.findViewById(R.id.inputCoffeeWeight);
         grinderSettingTxt = view.findViewById(R.id.inputGrinderSetting);
         waterAmountTxt = view.findViewById(R.id.inputWaterAmount);
@@ -53,9 +54,9 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
         filterTxt = view.findViewById(R.id.inputFilter);
     }
 
-    private void setupStep() {
-        BrewStepHelper brewStepHelper = new BrewStepHelper();
-        brewStepHelper.init(brew, this, this.getActivity());
+    @Override
+    public void setupStep() {
+        brewApiprovider.init(brew, this);
 
         prevStepButton.setVisibility(View.VISIBLE);
         prevStepButton.setOnClickListener(view -> {
@@ -64,14 +65,14 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
             transaction.commit();
         });
 
-        nextStepButton.setOnClickListener(v -> executeFinishStep(coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTempTxt, filterTxt, brewStepHelper));
+        nextStepButton.setOnClickListener(v -> executeFinishStep(coffeeWeightTxt, grinderSettingTxt, waterAmountTxt, waterTempTxt, filterTxt));
         nextStepButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_back));
         nextStepButton.setRotation(180);
 
         progressBar.setProgress(2);
     }
 
-    private void executeFinishStep(TextView coffeeWeightTxt, TextView grinderSettingTxt, TextView waterAmountTxt, TextView waterTempTxt, TextView filterTxt, BrewStepHelper brewStepHelper) {
+    private void executeFinishStep(TextView coffeeWeightTxt, TextView grinderSettingTxt, TextView waterAmountTxt, TextView waterTempTxt, TextView filterTxt) {
         if (!validate()) {
             return;
         }
@@ -83,7 +84,7 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
                 waterTempTxt.getText().toString(),
                 filterTxt.getText().toString()
         );
-        brewStepHelper.finish(brewWithIngredients, this, this.getActivity());
+        brewApiprovider.finish(brewWithIngredients, this);
     }
 
     private boolean validate() {
@@ -108,5 +109,10 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
         FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.step_container, new BrewStepPourOver(brew, prevStepButton, nextStepButton, progressBar));
         transaction.commit();
+    }
+
+    @Override
+    public void handleError() {
+        showToast(getActivity(), getString(R.string.error));
     }
 }

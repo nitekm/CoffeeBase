@@ -1,6 +1,5 @@
 package ncodedev.coffeebase.web.provider;
 
-import android.app.Activity;
 import android.util.Log;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.web.api.CoffeeApi;
@@ -13,9 +12,6 @@ import retrofit2.Response;
 
 import java.util.List;
 
-import static ncodedev.coffeebase.R.string.error;
-import static ncodedev.coffeebase.R.string.server_unavailable;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class CoffeeApiProvider {
@@ -31,115 +27,116 @@ public class CoffeeApiProvider {
         return instance;
     }
 
-    public void getAll(CoffeeListResponseListener listener, Activity activity) {
+    public void getAll(CoffeeListResponseListener listener) {
 
         Call<List<Coffee>> call = createApi(CoffeeApi.class).getCoffees();
-        handleListResponse(call, listener, activity);
+        handleListResponse(call, listener);
     }
 
-    public void search(String content, CoffeeListResponseListener listener, Activity activity) {
+    public void search(String content, CoffeeListResponseListener listener) {
         Call<List<Coffee>> call = createApi(CoffeeApi.class).searchCoffees(content);
-        handleListResponse(call, listener, activity);
+        handleListResponse(call, listener);
     }
 
-    public void getOne(long id, CoffeeResponseListener listener, Activity activity) {
+    public void getOne(long id, CoffeeResponseListener listener) {
         Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
-        handleCoffeeResponse(call, listener, activity);
+        handleCoffeeResponse(call, listener);
     }
 
-    public void save(Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+    public void save(Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
         Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee, image);
-        handleSaveResponse(call, listener, activity);
+        handleSaveResponse(call, listener);
     }
 
-    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener, Activity activity) {
+    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
         Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
-        handleSaveResponse(call, listener, activity);
+        handleSaveResponse(call, listener);
     }
 
-    public void delete(long id, CoffeeResponseListener listener, Activity activity) {
+    public void delete(long id, CoffeeResponseListener listener) {
         Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
-        handleDeleteResponse(call, listener, activity);
+        handleDeleteResponse(call, listener);
     }
 
-    public void switchFavourites(long coffeeId, CoffeeResponseListener listener, Activity activity) {
+    public void switchFavourites(long coffeeId, CoffeeResponseListener listener) {
         Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
-        handleCoffeeResponse(call, listener, activity);
+        handleCoffeeResponse(call, listener);
     }
 
-    private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener, Activity activity) {
+    private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
                 if (response.isSuccessful()) {
                     listener.handleGetList(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
                 Log.d(TAG, "Retrying call");
-                getAll(listener, activity);
+                getAll(listener);
             }
         });
     }
 
-    private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
+    private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
                     listener.handleCoffeeResponse(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
 
-    void handleSaveResponse(Call<Coffee> call, CoffeeResponseListener listener, Activity activity) {
+    void handleSaveResponse(Call<Coffee> call, CoffeeResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
                     listener.handleSaveResponse(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
 
-    private void handleDeleteResponse(Call<Void> call, CoffeeResponseListener listener, Activity activity) {
+    private void handleDeleteResponse(Call<Void> call, CoffeeResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 if (response.isSuccessful()) {
                     listener.handleDeleteResponse();
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 Log.i(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }

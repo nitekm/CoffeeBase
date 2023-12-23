@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui;
+package ncodedev.coffeebase.ui.brewstep;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,14 +10,14 @@ import androidx.fragment.app.FragmentTransaction;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.validator.Validator;
-import ncodedev.coffeebase.process.brewsteps.BrewStepHelper;
-import ncodedev.coffeebase.ui.utility.BrewMapper;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepResponseListener {
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
+public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepResponseListener, BrewStep {
 
     private TextView brewNameTxt, brewMethodDisplayTxt;
     private ImageButton prevStepButton, nextStepButton;
@@ -41,35 +41,32 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
         return view;
     }
 
-    private void initViews(View view) {
+    @Override
+    public void initViews(View view) {
         GridView brewMethodGrid = view.findViewById(R.id.methodGrid);
         brewMethodDisplayTxt = view.findViewById(R.id.methodNameDisplayTxt);
         brewMethodGrid.setAdapter(new MethodSelector(brewMethodDisplayTxt));
         brewNameTxt = view.findViewById(R.id.inputBrewName);
     }
 
-    private void setupStep() {
-        BrewStepHelper brewStepHelper = new BrewStepHelper();
-        brewStepHelper.init(brew, this, this.getActivity());
+    @Override
+    public void setupStep() {
+        brewApiprovider.init(brew, this);
 
         prevStepButton.setVisibility(View.INVISIBLE);
         prevStepButton.setClickable(false);
 
-        nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt, brewMethodDisplayTxt, brewStepHelper));
+        nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt, brewMethodDisplayTxt));
 
         progressBar.setProgress(1);
     }
 
-    private void executeFinishStep(TextView brewNameTxt, TextView brewMethodDisplayTxt, BrewStepHelper brewStepHelper) {
-        if (!validateBrew()) {
+    private void executeFinishStep(TextView brewNameTxt, TextView brewMethodDisplayTxt) {
+        if (!Validator.textNotBlank(brewNameTxt, getString(R.string.constraint_brew_name_not_empty))) {
             return;
         }
         Brew brewWithGeneralInfo = BrewMapper.mapGeneralInfo(brew, brewNameTxt.getText().toString(), brewMethodDisplayTxt.getText().toString());
-        brewStepHelper.finish(brewWithGeneralInfo, this, this.getActivity());
-    }
-
-    private boolean validateBrew() {
-        return Validator.textNotBlank(brewNameTxt, getString(R.string.constraint_brew_name_not_empty));
+        brewApiprovider.finish(brewWithGeneralInfo, this);
     }
 
     @Override
@@ -84,6 +81,11 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
         FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.step_container, new BrewStepIngredientsFragment(brew, prevStepButton, nextStepButton, progressBar));
         transaction.commit();
+    }
+
+    @Override
+    public void handleError() {
+        showToast(getActivity(),  getString(R.string.error));
     }
 
     private class MethodSelector extends BaseAdapter {

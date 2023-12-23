@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui;
+package ncodedev.coffeebase.ui.brewstep;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.PourOver;
-import ncodedev.coffeebase.process.brewsteps.BrewStepHelper;
-import ncodedev.coffeebase.ui.utility.BrewMapper;
+import ncodedev.coffeebase.ui.AddPourOverDialogFragment;
+import ncodedev.coffeebase.ui.MainActivity;
 import ncodedev.coffeebase.ui.utility.PourOverRecyclerViewAdapter;
-import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewStepPourOver extends Fragment implements BrewStepResponseListener {
+import static ncodedev.coffeebase.ui.brewstep.BrewMapper.mapPours;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
+
+public class BrewStepPourOver extends Fragment implements BrewStepResponseListener, BrewStep {
 
     private Brew brew;
     private ImageButton prevStepButton, nextStepButton, btnAddPourOver;
@@ -49,7 +51,8 @@ public class BrewStepPourOver extends Fragment implements BrewStepResponseListen
         return view;
     }
 
-    private void initViews(View view) {
+    @Override
+    public void initViews(View view) {
         recyclerView = view.findViewById(R.id.pourOverRecView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         pourOvers = new ArrayList<>();
@@ -63,9 +66,9 @@ public class BrewStepPourOver extends Fragment implements BrewStepResponseListen
 
     }
 
-    private void setupStep() {
-        BrewStepHelper brewStepHelper = new BrewStepHelper();
-        brewStepHelper.init(brew, this, this.getActivity());
+    @Override
+     public void setupStep() {
+        brewApiprovider.init(brew, this);
 
         prevStepButton.setOnClickListener(view -> {
             FragmentTransaction transaction = this.getActivity().getSupportFragmentManager().beginTransaction();
@@ -75,14 +78,9 @@ public class BrewStepPourOver extends Fragment implements BrewStepResponseListen
 
         nextStepButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_confirm));
         nextStepButton.setRotation(0);
-        nextStepButton.setOnClickListener(v -> executeFinishStep(brewStepHelper));
+        nextStepButton.setOnClickListener(v -> brewApiprovider.finish(mapPours(brew, pourOvers), this));
 
         progressBar.setProgress(3);
-    }
-
-    private void executeFinishStep(BrewStepHelper brewStepHelper) {
-        Brew brewWithPours = BrewMapper.mapPours(brew, pourOvers);
-        brewStepHelper.finish(brewWithPours, this, this.getActivity());
     }
 
     @Override
@@ -92,8 +90,13 @@ public class BrewStepPourOver extends Fragment implements BrewStepResponseListen
 
     @Override
     public void handleFinishBrewStepResponse(Brew brew) {
-        ToastUtils.showToast(this.getContext(), getString(R.string.brew_created));
+        showToast(this.getContext(), getString(R.string.brew_created));
         Intent intent = new Intent(this.getContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void handleError() {
+        showToast(getActivity(), getString(R.string.error));
     }
 }

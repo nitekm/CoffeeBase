@@ -35,12 +35,10 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
@@ -72,7 +70,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         initViews();
         determineContext();
         handleImage();
-        tagApiProvider.getAll(this, this);
+        tagApiProvider.getAll(this);
         launchColorPicker();
         handleAddTag();
     }
@@ -113,9 +111,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
             @Override
             public void afterTextChanged(final Editable editable) {
-                tagApiProvider.search(editable.toString(),
-                                EditCoffee.this,
-                                EditCoffee.this);
+                tagApiProvider.search(editable.toString(), EditCoffee.this);
             }
         });
 
@@ -160,7 +156,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
         isCoffeeEdited = coffeeId != -1L;
         if (isCoffeeEdited) {
-            coffeeApiProvider.getOne(coffeeId, this, this);
+            coffeeApiProvider.getOne(coffeeId, this);
         }
     }
 
@@ -179,9 +175,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         Coffee coffee = createCoffee();
 
         if (isCoffeeEdited) {
-            coffeeApiProvider.update(coffeeId, coffee, getImage(), this, this);
+            coffeeApiProvider.update(coffeeId, coffee, getImage(), this);
         } else {
-            coffeeApiProvider.save(coffee, getImage(), this, this);
+            coffeeApiProvider.save(coffee, getImage(), this);
         }
     }
 
@@ -364,5 +360,10 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     @Override
     public void handleDeleteResponse() {
 
+    }
+
+    @Override
+    public void handleError() {
+        showToast(this, getString(R.string.error));
     }
 }

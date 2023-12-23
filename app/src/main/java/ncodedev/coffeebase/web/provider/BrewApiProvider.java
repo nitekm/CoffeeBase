@@ -1,6 +1,5 @@
 package ncodedev.coffeebase.web.provider;
 
-import android.app.Activity;
 import android.util.Log;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.process.BrewActionDTO;
@@ -14,9 +13,6 @@ import retrofit2.Response;
 
 import java.util.List;
 
-import static ncodedev.coffeebase.R.string.error;
-import static ncodedev.coffeebase.R.string.server_unavailable;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
 public class BrewApiProvider {
@@ -32,19 +28,19 @@ public class BrewApiProvider {
         return instance;
     }
 
-    public void getAll(BrewListResponseListener listener, Activity activity) {
+    public void getAll(BrewListResponseListener listener) {
         Call<List<Brew>> call = createApi(BrewApi.class).getAll();
-        handleListResponse(call, listener, activity);
+        handleListResponse(call, listener);
     }
 
-    public void init(Brew brew, BrewStepResponseListener listener, Activity activity) {
+    public void init(Brew brew, BrewStepResponseListener listener) {
         Call<Brew> call = createApi(BrewApi.class).init(brew);
-        handleInitBrewStepResponse(call, listener, activity);
+        handleInitBrewStepResponse(call, listener);
     }
 
-    public void finish(Brew brew, BrewStepResponseListener listener, Activity activity) {
+    public void finish(Brew brew, BrewStepResponseListener listener) {
         Call<Brew> call = createApi(BrewApi.class).finish(brew);
-        handleFinishBrewStepResponse(call, listener, activity);
+        handleFinishBrewStepResponse(call, listener);
     }
 
     public void executeAction(BrewActionDTO brewActionDTO, BrewResponseListener listener) {
@@ -52,59 +48,59 @@ public class BrewApiProvider {
         handleVoidResponse(call, listener);
     }
 
-    private void handleListResponse(Call<List<Brew>> call, BrewListResponseListener listener, Activity activity) {
+    private void handleListResponse(Call<List<Brew>> call, BrewListResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Brew>> call, final Response<List<Brew>> response) {
                 if (response.isSuccessful()) {
                     listener.handleGetList(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Brew>> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
 
-    private void handleInitBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener, Activity activity) {
+    private void handleInitBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Brew> call, Response<Brew> response) {
                 if (response.isSuccessful()) {
                     listener.handleInitBrewStepResponse(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(Call<Brew> call, Throwable t) {
                 Log.i(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
 
-    private void handleFinishBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener, Activity activity) {
+    private void handleFinishBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Brew> call, Response<Brew> response) {
                 if (response.isSuccessful()) {
                     listener.handleFinishBrewStepResponse(response.body());
                 } else {
-                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(Call<Brew> call, Throwable t) {
                 Log.i(TAG, t.toString());
-                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
@@ -116,14 +112,14 @@ public class BrewApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleExecuteActionResult();
                 } else {
-//                    showToast(activity, activity.getString(error) + response.message());
+                    listener.handleError();
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 Log.i(TAG, t.toString());
-//                showToast(activity, activity.getString(server_unavailable));
+                listener.handleError();
             }
         });
     }
