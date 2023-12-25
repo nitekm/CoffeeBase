@@ -161,5 +161,8 @@
     <string name="add_brew_to_coffee">Add brew recipe to coffee</string>
     <string name="constraint_pour_water_amount">Water amount can be between 1 to 1500</string>
     <string name="constraint_pourover_time">Time can be between 1 to 600</string>
+    <string name="delete_account_question">This action will remove all your user data and everything you have done in
+        application.\nAre you sure you want to proceed?
+    </string>
 
 </resources>

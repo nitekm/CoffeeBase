@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.android.billingclient.api.ProductDetails;
 import com.android.billingclient.api.ProductDetails.SubscriptionOfferDetails;
@@ -13,24 +14,29 @@ import com.android.billingclient.api.Purchase;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.subscription.*;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
+import ncodedev.coffeebase.web.listener.UserSettingsResponseListener;
 import ncodedev.coffeebase.web.provider.SubscriptionApiProvider;
+import ncodedev.coffeebase.web.provider.UserSettingsApiProvider;
 
 import java.util.List;
 
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_1_99;
 import static ncodedev.coffeebase.subscription.SubscriptionBasePlan.MONTHLY_4_99;
+import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
-public class AccountActivity extends AppCompatActivity implements SubscriptionResponseListener {
+public class AccountActivity extends AppCompatActivity implements SubscriptionResponseListener, UserSettingsResponseListener {
 
     private static final String TAG = "AccountActivity";
     private ImageView accountUserPictureImage;
-    private Button sub1Btn, sub2Btn;
+    private Button sub1Btn, sub2Btn, deleteAccountBtn;
     private TextView accountUserNameTxt;
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private BillingClientSetup billingClientSetup;
     private final SubscriptionApiProvider subscriptionApiProvider = SubscriptionApiProvider.getInstance();
+    private final UserSettingsApiProvider userSettingsApiProvider = UserSettingsApiProvider.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +45,14 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
 
         initViews();
         fetchProducts();
+        setUpDeleteAccountBtnAction();
     }
 
     private void initViews() {
         accountUserPictureImage = findViewById(R.id.accountUserPictureImage);
         sub1Btn = findViewById(R.id.sub1Btn);
         sub2Btn = findViewById(R.id.sub2Btn);
+        deleteAccountBtn = findViewById(R.id.deleteAccountBtn);
         accountUserNameTxt = findViewById(R.id.accountUserNameTxt);
 
         var user = User.getInstance();
@@ -61,6 +69,10 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
 
         billingClientSetup = new BillingClientSetup(this);
     }
+
+    /*
+    SUBSCRIPTION START
+     */
 
     private void fetchProducts() {
         var subscriptionProduct = new SubscriptionProduct(this, billingClientSetup.getBillingClient());
@@ -111,5 +123,30 @@ public class AccountActivity extends AppCompatActivity implements SubscriptionRe
     private void processSubscription(ProductDetails productDetails, SubscriptionOfferDetails offerDetails) {
         SubscriptionPurchase subscriptionPurchase = new SubscriptionPurchase(billingClientSetup.getBillingClient());
         subscriptionPurchase.processSubscriptionPurchase(this, productDetails, offerDetails);
+    }
+
+    /*
+    SUBSCRIPTION END
+     */
+
+    private void setUpDeleteAccountBtnAction() {
+        deleteAccountBtn.setOnClickListener(view -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle(R.string.delete_account_question);
+            alertDialogBuilder.setNegativeButton(R.string.no, (dialogInterface, i) -> {});
+            alertDialogBuilder.setPositiveButton(R.string.yes, (dialogInterface, i) -> userSettingsApiProvider.deleteAccount( this));
+            alertDialogBuilder.create().show();
+        });
+    }
+
+    @Override
+    public void handleDeleteAccount() {
+        new GoogleSignInClientService(this).signOut();
+
+    }
+
+    @Override
+    public void handleError() {
+        showToast(this, getString(R.string.error));
     }
 }
