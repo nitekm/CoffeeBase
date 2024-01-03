@@ -4,9 +4,10 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-                     android:maxSdkVersion="32"/>
-    <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission
+            android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+            android:maxSdkVersion="32"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
 
     <application
             android:allowBackup="true"
@@ -17,28 +18,40 @@
             android:supportsRtl="true"
             android:theme="@style/Theme.CoffeeBase"
             android:usesCleartextTraffic="true">
+
+        <activity
+                android:name=".ui.SettingsActivity"
+                android:exported="false"
+                android:label="@string/title_activity_settings"
+                android:theme="@style/Theme.CoffeeBase"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ui.utility.PourOverCardView"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ui.AddBrewActivity"
                 android:exported="false"
                 android:label="@string/title_activity_edit_brew"
                 android:theme="@style/Theme.CoffeeBase"
+                android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan"/>
         <activity
                 android:name=".ui.BrewActivity"
                 android:exported="false"
                 android:label="@string/title_activity_brew"
-                android:theme="@style/Theme.CoffeeBase"/>
+                android:theme="@style/Theme.CoffeeBase"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ui.utility.BrewCardView"
                 android:exported="false"
                 android:label="@string/title_activity_brew_card_view"
-                android:theme="@style/Theme.CoffeeBase"/>
+                android:theme="@style/Theme.CoffeeBase"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ui.AccountActivity"
-                android:exported="false"/>
+                android:exported="false"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".ui.LoginActivity"
                 android:configChanges="orientation|keyboardHidden"
@@ -46,7 +59,6 @@
                 android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>

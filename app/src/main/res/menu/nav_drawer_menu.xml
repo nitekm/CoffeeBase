@@ -17,7 +17,6 @@
                 android:id="@+id/about"
                 android:title="@string/about"
                 android:icon="@drawable/ic_info"/>
-
     </group>
 
     <group android:checkableBehavior="single">
@@ -27,6 +26,11 @@
                     android:id="@+id/account"
                     android:title="@string/account"
                     android:icon="@drawable/ic_account"/>
+
+                <item
+                        android:id="@+id/settings"
+                        android:title="@string/settings"
+                        android:icon="@drawable/ic_settings"/>
 
                 <item
                     android:id="@+id/signout"

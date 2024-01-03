@@ -31,6 +31,8 @@ import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 import java.util.List;
 
+import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
+
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
     public static final String TAG = "MainActivity";
 
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void initViews() {
         recyclerView = findViewById(R.id.coffeeRecView);
+        this.getSharedPreferences(MY_COFFEEBASE_COFFEES_IN_ROW, MODE_PRIVATE);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(gridLayoutManager);
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
@@ -180,6 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case R.id.addBrew -> launchEditBrew();
             case R.id.about -> showAbout();
             case R.id.account -> showAccountInfo();
+            case R.id.settings -> launchSettings();
             case R.id.signout -> googleSignInClientService.signOut();
             default -> {}
         }
@@ -206,6 +210,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         aboutContentTxt.setText(spannedAboutContent);
 
         aboutDialog.show();
+    }
+
+    private void launchSettings() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
     private void showAccountInfo() {
