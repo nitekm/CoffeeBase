@@ -2,6 +2,7 @@ package ncodedev.coffeebase.ui;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import ncodedev.coffeebase.R;
@@ -20,6 +21,10 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        TextView flag = findViewById(R.id.flagtxt);
+        var countrycode = Character.toChars(0x1F1A5 + 'A');
+        flag.setText(String.valueOf(countrycode[0] + countrycode[1]));
+        flag.setText("\uD83C\uDDE6\uD83C\uDDF4" + " " + "ANGOLA");
         setUpDeleteAccountBtnAction();
     }
 
