@@ -8,16 +8,16 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "ncodedev.coffeebase"
         minSdk 27
-        targetSdk 34
-        versionCode 161
-        versionName "1.6.1"
-        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
-//        buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
+        targetSdk 33
+        versionCode 162
+        versionName "1.6.2"
+//        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
+        buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
         buildConfigField("String", "ClientId", apikeyProperties['CLIENT_ID'])
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

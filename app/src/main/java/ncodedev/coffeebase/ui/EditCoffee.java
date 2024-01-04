@@ -284,6 +284,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     private MultipartBody.Part getImage() {
         if (imgCoffee.getTag() != null) {
+            String realPath = getRealPath(this, (Uri) imgCoffee.getTag());
             File file = new File(getRealPath(this, (Uri) imgCoffee.getTag()));
             return MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(file, MediaType.parse("multipart/form-data")));
         }

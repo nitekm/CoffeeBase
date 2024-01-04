@@ -55,6 +55,7 @@ public class AddPourOverDialogFragment extends DialogFragment {
                 Integer.parseInt(waterAmount.getText().toString()),
                 Integer.parseInt(timeInSeconds.getText().toString())
         ));
+        pourOverRecyclerViewAdapter.notifyItemInserted(pourOvers.size() -1);
     }
 
     private PourOver createPourOver(Integer waterAmount, Integer timeInSeconds) {

@@ -39,6 +39,7 @@ public class ImageHelper {
     private ActivityResultLauncher<Intent> mGetGalleryImage;
     private boolean isReadPermissionGranted = false;
     private boolean isWritePermissionGranted = false;
+    private boolean isReadMediaImagesPermissionGranted = false;
     private ActivityResultLauncher<String[]> mPermissionResultLauncher;
     private Dialog imageDialog;
     private Uri imageUri;
@@ -89,13 +90,18 @@ public class ImageHelper {
                     if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
                         isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
                     }
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        isReadMediaImagesPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_MEDIA_IMAGES));
+                    } else {
+                        isReadMediaImagesPermissionGranted = true;
+                    }
                 });
     }
 
     public void getCoffeeGalleryImage(AppCompatActivity activity, ImageView imgCoffee) {
         mGetGalleryImage = activity.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && isReadMediaImagesPermissionGranted) {
                         imageUri = result.getData().getData();
 
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
@@ -146,8 +152,19 @@ public class ImageHelper {
             permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
 
+        handleNewPermissionSKD33(activity, permissionRequest);
+
         if (!permissionRequest.isEmpty()) {
             mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+        }
+    }
+
+    private void handleNewPermissionSKD33(Activity activity, List<String> permissionRequest) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            isReadMediaImagesPermissionGranted = PermissionsUtils.checkReadMediaImagesPermission(activity);
+            if (!isReadMediaImagesPermissionGranted) {
+                permissionRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
+            }
         }
     }
 
