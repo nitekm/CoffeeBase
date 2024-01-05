@@ -9,7 +9,10 @@ import android.os.Looper;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -31,6 +34,7 @@ import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 import java.util.List;
 
+import static ncodedev.coffeebase.ui.utility.ChangeLanguageHandler.translateIU;
 import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         imageHelper.setPicassoInstance(this);
         googleSignInClientService = new GoogleSignInClientService(this);
 
+        translateIU(this);
         initViews();
         getAllCoffees();
     }
