@@ -9,9 +9,6 @@
     <string name="nav_header_subtitle" translatable="false">android.studio@android.com</string>
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="server_client_id" translatable="false">
-        197200968254-uftl0ec1vual1ikvru1qtk2rialvbcji.apps.googleusercontent.com
-    </string>
 
     <!--    translatable-->
     <string name="coffee_name">Coffee Name</string>
@@ -70,6 +67,61 @@
     <string name="thank_you">Thank You!!!</string>
     <string name="subscription1">Monthly - 1.99$</string>
     <string name="subscription2">Monthly - 4.99$</string>
+    <string name="coffee_info">INFO</string>
+    <string name="brews">BREWS</string>
+    <string name="brew">Brew</string>
+    <string name="add_brew_recipe">Add brew recipe</string>
+    <string name="delete_brew">Delete brew</string>
+    <string name="brew_name">Brew Name</string>
+    <string name="method">Method</string>
+    <string name="water">Water</string>
+    <string name="filter">Filter</string>
+    <string name="comment">Comment</string>
+    <string name="water_amount">Water Amount</string>
+    <string name="water_temp">Water temperature</string>
+    <string name="coffee_weight">Coffee weight</string>
+    <string name="grinder_setting">Grinder setting</string>
+    <string name="time">Time</string>
+    <string name="how_was_it">How was it?</string>
+    <string name="detach_brew_question">Do you want to remove brew from this coffee?\nIt will still be available on
+        other coffees.</string>
+    <string name="gram">grams</string>
+    <string name="click">clicks</string>
+    <string name="mililiters">ml</string>
+    <string name="minutes">minutes</string>
+    <string name="aeropress">aeropress</string>
+    <string name="auto_drip">pour-over machine</string>
+    <string name="chemex">chemex</string>
+    <string name="espresso">espresso machine</string>
+    <string name="french_press">french press</string>
+    <string name="mokka_pot">mokka pot</string>
+    <string name="v60">V60</string>
+    <string name="constraint_brew_name_not_empty">Brew name cannot be empty</string>
+    <string name="coffee_weight_in_grams">Coffee weight (grams)</string>
+    <string name="grinder_setting_in_clicks">Grinder setting (clicks)</string>
+    <string name="water_amount_in_ml">Water amount (ml)</string>
+    <string name="water_temp_in_celsius">Water temperature (Celsius)</string>
+    <string name="constraint_coffee_weight">Coffee weight can be between 1 to 250</string>
+    <string name="constraint_grinder_setting">Grinder setting can be between 1 to 100</string>
+    <string name="constraint_water_amount">Water amount can be between 1 to 5000</string>
+    <string name="constraint_water_temp">Water temperature can be between 1 to 100</string>
+    <string name="seconds">seconds</string>
+    <string name="pour">pour</string>
+    <string name="add_pour">Add Pour</string>
+    <string name="water_ml_in_pour">Mililiters of water in pour</string>
+    <string name="pour_time_seconds">Pour time in seconds</string>
+    <string name="brew_created">New brew recipe has been created!</string>
+    <string name="add_brew_to_coffee">Add brew recipe to coffee</string>
+    <string name="constraint_pour_water_amount">Water amount can be between 1 to 1500</string>
+    <string name="constraint_pourover_time">Time can be between 1 to 600</string>
+    <string name="delete_account_question">This action will remove all your data!\nAre you sure you want to proceed?
+    </string>
+    <string name="delete_account">Delete Account</string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="languageCode">Language</string>
+    <string name="UI">UI</string>
+    <string name="other">Other</string>
 
     <!-- about-->
     <string name="about_content" formatted="false">
@@ -118,65 +170,7 @@
 
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="COFFEE_INFO">INFO</string>
-    <string name="brews">BREWS</string>
     <string name="title_activity_brew_card_view">BrewCardView</string>
     <string name="title_activity_brew">BrewActivity</string>
-    <string name="brew">Brew</string>
-    <string name="add_brew_recipe">Add brew recipe</string>
-    <string name="delete_brew">Delete brew</string>
-    <string name="brew_name">Brew Name</string>
-    <string name="method">Method</string>
-    <string name="water">Water</string>
-    <string name="filter">Filter</string>
-    <string name="comment">Comment</string>
-    <string name="water_amount">Water Amount</string>
-    <string name="water_temp">Water temperature</string>
-    <string name="coffee_weight">Coffee weight</string>
-    <string name="grinder_setting">Grinder setting</string>
-    <string name="time">Time</string>
-    <string name="how_was_it">How was it?</string>
-    <string name="detach_brew_question">Do you want to remove brew from this coffee?\nIt will still be available on
-        other coffees.
-    </string>
-    <string name="gram">grams</string>
-    <string name="click">clicks</string>
-    <string name="mililiters">ml</string>
-    <string name="minutes">minutes</string>
     <string name="title_activity_edit_brew">EditBrewActivity</string>
-    <string name="aeropress">aeropress</string>
-    <string name="auto_drip">pour-over machine</string>
-    <string name="chemex">chemex</string>
-    <string name="espresso">espresso machine</string>
-    <string name="french_press">french press</string>
-    <string name="mokka_pot">mokka pot</string>
-    <string name="v60">V60</string>
-    <string name="constraint_brew_name_not_empty">Brew name cannot be empty</string>
-    <string name="coffee_weight_in_grams">Coffee weight (grams)</string>
-    <string name="grinder_setting_in_clicks">Grinder setting (clicks)</string>
-    <string name="water_amount_in_ml">Water amount (ml)</string>
-    <string name="water_temp_in_celsius">Water temperature (Celsius)</string>
-    <string name="constraint_coffee_weight">Coffee weight can be between 1 to 250</string>
-    <string name="constraint_grinder_setting">Grinder setting can be between 1 to 100</string>
-    <string name="constraint_water_amount">Water amount can be between 1 to 5000</string>
-    <string name="constraint_water_temp">Water temperature can be between 1 to 100</string>
-    <string name="seconds">seconds</string>
-    <string name="pour">pour</string>
-    <string name="add_pour">Add Pour</string>
-    <string name="water_ml_in_pour">Mililiters of water in pour</string>
-    <string name="pour_time_seconds">Pour time in seconds</string>
-    <string name="brew_created">New brew recipe has been created!</string>
-    <string name="add_brew_to_coffee">Add brew recipe to coffee</string>
-    <string name="constraint_pour_water_amount">Water amount can be between 1 to 1500</string>
-    <string name="constraint_pourover_time">Time can be between 1 to 600</string>
-    <string name="delete_account_question">This action will remove all your data!\nAre you sure you want to proceed?
-    </string>
-    <string name="delete_account">Delete Account</string>
-    <string name="settings">Settings</string>
-    <string name="title_activity_settings">Settings</string>
-    <string name="language">Language</string>
-    <string name="UI">UI</string>
-    <string name="other">Other</string>
-
 </resources>

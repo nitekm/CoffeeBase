@@ -110,7 +110,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     @Override
     public void handleCoffeeResponse(Coffee coffee) {
         CoffeeTabPagerAdapter pagerAdapter = new CoffeeTabPagerAdapter(getSupportFragmentManager());
-        pagerAdapter.addTabFragment(new CoffeeInfo(coffee), getString(R.string.COFFEE_INFO));
+        pagerAdapter.addTabFragment(new CoffeeInfo(coffee), getString(R.string.coffee_info));
         pagerAdapter.addTabFragment(new BrewsFragment(coffee.getBrews(), coffeeId), getString(R.string.brews));
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

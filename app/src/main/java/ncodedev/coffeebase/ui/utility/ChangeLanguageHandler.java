@@ -23,9 +23,9 @@ public class ChangeLanguageHandler {
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 
-    public static void changeLanguage(Language language, Activity activity) {
+    public static void changeLanguage(LanguageCode languageCode, Activity activity) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        preferences.edit().putString(LANGUAGE, language.name()).apply();
+        preferences.edit().putString(LANGUAGE, languageCode.name()).apply();
 
         translateIU(activity);
         Intent intent = activity.getIntent();
