@@ -39,29 +39,33 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item);
         LanguageCode.stream().forEach(languageCode -> languageAdapter.add(languageCode.getValue()));
         languageSpinner.setAdapter(languageAdapter);
-        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               LanguageCode chosenLanguageCode = ChangeLanguageHandler.getLanguageCodeByValue(parent.getItemAtPosition(position).toString());
-
-               switch(chosenLanguageCode) {
-                   case EN -> ChangeLanguageHandler.changeLanguage(EN, SettingsActivity.this);
-                   case ES -> ChangeLanguageHandler.changeLanguage(ES, SettingsActivity.this);
-                   case DE -> ChangeLanguageHandler.changeLanguage(DE, SettingsActivity.this);
-                   case FR -> ChangeLanguageHandler.changeLanguage(FR, SettingsActivity.this);
-                   case PL -> ChangeLanguageHandler.changeLanguage(PL, SettingsActivity.this);
-                   case PT -> ChangeLanguageHandler.changeLanguage(PT, SettingsActivity.this);
-               }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        setUpLanguageSpinner();
 
         MaterialToolbar toolbar = findViewById(R.id.topAppBarSettingsActivity);
         toolbar.setNavigationOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        });
+    }
+
+    private void setUpLanguageSpinner() {
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                LanguageCode chosenLanguageCode = ChangeLanguageHandler.getLanguageCodeByValue(parent.getItemAtPosition(position).toString());
+
+                switch(chosenLanguageCode) {
+                    case EN -> ChangeLanguageHandler.changeLanguage(EN, SettingsActivity.this);
+                    case ES -> ChangeLanguageHandler.changeLanguage(ES, SettingsActivity.this);
+                    case DE -> ChangeLanguageHandler.changeLanguage(DE, SettingsActivity.this);
+                    case FR -> ChangeLanguageHandler.changeLanguage(FR, SettingsActivity.this);
+                    case PL -> ChangeLanguageHandler.changeLanguage(PL, SettingsActivity.this);
+                    case PT -> ChangeLanguageHandler.changeLanguage(PT, SettingsActivity.this);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
 
