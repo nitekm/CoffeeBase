@@ -14,7 +14,7 @@ public class ChangeLanguageHandler {
 
     public static void translateIU(Activity activity) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        String chosenLanguage = preferences.getString(LANGUAGE, "en");
+        String chosenLanguage = preferences.getString(LANGUAGE, "EN");
         Locale locale = new Locale(chosenLanguage);
         Resources resources = activity.getResources();
         Configuration configuration = resources.getConfiguration();
@@ -27,9 +27,6 @@ public class ChangeLanguageHandler {
         preferences.edit().putString(LANGUAGE, languageCode.name()).apply();
 
         translateIU(activity);
-//        Intent intent = activity.getIntent();
-//        activity.finish();
-//        activity.startActivity(intent);
     }
 
     public static LanguageCode getLanguageCodeByValue(String value) {
