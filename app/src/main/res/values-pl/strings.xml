@@ -1,7 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--    translatable-->
-    <string name="coffee_name">Nazwa kawy</string>
+    <string name="coffee_name">Coffee Name</string>
     <string name="roaster">Palarnia</string>
     <string name="roast_profile">Profil palenia</string>
     <string name="continent">Kontynent</string>
@@ -111,34 +110,33 @@
     <string name="languageCode">Language</string>
     <string name="UI">UI</string>
     <string name="other">Other</string>
+    <string name="purchased">purchased</string>
+
 
     <!-- about-->
     <string name="about_content" formatted="false">
-        &lt;h2>About CoffeeBase&lt;/h2>
+        &lt;h2>O aplikacji CoffeeBase&lt;/h2>
         &lt;p>
-        CoffeeBase is a pure hobby project. I developed it for learning purposes and because I needed to get rid of all
-        those empty coffee bags with notes and ratings :)
+        CoffeeBase jest czysto hobbystycznym projektem. Stworzyłem go w celach nauki jak również po to, żeby w końcu móc
+        pozbyć się wszystkich opakowań po kawach z notatkami i ocenami :)
         &lt;/p>
 
-        &lt;h2>Updates&lt;/h2>
+        &lt;h2>Aktualizacje&lt;/h2>
         &lt;p>
-        I am working on this project after my working hours, in my private time. I have a few more ideas on what else to
-        add, but do not expect any periodic updates.
-        Additionally, I am very lazy, so please understand :) If you have any cool ideas for this app, please contact me
-        via email.
+        Nad projektem siedzę po pracy, w wolnym czasie. Mam parę pomysłów na rzeczy, które chciałbym dodać, lecz nie mogę
+        obiecaćsystematycznych aktualizacji z nowymi funkcjonalnościami. Dodatkowo, jestem strasznie leniwy, więc proszę
+        o zrozumienie :) Jeśli masz jakiś ciekawy pomysł na dodanie czegoś do aplikacji to proszę skontaktuj się ze mną
+        przez email!
         &lt;/p>
 
-        &lt;h2>Monetization&lt;/h2>
+        &lt;h2>Monetyzacja&lt;/h2>
         &lt;p>
-        This app will always be free, and you will never see any ads here. However, keeping the app alive on the Play
-        Store, marketing, web service,
-        and database all have their costs. That\'s why if you want, you can subscribe to pay $2 or 5$ a month.
-        It\'s the cost of one coffee, and you will help me a lot! There are no benefits to gain by doing so (yet), and
-        it\'s completely optional.
-        Subscription is available in account section.
+        Aplikacja zawsze będzie całkowicie darmowa i nigdy nie zobaczysz tutaj żadnych reklam. Jednak utrzymanie jej na
+        sklepie Play, marketing czy utrzymanie serwera i bazy danych ma swoje koszty. Dlatego, jeśli chcesz możesz wykupić
+        subskrypcję w cenie małej albo dużej kawy. Bardzo mi to pomoże. Nie ma z tego powodu żadnych benefitów (jeszcze)
+        i jest całkowicie opcjonalne. Subskrypcja jest dostępna w sekcji "Konto".
         &lt;/p>
 
         &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
     </string>
-    <string name="purchased">purchased</string>
 </resources>

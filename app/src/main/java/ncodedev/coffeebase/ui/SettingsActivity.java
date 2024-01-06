@@ -1,10 +1,15 @@
 package ncodedev.coffeebase.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.ui.utility.ChangeLanguageHandler;
@@ -37,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               LanguageCode chosenLanguageCode = LanguageCode.valueOf(parent.getItemAtPosition(position).toString());
+               LanguageCode chosenLanguageCode = ChangeLanguageHandler.getLanguageCodeByValue(parent.getItemAtPosition(position).toString());
 
                switch(chosenLanguageCode) {
                    case EN -> ChangeLanguageHandler.changeLanguage(EN, SettingsActivity.this);
@@ -51,6 +56,12 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+        MaterialToolbar toolbar = findViewById(R.id.topAppBarSettingsActivity);
+        toolbar.setNavigationOnClickListener(view -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
         });
     }
 
