@@ -49,9 +49,10 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
     }
 
     //TODO: zmień - spinner ustawia a dodaj guzik zapisz i on bierze wtedy wartość ze spinnera, podmienia język i odświezą activity.
-    // Dodatkowo, można z shared preferences brać język i ustawiać spinner na pozycji jaka aktualnie jest wybrana
+    // Dodatkowo, można z shared preferences brać język i ustawiać spinner na pozycji jaka aktualnie jest wybrana spinner.setSelection.
     private void setUpLanguageSpinner() {
         languageSpinner.getSelectedItem();
+
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
