@@ -8,9 +8,9 @@ import androidx.preference.PreferenceManager;
 
 import java.util.Locale;
 
-public class ChangeLanguageHandler {
+import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.LANGUAGE;
 
-    private static final String LANGUAGE = "language";
+public class ChangeLanguageHandler {
 
     public static void translateIU(Activity activity) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
