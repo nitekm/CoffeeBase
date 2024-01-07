@@ -136,4 +136,5 @@
 
         &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
     </string>
+    <string name="save_settings">Zapisz ustawienia</string>
 </resources>
