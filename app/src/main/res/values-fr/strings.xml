@@ -1,0 +1,141 @@
+<resources>
+
+    <!-- À propos -->
+    <string name="about_content" formatted="false">
+        &lt;h2>À propos de CoffeeBase/h2>
+        &lt;p>
+        CoffeeBase est un projet purement amateur. Je l\'ai développé à des fins d\'apprentissage et parce que je devais
+        me débarrasser de tous ces sacs de café vides avec des notes et des évaluations :)
+        &lt;/p>
+
+        &lt;h2>Mises à jour&lt;/h2>
+        &lt;p>
+        Je travaille sur ce projet après mes heures de travail, dans mon temps libre. J\'ai quelques idées sur ce que
+        je pourrais ajouter, mais je ne peux pas promettre des mises à jour périodiques. De plus, je suis très paresseux,
+        alors veuillez comprendre :) Si vous avez des idées géniales pour cette application, veuillez me contacter par e-mail!
+        &lt;/p>
+
+        &lt;h2>Monétisation&lt;/h2>
+        &lt;p>
+        Cette application sera toujours gratuite, et vous ne verrez jamais de publicités ici. Cependant, maintenir
+        l\'application en vie sur le Play Store, le marketing, le service web, et la base de données ont tous leurs coûts.
+        C\'est pourquoi, si vous le souhaitez, vous pouvez vous abonner pour payer 2$ ou 5$ par mois. C\'est le coût
+        d'un café, et vous m\'aiderez beaucoup ! Il n'y a aucun avantage à le faire (pour le moment), et c\'est complètement
+        facultatif. L\'abonnement est disponible dans la section du compte.
+        &lt;/p>
+
+        &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
+    </string>
+
+    <!-- Traduisible -->
+    <string name="coffee_name">Nom du Café</string>
+    <string name="roaster">Torréfacteur</string>
+    <string name="roast_profile">Profil de Torréfaction</string>
+    <string name="continent">Continent</string>
+    <string name="origin">Origine</string>
+    <string name="region">Région</string>
+    <string name="farm">Ferme</string>
+    <string name="crop_height">Hauteur de la Récolte</string>
+    <string name="processing">Traitement</string>
+    <string name="sca_score">Score SCA</string>
+    <string name="coffee">Café</string>
+    <string name="change_image">Changer l'Image</string>
+    <string name="rating">Évaluation</string>
+    <string name="tag">"Tag "</string>
+    <string name="save">Enregistrer</string>
+    <string name="my_coffeebase">Ma CoffeeBase</string>
+    <string name="gallery">Galerie</string>
+    <string name="camera">Caméra</string>
+    <string name="username">Nom d'utilisateur</string>
+    <string name="add_coffee">Ajouter du Café</string>
+    <string name="about">À propos</string>
+    <string name="user">Utilisateur</string>
+    <string name="account">Compte</string>
+    <string name="sign_out">Se Déconnecter</string>
+    <string name="add_to_favourites">Ajouter aux Favoris</string>
+    <string name="edit_coffee">Modifier le Café</string>
+    <string name="delete_coffee">Supprimer le Café</string>
+    <string name="search">Rechercher</string>
+    <string name="welcome_back">Bienvenue de nouveau</string>
+    <string name="successfully_logged_out">Déconnexion réussie !</string>
+    <string name="login_failed">Échec de la Connexion</string>
+    <string name="error">Erreur !</string>
+    <string name="server_unavailable">Le serveur n'est pas disponible. Réessayez plus tard</string>
+    <string name="image_not_saved">Image non enregistrée !</string>
+    <string name="permission_not_granted">Autorisation non accordée !</string>
+    <string name="delete_coffee_question">Supprimer ce café ?</string>
+    <string name="no">Non</string>
+    <string name="yes">Oui</string>
+    <string name="constraint_coffee_name_not_empty">Le nom ne peut pas être vide</string>
+    <string name="constraint_crop_height">La hauteur de la récolte doit être entre 0 et 8849</string>
+    <string name="constraint_sca_rating">La note SCA doit être entre 0 et 100</string>
+    <string name="constraint_tag_name_not_empty">Le nom du tag ne peut pas être vide</string>
+    <string name="exit_app">Quitter l'Application</string>
+    <string name="dismiss">Rejeter</string>
+    <string name="developed_by_ncode">Développé par NCode</string>
+    <string name="signed_in_with_google">Connecté avec Google</string>
+    <string name="africa">Afrique</string>
+    <string name="asia">Asie</string>
+    <string name="south_america">Amérique du Sud</string>
+    <string name="light">Léger</string>
+    <string name="omniroast">Omniroast</string>
+    <string name="dark">Foncé</string>
+    <string name="subscription">Abonnement</string>
+    <string name="thank_you">Merci !!!</string>
+    <string name="subscription1">Mensuel - 1,99$</string>
+    <string name="subscription2">Mensuel - 4,99$</string>
+    <string name="coffee_info">INFO</string>
+    <string name="brews">INFUSIONS</string>
+    <string name="brew">Infusion</string>
+    <string name="add_brew_recipe">Ajouter une recette d'infusion</string>
+    <string name="delete_brew">Supprimer l'infusion</string>
+    <string name="brew_name">Nom de l'infusion</string>
+    <string name="method">Méthode</string>
+    <string name="water">Eau</string>
+    <string name="filter" translatable="false">Filtre</string>
+    <string name="comment" translatable="false">Commentaire</string>
+    <string name="water_amount">Quantité d'eau</string>
+    <string name="water_temp">Température de l'eau</string>
+    <string name="coffee_weight">Poids du café</string>
+    <string name="grinder_setting">Réglage du moulin</string>
+    <string name="time">Temps</string>
+    <string name="how_was_it">Comment était-ce ?</string>
+    <string name="detach_brew_question">Voulez-vous retirer l'infusion de ce café ?\nElle restera disponible pour d'autres cafés.</string>
+    <string name="gram">grammes</string>
+    <string name="click">clics</string>
+    <string name="mililiters">ml</string>
+    <string name="minutes">minutes</string>
+    <string name="aeropress">aeropress</string>
+    <string name="auto_drip">machine à verseur</string>
+    <string name="chemex">chemex</string>
+    <string name="espresso">machine à espresso</string>
+    <string name="french_press">presse française</string>
+    <string name="mokka_pot">mokka pot</string>
+    <string name="v60">V60</string>
+    <string name="constraint_brew_name_not_empty">Le nom de l'infusion ne peut pas être vide</string>
+    <string name="coffee_weight_in_grams" translatable="false">Poids du café (grammes)</string>
+    <string name="grinder_setting_in_clicks">Réglage du moulin (clics)</string>
+    <string name="water_amount_in_ml">Quantité d'eau (ml)</string>
+    <string name="water_temp_in_celsius">Température de l'eau (Celsius)</string>
+    <string name="constraint_coffee_weight">Le poids du café doit être entre 1 et 250</string>
+    <string name="constraint_grinder_setting">Le réglage du moulin doit être entre 1 et 100</string>
+    <string name="constraint_water_amount">La quantité d'eau doit être entre 1 et 5000</string>
+    <string name="constraint_water_temp">La température de l'eau doit être entre 1 et 100</string>
+    <string name="seconds">secondes</string>
+    <string name="pour">verser</string>
+    <string name="add_pour">Ajouter Verser</string>
+    <string name="water_ml_in_pour">Millilitres d'eau versés</string>
+    <string name="pour_time_seconds">Temps de versement en secondes</string>
+    <string name="brew_created">Nouvelle recette d'infusion créée !</string>
+    <string name="add_brew_to_coffee">Ajouter une recette d'infusion au café</string>
+    <string name="constraint_pour_water_amount">La quantité d'eau versée doit être entre 1 et 1500</string>
+    <string name="constraint_pourover_time">Le temps doit être entre 1 et 600</string>
+    <string name="delete_account_question">Cette action supprimera toutes vos données !\nÊtes-vous sûr de vouloir continuer ? </string>
+    <string name="delete_account">Supprimer le Compte</string>
+    <string name="settings">Paramètres</string>
+    <string name="languageCode">Langue</string>
+    <string name="UI">Interface Utilisateur</string>
+    <string name="other">Autre</string>
+    <string name="purchased">acheté</string>
+    <string name="save_settings">Enregistrer les Paramètres</string>
+</resources>

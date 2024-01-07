@@ -1,5 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- about-->
+    <string name="about_content" formatted="false">
+        &lt;h2>O aplikacji CoffeeBase&lt;/h2>
+        &lt;p>
+        CoffeeBase jest czysto hobbystycznym projektem. Stworzyłem go w celach nauki jak również po to, żeby w końcu móc
+        pozbyć się wszystkich opakowań po kawach z notatkami i ocenami :)
+        &lt;/p>
+
+        &lt;h2>Aktualizacje&lt;/h2>
+        &lt;p>
+        Nad projektem siedzę po pracy, w wolnym czasie. Mam parę pomysłów na rzeczy, które chciałbym dodać, lecz nie mogę
+        obiecaćsystematycznych aktualizacji z nowymi funkcjonalnościami. Dodatkowo, jestem strasznie leniwy, więc proszę
+        o zrozumienie :) Jeśli masz jakiś ciekawy pomysł na dodanie czegoś do aplikacji to proszę skontaktuj się ze mną
+        przez email!
+        &lt;/p>
+
+        &lt;h2>Monetyzacja&lt;/h2>
+        &lt;p>
+        Aplikacja zawsze będzie całkowicie darmowa i nigdy nie zobaczysz tutaj żadnych reklam. Jednak utrzymanie jej na
+        sklepie Play, marketing czy utrzymanie serwera i bazy danych ma swoje koszty. Dlatego, jeśli chcesz możesz wykupić
+        subskrypcję w cenie małej albo dużej kawy. Bardzo mi to pomoże. Nie ma z tego powodu żadnych benefitów (jeszcze)
+        i jest całkowicie opcjonalne. Subskrypcja jest dostępna w sekcji "Konto".
+        &lt;/p>
+
+        &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
+    </string>
+
+
     <string name="coffee_name">Coffee Name</string>
     <string name="roaster">Palarnia</string>
     <string name="roast_profile">Profil palenia</string>
@@ -109,32 +137,5 @@
     <string name="UI">UI</string>
     <string name="other">Inne</string>
     <string name="purchased">zakupiony</string>
-
-    <!-- about-->
-    <string name="about_content" formatted="false">
-        &lt;h2>O aplikacji CoffeeBase&lt;/h2>
-        &lt;p>
-        CoffeeBase jest czysto hobbystycznym projektem. Stworzyłem go w celach nauki jak również po to, żeby w końcu móc
-        pozbyć się wszystkich opakowań po kawach z notatkami i ocenami :)
-        &lt;/p>
-
-        &lt;h2>Aktualizacje&lt;/h2>
-        &lt;p>
-        Nad projektem siedzę po pracy, w wolnym czasie. Mam parę pomysłów na rzeczy, które chciałbym dodać, lecz nie mogę
-        obiecaćsystematycznych aktualizacji z nowymi funkcjonalnościami. Dodatkowo, jestem strasznie leniwy, więc proszę
-        o zrozumienie :) Jeśli masz jakiś ciekawy pomysł na dodanie czegoś do aplikacji to proszę skontaktuj się ze mną
-        przez email!
-        &lt;/p>
-
-        &lt;h2>Monetyzacja&lt;/h2>
-        &lt;p>
-        Aplikacja zawsze będzie całkowicie darmowa i nigdy nie zobaczysz tutaj żadnych reklam. Jednak utrzymanie jej na
-        sklepie Play, marketing czy utrzymanie serwera i bazy danych ma swoje koszty. Dlatego, jeśli chcesz możesz wykupić
-        subskrypcję w cenie małej albo dużej kawy. Bardzo mi to pomoże. Nie ma z tego powodu żadnych benefitów (jeszcze)
-        i jest całkowicie opcjonalne. Subskrypcja jest dostępna w sekcji "Konto".
-        &lt;/p>
-
-        &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
-    </string>
     <string name="save_settings">Zapisz ustawienia</string>
 </resources>

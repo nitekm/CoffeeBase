@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- about-->
+    <string name="about_content" formatted="false">
+        <h2>Acerca de CoffeeBase</h2>
+        <p>
+        CoffeeBase es un proyecto puramente de hobby. Lo desarrollé con fines educativos y porque necesitaba deshacerme de
+        todas esas bolsas de café vacías con notas y calificaciones :)
+        </p>
+
+        <h2>Actualizaciones</h2>
+        <p>
+        Trabajo en este proyecto después de mi horario laboral, en mi tiempo libre. Tengo algunas ideas más sobre qué
+        más agregar, pero no puedo prometer actualizaciones periódicas. Además, soy bastante perezoso, así que por
+        favor entiende :) ¡Si tienes ideas geniales para esta aplicación, contáctame por correo electrónico!
+        </p>
+
+        <h2>Monetización</h2>
+        <p>
+        Esta aplicación siempre será gratuita y nunca verás anuncios aquí. Sin embargo, mantener la aplicación viva en
+        la Play Store, marketing, servicio web y base de datos tienen sus costos. Es por eso que, si quieres,
+        puedes suscribirte para pagar $2 o 5$ al mes. Es el costo de un café, ¡y me ayudarás mucho! No hay beneficios
+        por hacerlo (por ahora) y es completamente opcional. La suscripción está disponible en la sección de cuenta.
+        </p>
+
+        &lt;p>&lt;b>&lt;font size=\"16\">Developed by NCode&lt;/font>&lt;/b>&lt;/p>
+    </string>
+
+    <string name="coffee_name">Nombre del Café</string>
+    <string name="roaster">Tostador</string>
+    <string name="roast_profile">Perfil de Tueste</string>
+    <string name="continent">Continente</string>
+    <string name="origin">Origen</string>
+    <string name="region">Región</string>
+    <string name="farm">Finca</string>
+    <string name="crop_height">Altura del Cultivo</string>
+    <string name="processing">Procesamiento</string>
+    <string name="sca_score">Puntuación SCA</string>
+    <string name="coffee">Café</string>
+    <string name="change_image">Cambiar Imagen</string>
+    <string name="rating">Clasificación</string>
+    <string name="tag">"Etiqueta "</string>
+    <string name="save">Guardar</string>
+    <string name="my_coffeebase">Mi CoffeeBase</string>
+    <string name="gallery">Galería</string>
+    <string name="camera">Cámara</string>
+    <string name="username">Nombre de Usuario</string>
+    <string name="add_coffee">Agregar Café</string>
+    <string name="about">Acerca de</string>
+    <string name="user">Usuario</string>
+    <string name="account">Cuenta</string>
+    <string name="sign_out">Cerrar Sesión</string>
+    <string name="add_to_favourites">Agregar a Favoritos</string>
+    <string name="edit_coffee">Editar Café</string>
+    <string name="delete_coffee">Eliminar Café</string>
+    <string name="search">Buscar</string>
+    <string name="welcome_back">Bienvenido de nuevo</string>
+    <string name="successfully_logged_out">Cierre de sesión exitoso</string>
+    <string name="login_failed">Inicio de sesión fallido</string>
+    <string name="error">¡Error!</string>
+    <string name="server_unavailable">El servidor no está disponible. Inténtalo de nuevo más tarde</string>
+    <string name="image_not_saved">¡Imagen no guardada!</string>
+    <string name="permission_not_granted">Permiso no concedido</string>
+    <string name="delete_coffee_question">¿Eliminar este café?</string>
+    <string name="no">No</string>
+    <string name="yes">Sí</string>
+    <string name="constraint_coffee_name_not_empty">El nombre no puede estar vacío</string>
+    <string name="constraint_crop_height">La altura del cultivo debe estar entre 0 y 8849</string>
+    <string name="constraint_sca_rating">La puntuación SCA debe estar entre 0 y 100</string>
+    <string name="constraint_tag_name_not_empty">El nombre de la etiqueta no puede estar vacío</string>
+    <string name="exit_app">Salir de la aplicación</string>
+    <string name="dismiss">Descartar</string>
+    <string name="developed_by_ncode">Desarrollado por NCode</string>
+    <string name="signed_in_with_google">Iniciado sesión con Google</string>
+    <string name="africa">África</string>
+    <string name="asia">Asia</string>
+    <string name="south_america">América del Sur</string>
+    <string name="light">Claro</string>
+    <string name="omniroast">Omniroast</string>
+    <string name="dark">Oscuro</string>
+    <string name="subscription">Suscripción</string>
+    <string name="thank_you">¡Gracias!</string>
+    <string name="subscription1">Mensual - 1.99$</string>
+    <string name="subscription2">Mensual - 4.99$</string>
+    <string name="coffee_info">INFO</string>
+    <string name="brews">PREPARACIONES</string>
+    <string name="brew">Preparación</string>
+    <string name="add_brew_recipe">Agregar receta de preparación</string>
+    <string name="delete_brew">Eliminar preparación</string>
+    <string name="brew_name">Nombre de la Preparación</string>
+    <string name="method">Método</string>
+    <string name="water">Agua</string>
+    <string name="filter" translatable="false">Filtro</string>
+    <string name="comment" translatable="false">Comentario</string>
+    <string name="water_amount">Cantidad de Agua</string>
+    <string name="water_temp">Temperatura del Agua</string>
+    <string name="coffee_weight">Peso del Café</string>
+    <string name="grinder_setting">Ajuste del Molinillo</string>
+    <string name="time">Tiempo</string>
+    <string name="how_was_it">¿Cómo fue?</string>
+    <string name="detach_brew_question">¿Deseas eliminar la preparación de este café?\nTodavía estará disponible en otros cafés.</string>
+    <string name="gram">gramos</string>
+    <string name="click">clics</string>
+    <string name="mililiters">ml</string>
+    <string name="minutes">minutos</string>
+    <string name="aeropress">aeropress</string>
+    <string name="auto_drip">máquina de goteo</string>
+    <string name="chemex">chemex</string>
+    <string name="espresso">máquina de espresso</string>
+    <string name="french_press">prensa francesa</string>
+    <string name="mokka_pot">mokka pot</string>
+    <string name="v60">V60</string>
+    <string name="constraint_brew_name_not_empty">El nombre de la preparación no puede estar vacío</string>
+    <string name="coffee_weight_in_grams" translatable="false">Peso del café (gramos)</string>
+    <string name="grinder_setting_in_clicks">Ajuste del molinillo (clics)</string>
+    <string name="water_amount_in_ml">Cantidad de agua (ml)</string>
+    <string name="water_temp_in_celsius">Temperatura del agua (Celsius)</string>
+    <string name="constraint_coffee_weight">El peso del café debe estar entre 1 y 250</string>
+    <string name="constraint_grinder_setting">El ajuste del molinillo debe estar entre 1 y 100</string>
+    <string name="constraint_water_amount">La cantidad de agua debe estar entre 1 y 5000</string>
+    <string name="constraint_water_temp">La temperatura del agua debe estar entre 1 y 100</string>
+    <string name="seconds">segundos</string>
+    <string name="pour">verter</string>
+    <string name="add_pour">Agregar Verter</string>
+    <string name="water_ml_in_pour">Mililitros de agua en el verter</string>
+    <string name="pour_time_seconds">Tiempo de vertido en segundos</string>
+    <string name="brew_created">¡Nueva receta de preparación creada!</string>
+    <string name="add_brew_to_coffee">Agregar receta de preparación al café</string>
+    <string name="constraint_pour_water_amount">La cantidad de agua debe estar entre 1 y 1500</string>
+    <string name="constraint_pourover_time">El tiempo debe estar entre 1 y 600</string>
+    <string name="delete_account_question">¡Esta acción eliminará todos tus datos!\n¿Estás seguro de que quieres continuar?</string>
+    <string name="delete_account">Eliminar Cuenta</string>
+    <string name="settings">Configuración</string>
+    <string name="languageCode">Idioma</string>
+    <string name="UI">Interfaz de Usuario</string>
+    <string name="other">Otros</string>
+    <string name="purchased">comprado</string>
+    <string name="save_settings">Guardar Configuración</string>
+</resources>
