@@ -22,7 +22,9 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
     private TextView brewNameTxt, brewMethodDisplayTxt;
     private ImageButton prevStepButton, nextStepButton;
     private ProgressBar progressBar;
+    private GridView brewMethodGrid;
     private Brew brew;
+    private BrewMethod brewMethod = BrewMethod.EMPTY;
 
     public BrewStepGeneralInfoFragment(Brew brew, ImageButton prevStepButton, ImageButton nextStepButton, ProgressBar progressBar) {
         this.brew = brew;
@@ -43,7 +45,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
 
     @Override
     public void initViews(View view) {
-        GridView brewMethodGrid = view.findViewById(R.id.methodGrid);
+        brewMethodGrid = view.findViewById(R.id.methodGrid);
         brewMethodDisplayTxt = view.findViewById(R.id.methodNameDisplayTxt);
         brewMethodGrid.setAdapter(new MethodSelector(brewMethodDisplayTxt));
         brewNameTxt = view.findViewById(R.id.inputBrewName);
@@ -56,16 +58,16 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
         prevStepButton.setVisibility(View.INVISIBLE);
         prevStepButton.setClickable(false);
 
-        nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt, brewMethodDisplayTxt));
+        nextStepButton.setOnClickListener(v -> executeFinishStep(brewNameTxt));
 
         progressBar.setProgress(1);
     }
 
-    private void executeFinishStep(TextView brewNameTxt, TextView brewMethodDisplayTxt) {
+    private void executeFinishStep(TextView brewNameTxt) {
         if (!Validator.textNotBlank(brewNameTxt, getString(R.string.constraint_brew_name_not_empty))) {
             return;
         }
-        Brew brewWithGeneralInfo = BrewMapper.mapGeneralInfo(brew, brewNameTxt.getText().toString(), brewMethodDisplayTxt.getText().toString());
+        Brew brewWithGeneralInfo = BrewMapper.mapGeneralInfo(brew, brewNameTxt.getText().toString(), brewMethod.getValue());
         brewApiprovider.finish(brewWithGeneralInfo, this);
     }
 
@@ -73,7 +75,10 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
     public void handleInitBrewStepResponse(Brew brew) {
         this.brew =  brew;
         brewNameTxt.setText(brew.getName());
-        brewMethodDisplayTxt.setText(brew.getMethod());
+        if (brew.getMethod() == null) {
+            return;
+        }
+        brewMethodDisplayTxt.setText(getString(BrewMethod.getResourceIdForMethod(BrewMethod.getMethodFromString(brew.getMethod()))));
     }
 
     @Override
@@ -113,7 +118,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
 
         @Override
         public Object getItem(int position) {
-            return null;
+           return null;
         }
 
         @Override
@@ -145,8 +150,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
                 case 1 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.auto_drip));
                 case 2 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.chemex));
                 case 3 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.espresso));
-                case 4 ->
-                        imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.french_press));
+                case 4 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.french_press));
                 case 5 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.mokka_pot));
                 case 6 -> imageView.setOnClickListener(view -> setIconSelectedBehaviour(imageView, R.string.v60));
             }
@@ -156,6 +160,7 @@ public class BrewStepGeneralInfoFragment extends Fragment implements BrewStepRes
             methodIcons.forEach(icon -> icon.setBackgroundResource(0));
             imageView.setBackgroundResource(R.drawable.roundcorner);
             brewMethodDisplayTxt.setText(textResourceId);
+            brewMethod = BrewMethod.getMethodForResourceId(textResourceId);
         }
     }
 }
