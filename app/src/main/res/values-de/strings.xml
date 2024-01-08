@@ -137,5 +137,6 @@
     <string name="other">Sonstige</string>
     <string name="purchased">gekauft</string>
     <string name="save_settings">Einstellungen speichern</string>
+    <string name="coffees_in_row">My coffeebase Kaffees in Reihe</string>
 
 </resources>

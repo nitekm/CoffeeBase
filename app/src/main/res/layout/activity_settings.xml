@@ -66,12 +66,32 @@
             app:layout_constraintTop_toBottomOf="@id/guideline1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:textSize="14sp"
+            android:text="@string/coffees_in_row"
+            android:id="@+id/coffeesInRowTxt" />
+
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/coffeesInRowTxt"
+            app:layout_constraintTop_toBottomOf="@id/guideline1"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="37dp"
+            android:id="@+id/coffeesInRowSpinner"
+            android:entries="@array/coffees_in_row"/>
 
     <androidx.constraintlayout.widget.Guideline
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/guideline2"
-            app:layout_constraintGuide_begin="273dp"
+            app:layout_constraintGuide_begin="305dp"
             android:orientation="horizontal"/>
 
     <TextView

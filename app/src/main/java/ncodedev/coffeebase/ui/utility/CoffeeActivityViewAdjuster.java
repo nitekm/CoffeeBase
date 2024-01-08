@@ -3,7 +3,6 @@ package ncodedev.coffeebase.ui.utility;
 import android.view.View;
 import androidx.constraintlayout.widget.ConstraintLayout.LayoutParams;
 import com.google.android.material.textfield.TextInputLayout;
-import ncodedev.coffeebase.R;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,7 +18,7 @@ public class CoffeeActivityViewAdjuster {
 
             String layoutText = Objects.requireNonNull(layout.getEditText()).getText().toString();
             if (isBlankOrDefault(layoutText)) {
-                hideBlank(layout);
+                hide(layout);
             } else {
                 lastPresentElementId = layout.getId();
                 isPrevHidden = false;
@@ -27,7 +26,7 @@ public class CoffeeActivityViewAdjuster {
         }
     }
 
-    private static void hideBlank(TextInputLayout layout) {
+    private static void hide(TextInputLayout layout) {
         layout.setVisibility(View.GONE);
         isPrevHidden = true;
     }
@@ -40,7 +39,7 @@ public class CoffeeActivityViewAdjuster {
 
     private static boolean isBlankOrDefault(String text) {
         return text.isEmpty() ||
-                text.equalsIgnoreCase(String.valueOf(R.string.continent)) ||
-                text.equalsIgnoreCase(String.valueOf(R.string.roast_profile));
+                text.equalsIgnoreCase("Roast Profile") ||
+                text.equalsIgnoreCase("Continent");
     }
 }

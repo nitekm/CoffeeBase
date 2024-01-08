@@ -19,6 +19,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -34,7 +35,6 @@ import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 import java.util.List;
 
-import static ncodedev.coffeebase.ui.utility.ChangeLanguageHandler.translateIU;
 import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         imageHelper.setPicassoInstance(this);
         googleSignInClientService = new GoogleSignInClientService(this);
 
-        translateIU(this);
         initViews();
         getAllCoffees();
     }
@@ -70,9 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void initViews() {
         recyclerView = findViewById(R.id.coffeeRecView);
-        this.getSharedPreferences(MY_COFFEEBASE_COFFEES_IN_ROW, MODE_PRIVATE);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        setUpCoffeesView();
         toolbar = findViewById(R.id.topAppBarCoffeeActivity);
         drawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.navigation);
@@ -91,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (user.getPictureUri() != null) {
             imageHelper.picassoSetImage(user.getPictureUri(), userPictureImage, R.drawable.ic_account);
         }
+    }
+
+    private void setUpCoffeesView() {
+        int coffeesInRowPreference =  PreferenceManager.getDefaultSharedPreferences(this).getInt(MY_COFFEEBASE_COFFEES_IN_ROW, 2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, coffeesInRowPreference);
+        recyclerView.setLayoutManager(gridLayoutManager);
     }
 
     private void getAllCoffees() {
@@ -177,8 +180,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 item -> {
                     selectDrawerItem(item);
                     return true;
-                }
-        );
+                });
     }
 
     @SuppressLint("NonConstantResourceId")

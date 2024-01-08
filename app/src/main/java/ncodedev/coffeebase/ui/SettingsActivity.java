@@ -19,11 +19,12 @@ import ncodedev.coffeebase.web.provider.UserSettingsApiProvider;
 
 import static ncodedev.coffeebase.ui.utility.LanguageCode.*;
 import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.LANGUAGE;
+import static ncodedev.coffeebase.ui.utility.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class SettingsActivity extends AppCompatActivity implements UserSettingsResponseListener {
 
-    private Spinner languageSpinner;
+    private Spinner languageSpinner, coffeesInRowSpinner;
     private Button saveSettingsBtn;
     private final UserSettingsApiProvider userSettingsApiProvider = UserSettingsApiProvider.getInstance();
 
@@ -42,6 +43,9 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
         LanguageCode.stream().forEach(languageCode -> languageAdapter.add(languageCode.getValue()));
         languageSpinner.setAdapter(languageAdapter);
         setUpLanguageSpinner();
+
+        coffeesInRowSpinner = findViewById(R.id.coffeesInRowSpinner);
+        setUpCoffeesInRowSpinner();
 
         saveSettingsBtn = findViewById(R.id.saveSettingsBtn);
         saveSettingsBtn.setOnClickListener(view -> saveSettings());
@@ -63,6 +67,21 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
             case FR -> languageSpinner.setSelection(3);
             case PL -> languageSpinner.setSelection(4);
             case PT -> languageSpinner.setSelection(5);
+        }
+    }
+
+    private void setUpCoffeesInRowSpinner() {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.coffees_in_row, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        coffeesInRowSpinner.setAdapter(adapter);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final var coffeesInRow = sharedPreferences.getInt(MY_COFFEEBASE_COFFEES_IN_ROW, 2);
+        switch (coffeesInRow) {
+            case 2 -> coffeesInRowSpinner.setSelection(0);
+            case 3 -> coffeesInRowSpinner.setSelection(1);
+            case 4 -> coffeesInRowSpinner.setSelection(2);
+            case 5 -> coffeesInRowSpinner.setSelection(3);
         }
     }
 
@@ -88,6 +107,8 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
     }
 
     private void applyChangeCoffeesInRow() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.edit().putInt(MY_COFFEEBASE_COFFEES_IN_ROW, Integer.parseInt((String) coffeesInRowSpinner.getSelectedItem())).apply();
     }
 
     private void setUpDeleteAccountBtnAction() {

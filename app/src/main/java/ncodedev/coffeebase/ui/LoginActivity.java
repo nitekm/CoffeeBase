@@ -13,6 +13,8 @@ import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 
+import static ncodedev.coffeebase.ui.utility.ChangeLanguageHandler.translateIU;
+
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
@@ -24,6 +26,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Log.d(TAG, "in loginActivity");
+
+        translateIU(this);
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
