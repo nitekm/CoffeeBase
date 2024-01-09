@@ -77,6 +77,7 @@ public class GoogleSignInClientService {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             Log.d(TAG, "OAuth2.0 token acquired");
             setCurrentUser(account);
+            context.startActivity(new Intent(context, MainActivity.class));
         } catch (ApiException e) {
             startLoginActivityWithSignIn();
             showToast(context, context.getString(login_failed));
