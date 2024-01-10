@@ -8,8 +8,8 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
-import ncodedev.coffeebase.ui.LoginActivity;
-import ncodedev.coffeebase.ui.MainActivity;
+import ncodedev.coffeebase.ui.activity.LoginActivity;
+import ncodedev.coffeebase.ui.activity.MainActivity;
 
 import static ncodedev.coffeebase.R.string.login_failed;
 import static ncodedev.coffeebase.R.string.successfully_logged_out;

@@ -21,40 +21,40 @@
             android:usesCleartextTraffic="true">
 
         <activity
-                android:name=".ui.SettingsActivity"
+                android:name=".ui.activity.SettingsActivity"
                 android:exported="false"
                 android:label="@string/title_activity_settings"
                 android:theme="@style/Theme.CoffeeBase"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.utility.PourOverCardView"
+                android:name=".ui.view.card.PourOverCardView"
                 android:exported="false"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.AddBrewActivity"
+                android:name=".ui.activity.AddBrewActivity"
                 android:exported="false"
                 android:label="@string/title_activity_edit_brew"
                 android:theme="@style/Theme.CoffeeBase"
                 android:screenOrientation="portrait"
                 android:windowSoftInputMode="adjustPan"/>
         <activity
-                android:name=".ui.BrewActivity"
+                android:name=".ui.activity.BrewActivity"
                 android:exported="false"
                 android:label="@string/title_activity_brew"
                 android:theme="@style/Theme.CoffeeBase"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.utility.BrewCardView"
+                android:name=".ui.view.card.BrewCardView"
                 android:exported="false"
                 android:label="@string/title_activity_brew_card_view"
                 android:theme="@style/Theme.CoffeeBase"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.AccountActivity"
+                android:name=".ui.activity.AccountActivity"
                 android:exported="false"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.LoginActivity"
+                android:name=".ui.activity.LoginActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait">
@@ -64,20 +64,20 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ui.EditCoffee"
+                android:name=".ui.activity.EditCoffee"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.CoffeeActivity"
+                android:name=".ui.activity.CoffeeActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
         <activity
-                android:name=".ui.utility.CoffeeCardView"
+                android:name=".ui.view.card.CoffeeCardView"
                 android:exported="true"/>
         <activity
-                android:name=".ui.MainActivity"
+                android:name=".ui.activity.MainActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>
