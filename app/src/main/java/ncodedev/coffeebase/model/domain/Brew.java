@@ -43,7 +43,7 @@ public class Brew implements Serializable {
 
     @SerializedName("totalTime")
     @Expose
-    private Integer totalTime;
+    private String totalTime;
 
     @SerializedName("status")
     @Expose
@@ -129,11 +129,11 @@ public class Brew implements Serializable {
         this.filter = filter;
     }
 
-    public Integer getTotalTime() {
+    public String getTotalTime() {
         return totalTime;
     }
 
-    public void setTotalTime(Integer totalTime) {
+    public void setTotalTime(String totalTime) {
         this.totalTime = totalTime;
     }
 

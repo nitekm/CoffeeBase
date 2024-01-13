@@ -85,7 +85,6 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
                 .map(String::valueOf)
                 .ifPresent(holder.coffeeAmountTxt::setText);
         Optional.ofNullable(brews.get(holder.getAdapterPosition()).getTotalTime())
-                .map(String::valueOf)
                 .ifPresent(holder.brewTimeTxt::setText);
 
         if (calledFrom.equalsIgnoreCase("DISPLAY_BREWS_DIALOG")) {

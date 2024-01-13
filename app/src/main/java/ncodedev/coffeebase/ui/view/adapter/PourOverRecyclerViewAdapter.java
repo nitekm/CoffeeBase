@@ -42,7 +42,7 @@ public class PourOverRecyclerViewAdapter extends RecyclerView.Adapter<PourOverRe
         Optional.of(pourOvers.get(holder.getAdapterPosition()).getWaterAmountInMl())
                 .map(String::valueOf)
                 .ifPresent(holder.waterAmountTxt::setText);
-        Optional.of(pourOvers.get(holder.getAdapterPosition()).getTime())
+        Optional.of(pourOvers.get(holder.getAdapterPosition()).getTimeInSeconds())
                 .map(String::valueOf)
                 .ifPresent(holder.pourTimeTxt::setText);
     }

@@ -11,9 +11,9 @@ public class PourOver implements Serializable {
     @Expose
     private Long id;
 
-    @SerializedName("time")
+    @SerializedName("timeInSeconds")
     @Expose
-    private Integer time;
+    private Long timeInSeconds;
 
     @SerializedName("waterAmountInMl")
     @Expose
@@ -30,9 +30,9 @@ public class PourOver implements Serializable {
     @Expose(serialize = false)
     private Brew brew;
 
-    public PourOver(Brew brew, Integer time, Integer waterAmountInMl) {
+    public PourOver(Brew brew, Long timeInSeconds, Integer waterAmountInMl) {
         this.brew = brew;
-        this.time = time;
+        this.timeInSeconds = timeInSeconds;
         this.waterAmountInMl = waterAmountInMl;
     }
 
@@ -44,12 +44,12 @@ public class PourOver implements Serializable {
         this.id = id;
     }
 
-    public Integer getTime() {
-        return time;
+    public Long getTimeInSeconds() {
+        return timeInSeconds;
     }
 
-    public void setTime(Integer time) {
-        this.time = time;
+    public void setTimeInSeconds(Long timeInSeconds) {
+        this.timeInSeconds = timeInSeconds;
     }
 
     public Integer getWaterAmountInMl() {

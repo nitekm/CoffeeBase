@@ -2,8 +2,10 @@ package ncodedev.coffeebase.ui.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,31 +36,43 @@ public class AddPourOverDialogFragment extends DialogFragment {
     @NotNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        View view = getLayoutInflater().inflate(R.layout.add_pour_over_dialog, null);
+//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
 
+        View view = getLayoutInflater().inflate(R.layout.add_pour_over_dialog, null);
         waterAmount = view.findViewById(R.id.waterAmountInPourTxt);
         timeInSeconds = view.findViewById(R.id.pourTimeTxt);
-        dialogBuilder.setView(view)
+//        dialogBuilder.setView(view)
+//                .setTitle(R.string.add_pour)
+//                .setPositiveButton("OK", (dialog, which) -> validateAndAddPourOver(pourOvers, waterAmount, timeInSeconds))
+//                .setNegativeButton(R.string.colorpicker_dialog_cancel, (dialog, which) -> dialog.cancel());
+        AlertDialog addPourOverDialog = new AlertDialog.Builder(getActivity())
+                .setView(view)
                 .setTitle(R.string.add_pour)
-                .setPositiveButton("OK", (dialog, which) -> validateAndAddPourOver(pourOvers, waterAmount, timeInSeconds))
-                .setNegativeButton(R.string.colorpicker_dialog_cancel, (dialog, which) -> dialog.cancel());
+                .setPositiveButton("OK", null)
+                .setNegativeButton(R.string.colorpicker_dialog_cancel, (dialog, which) -> dialog.cancel())
+                .create();
 
-        return dialogBuilder.create();
+        addPourOverDialog.setOnShowListener(dialog -> {
+            Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(v -> validateAndAddPourOver(pourOvers, waterAmount, timeInSeconds, dialog));
+        });
+
+        return addPourOverDialog;
     }
 
-    private void validateAndAddPourOver(List<PourOver> pourOvers, TextView waterAmount, TextView timeInSeconds) {
+    private void validateAndAddPourOver(List<PourOver> pourOvers, TextView waterAmount, TextView timeInSeconds, DialogInterface dialog) {
         if (!validatePour()) {
             return;
         }
         pourOvers.add(createPourOver(
                 Integer.parseInt(waterAmount.getText().toString()),
-                Integer.parseInt(timeInSeconds.getText().toString())
+                Long.parseLong(timeInSeconds.getText().toString())
         ));
         pourOverRecyclerViewAdapter.notifyItemInserted(pourOvers.size() -1);
+        dialog.dismiss();
     }
 
-    private PourOver createPourOver(Integer waterAmount, Integer timeInSeconds) {
+    private PourOver createPourOver(Integer waterAmount, Long timeInSeconds) {
         return new PourOver(new Brew(brew.getId()), timeInSeconds, waterAmount);
     }
 
