@@ -41,10 +41,6 @@ public class AddPourOverDialogFragment extends DialogFragment {
         View view = getLayoutInflater().inflate(R.layout.add_pour_over_dialog, null);
         waterAmount = view.findViewById(R.id.waterAmountInPourTxt);
         timeInSeconds = view.findViewById(R.id.pourTimeTxt);
-//        dialogBuilder.setView(view)
-//                .setTitle(R.string.add_pour)
-//                .setPositiveButton("OK", (dialog, which) -> validateAndAddPourOver(pourOvers, waterAmount, timeInSeconds))
-//                .setNegativeButton(R.string.colorpicker_dialog_cancel, (dialog, which) -> dialog.cancel());
         AlertDialog addPourOverDialog = new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle(R.string.add_pour)
