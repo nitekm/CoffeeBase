@@ -36,8 +36,6 @@ public class AddPourOverDialogFragment extends DialogFragment {
     @NotNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-
         View view = getLayoutInflater().inflate(R.layout.add_pour_over_dialog, null);
         waterAmount = view.findViewById(R.id.waterAmountInPourTxt);
         timeInSeconds = view.findViewById(R.id.pourTimeTxt);
