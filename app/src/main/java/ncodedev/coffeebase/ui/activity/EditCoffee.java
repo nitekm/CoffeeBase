@@ -35,7 +35,10 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
@@ -359,12 +362,11 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
 
     @Override
-    public void handleDeleteResponse() {
-
-    }
+    public void handleDeleteResponse() {}
 
     @Override
     public void handleError() {
         showToast(this, getString(R.string.error));
+        saveBtn.setEnabled(true);
     }
 }
