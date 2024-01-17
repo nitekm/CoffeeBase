@@ -9,7 +9,10 @@ import android.os.Looper;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -61,7 +64,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onStart() {
         super.onStart();
-        googleSignInClientService.silentSignIn();
+        if (User.getInstance() == null) {
+            googleSignInClientService.silentSignIn();
+            Log.d(TAG, "No logged user found, initializing silent SignIn");
+        }
     }
 
     private void initViews() {

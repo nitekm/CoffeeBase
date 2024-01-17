@@ -3,7 +3,10 @@ package ncodedev.coffeebase.service;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
-import com.google.android.gms.auth.api.signin.*;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.BuildConfig;
@@ -11,9 +14,7 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.ui.activity.LoginActivity;
 import ncodedev.coffeebase.ui.activity.MainActivity;
 
-import static ncodedev.coffeebase.R.string.login_failed;
-import static ncodedev.coffeebase.R.string.successfully_logged_out;
-import static ncodedev.coffeebase.R.string.welcome_back;
+import static ncodedev.coffeebase.R.string.*;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class GoogleSignInClientService {
@@ -42,6 +43,7 @@ public class GoogleSignInClientService {
         if (silentSignInTask.isSuccessful()) {
             setCurrentUser(silentSignInTask.getResult());
             showToast(context, context.getString(welcome_back));
+            Log.d(TAG, "silentSignInWithRedirect: calling main activity after silent signin");
             context.startActivity(new Intent(context, MainActivity.class));
         } else {
             silentSignInTask.addOnSuccessListener(task -> {
