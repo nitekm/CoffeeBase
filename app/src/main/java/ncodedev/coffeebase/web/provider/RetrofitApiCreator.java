@@ -1,8 +1,8 @@
 package ncodedev.coffeebase.web.provider;
 
-import ncodedev.coffeebase.web.api.Api;
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.web.api.Api;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -20,8 +20,8 @@ public class RetrofitApiCreator {
 
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
-                .connectTimeout(15, TimeUnit.SECONDS)
-                .callTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .callTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(logging)
                 .addInterceptor(chain -> {
                     Request request = chain.request()
