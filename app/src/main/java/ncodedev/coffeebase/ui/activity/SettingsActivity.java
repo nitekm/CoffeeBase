@@ -3,6 +3,7 @@ package ncodedev.coffeebase.ui.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -100,6 +101,7 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
             case PL -> ChangeLanguageHandler.changeLanguage(PL, SettingsActivity.this);
             case PT -> ChangeLanguageHandler.changeLanguage(PT, SettingsActivity.this);
         }
+        Log.d("settings", "applyChangeLanguage: " + chosenLanguageCode.getValue());
 
         Intent intent = this.getIntent();
         this.finish();
