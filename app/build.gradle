@@ -14,8 +14,8 @@ android {
         applicationId "ncodedev.coffeebase"
         minSdk 27
         targetSdk 33
-        versionCode 170
-        versionName "1.7.0"
+        versionCode 172
+        versionName "1.7.2"
 //        buildConfigField("String", "BaseURL", '\"http://10.0.2.2:8080/"')
         buildConfigField("String", "BaseURL", '\"https://coffeebase-379621.lm.r.appspot.com/"')
         buildConfigField("String", "ClientId", apikeyProperties['CLIENT_ID'])
@@ -52,6 +52,11 @@ android {
     packaging {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+    bundle {
+        language {
+            enableSplit = false
         }
     }
 }
