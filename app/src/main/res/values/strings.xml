@@ -158,6 +158,7 @@
     <string name="purchased">purchased</string>
     <string name="save_settings">Save Settings</string>
     <string name="coffees_in_row">My coffeebase coffees in row</string>
+    <string name="search_by_anything">search by anything</string>
 
     <!--    dropdowns-->
     <string-array name="continents">

@@ -139,4 +139,5 @@
     <string name="purchased">zakupiony</string>
     <string name="save_settings">Zapisz ustawienia</string>
     <string name="coffees_in_row">My coffeebase kawy w rzędzie</string>
+    <string name="search_by_anything">szukaj według dowolnego kryterium</string>
 </resources>

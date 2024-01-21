@@ -2,6 +2,8 @@ package ncodedev.coffeebase.web.provider;
 
 import android.util.Log;
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.model.utils.Page;
+import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.api.CoffeeApi;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
@@ -27,10 +29,9 @@ public class CoffeeApiProvider {
         return instance;
     }
 
-    public void getAll(CoffeeListResponseListener listener) {
-
-        Call<List<Coffee>> call = createApi(CoffeeApi.class).getCoffees();
-        handleListResponse(call, listener);
+    public void getAllPaged(CoffeeListResponseListener listener, PageCoffeeRequest request) {
+        Call<Page<Coffee>> call = createApi(CoffeeApi.class).getCoffeesPaged(request);
+        handleListResponse(call, listener, request);
     }
 
     public void search(String content, CoffeeListResponseListener listener) {
@@ -63,6 +64,26 @@ public class CoffeeApiProvider {
         handleCoffeeResponse(call, listener);
     }
 
+    private void handleListResponse(Call<Page<Coffee>> call, CoffeeListResponseListener listener, PageCoffeeRequest request) {
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(final Call<Page<Coffee>> call, final Response<Page<Coffee>> response) {
+                if (response.isSuccessful()) {
+                    listener.handleGetList(response.body());
+                } else {
+                    listener.handleError();
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Page<Coffee>> call, final Throwable t) {
+                listener.handleError();
+                Log.d(TAG, "Retrying call");
+                getAllPaged(listener, request);
+            }
+        });
+    }
+
     private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
@@ -78,7 +99,6 @@ public class CoffeeApiProvider {
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
                 listener.handleError();
                 Log.d(TAG, "Retrying call");
-                getAll(listener);
             }
         });
     }

@@ -1,21 +1,19 @@
 package ncodedev.coffeebase.ui.activity;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.text.Html;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.SearchView;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -27,28 +25,33 @@ import com.google.android.material.navigation.NavigationView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.model.utils.Page;
+import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
+import ncodedev.coffeebase.ui.utility.NavigationDrawerHandler;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 import static ncodedev.coffeebase.service.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, CoffeeListResponseListener {
+public class MainActivity extends AppCompatActivity implements CoffeeListResponseListener {
     public static final String TAG = "MainActivity";
 
+    private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
     private RecyclerView recyclerView;
-    private MaterialToolbar toolbar;
-    private DrawerLayout drawerLayout;
     private TextView userNameTxt;
     private ImageView userPictureImage;
     private ProgressBar progressBar;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
+    private Integer currentPage = 0;
+    private boolean lastPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +76,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private void initViews() {
         recyclerView = findViewById(R.id.coffeeRecView);
         setUpCoffeesView();
-        toolbar = findViewById(R.id.topAppBarCoffeeActivity);
-        drawerLayout = findViewById(R.id.drawerLayout);
+        MaterialToolbar toolbar = findViewById(R.id.topAppBarCoffeeActivity);
+        DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.navigation);
         View headerView = navigationView.getHeaderView(0);
         userNameTxt = headerView.findViewById(R.id.userNameTxt);
         userPictureImage = headerView.findViewById(R.id.userPictureImage);
-        setUpNavigationDrawer();
-        setUpNavigationDrawerContent(navigationView);
+        NavigationDrawerHandler navigationDrawerHandler = new NavigationDrawerHandler(this);
+        navigationDrawerHandler.setUpNavigationDrawer(toolbar, drawerLayout, navigationView);
         progressBar = findViewById(R.id.progressBar);
         updateUI();
     }
@@ -94,14 +97,39 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setUpCoffeesView() {
-        int coffeesInRowPreference =  PreferenceManager.getDefaultSharedPreferences(this).getInt(MY_COFFEEBASE_COFFEES_IN_ROW, 2);
+        int coffeesInRowPreference = PreferenceManager.getDefaultSharedPreferences(this).getInt(MY_COFFEEBASE_COFFEES_IN_ROW, 2);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, coffeesInRowPreference);
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !lastPage) {
+                    coffeeApiProvider.getAllPaged(MainActivity.this, new PageCoffeeRequest(currentPage + 1));
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
     }
+
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
-        coffeeApiProvider.getAll(this);
+        coffeeApiProvider.getAllPaged(this, new PageCoffeeRequest(currentPage));
+    }
+
+    @Override
+    public void handleGetList(Page<Coffee> coffeesPage) {
+        Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
+        if (coffeeRecyclerViewAdapter == null) {
+            coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffeesPage.getContent());
+            recyclerView.setAdapter(coffeeRecyclerViewAdapter);
+        } else {
+            coffeeRecyclerViewAdapter.addItems(coffeesPage.getContent());
+            coffeeRecyclerViewAdapter.notifyDataSetChanged();
+        }
+        currentPage = coffeesPage.getNumber();
+        lastPage = coffeesPage.isLast();
+        progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -149,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         };
         menu.findItem(R.id.searchMenuItem).setOnActionExpandListener(onActionExpandListener);
         SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
-        searchView.setQueryHint("...");
+        searchView.setQueryHint(getString(R.string.search_by_anything));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(final String searchBy) {
@@ -167,80 +195,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return true;
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
-
-
-    //NAVIGATION DRAWER - START --------------------------------------------------------------------------------------\\
-    private void setUpNavigationDrawer() {
-        setSupportActionBar(toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
-    private void setUpNavigationDrawerContent(NavigationView navigationView) {
-        navigationView.bringToFront();
-        navigationView.setNavigationItemSelectedListener(
-                item -> {
-                    selectDrawerItem(item);
-                    return true;
-                });
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    private void selectDrawerItem(@NonNull final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.addCoffee -> launchEditCoffee();
-            case R.id.addBrew -> launchEditBrew();
-            case R.id.about -> showAbout();
-            case R.id.account -> showAccountInfo();
-            case R.id.settings -> launchSettings();
-            case R.id.signout -> googleSignInClientService.signOut();
-            default -> {}
-        }
-    }
-
-    private void launchEditCoffee() {
-        Intent intent = new Intent(MainActivity.this, EditCoffee.class);
-        startActivity(intent);
-    }
-
-    private void launchEditBrew() {
-        Intent intent = new Intent(this, AddBrewActivity.class);
-        startActivity(intent);
-    }
-
-    private void showAbout() {
-        Dialog aboutDialog = new Dialog(this);
-        aboutDialog.setContentView(R.layout.about_dialog);
-
-        String aboutContentFormatted = getString(R.string.about_content);
-        Spanned spannedAboutContent = Html.fromHtml(aboutContentFormatted);
-
-        TextView aboutContentTxt = aboutDialog.findViewById(R.id.aboutContentTxt);
-        aboutContentTxt.setText(spannedAboutContent);
-
-        aboutDialog.show();
-    }
-
-    private void launchSettings() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    private void showAccountInfo() {
-        Intent intent = new Intent(this, AccountActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemSelected(final AdapterView<?> adapterView, final View view, final int i, final long l) {
-    }
-
-    @Override
-    public void onNothingSelected(final AdapterView<?> adapterView) {
-    }
-    //NAVIGATION DRAWER - END ---------------------------------------------------------------------------------------\\
-
 
     @Override
     public void handleError() { }

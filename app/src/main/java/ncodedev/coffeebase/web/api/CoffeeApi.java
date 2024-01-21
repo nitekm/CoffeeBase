@@ -1,6 +1,8 @@
 package ncodedev.coffeebase.web.api;
 
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.model.utils.Page;
+import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -9,8 +11,8 @@ import java.util.List;
 
 public interface CoffeeApi extends Api {
 
-    @GET("coffees")
-    Call<List<Coffee>> getCoffees();
+    @POST("coffees/find")
+    Call<Page<Coffee>> getCoffeesPaged(@Body PageCoffeeRequest request);
 
     @GET("coffees/search")
     Call<List<Coffee>> searchCoffees(@Query("content") String content);

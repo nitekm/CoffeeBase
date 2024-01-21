@@ -71,6 +71,10 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         return coffees.size();
     }
 
+    public void addItems(List<Coffee> items) {
+        coffees.addAll(items);
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final CardView cardView;
         private final ImageView coffeeImg;

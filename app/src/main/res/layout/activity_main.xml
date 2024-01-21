@@ -34,19 +34,14 @@
                     app:title="@string/my_coffeebase"
                     app:menu="@menu/top_app_bar_coffee_activity"
                     app:navigationIcon="@drawable/ic_menu_black_24"
-                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:layout_scrollFlags="enterAlways|snap"
                     style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
         </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                 <ProgressBar
                         style="?android:attr/progressBarStyle"
@@ -60,16 +55,16 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:id="@+id/coffeeRecView"
                         tools:ignore="MissingConstraints"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="16dp"/>
+                        android:layout_marginTop="50dp"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
