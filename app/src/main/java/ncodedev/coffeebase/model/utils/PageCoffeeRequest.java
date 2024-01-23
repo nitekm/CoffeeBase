@@ -21,6 +21,18 @@ public class PageCoffeeRequest {
     @Expose
     String sortDirection = "ASC";
 
+    @SerializedName("favourite")
+    @Expose
+    Boolean favourite;
+
+    @SerializedName("continent")
+    @Expose
+    String continent;
+
+    @SerializedName("roastProfile")
+    @Expose
+    String roastProfile;
+
     public PageCoffeeRequest(Integer pageNumber) {
         this.pageNumber = pageNumber;
     }
@@ -55,5 +67,29 @@ public class PageCoffeeRequest {
 
     public void setSortDirection(String sortDirection) {
         this.sortDirection = sortDirection;
+    }
+
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
+    }
+
+    public String getContinent() {
+        return continent;
+    }
+
+    public void setContinent(String continent) {
+        this.continent = continent;
+    }
+
+    public String getRoastProfile() {
+        return roastProfile;
+    }
+
+    public void setRoastProfile(String roastProfile) {
+        this.roastProfile = roastProfile;
     }
 }

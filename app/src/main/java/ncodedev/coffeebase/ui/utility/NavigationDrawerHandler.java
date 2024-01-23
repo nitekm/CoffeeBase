@@ -15,12 +15,9 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
-import ncodedev.coffeebase.ui.activity.AccountActivity;
-import ncodedev.coffeebase.ui.activity.AddBrewActivity;
-import ncodedev.coffeebase.ui.activity.EditCoffee;
-import ncodedev.coffeebase.ui.activity.SettingsActivity;
+import ncodedev.coffeebase.ui.activity.*;
 
-public class NavigationDrawerHandler {
+public class NavigationDrawerHandler extends MainActivity {
 
     private final AppCompatActivity mainActivity;
     private GoogleSignInClientService googleSignInClientService;

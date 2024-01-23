@@ -9,10 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -193,6 +190,19 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
             }
         });
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.sortMenuItem) {
+            var sortMenu = new PopupMenu(this, findViewById(item.getItemId()));
+            var menuInflater = sortMenu.getMenuInflater();
+            menuInflater.inflate(R.menu.top_app_bar_sort_menu, sortMenu.getMenu());
+//            sortMenu.setOnMenuItemClickListener();
+            sortMenu.show();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
 

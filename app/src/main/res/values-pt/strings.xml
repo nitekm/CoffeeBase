@@ -138,4 +138,7 @@
     <string name="save_settings">Salvar Configurações</string>
     <string name="coffees_in_row">My coffeebase cafés em fila</string>
     <string name="search_by_anything">pesquisar por qualquer coisa</string>
+    <string name="sort">sort</string>
+    <string name="do_filter">filter</string>
+    <string name="sort_default">default</string>
 </resources>

@@ -159,6 +159,9 @@
     <string name="save_settings">Save Settings</string>
     <string name="coffees_in_row">My coffeebase coffees in row</string>
     <string name="search_by_anything">search by anything</string>
+    <string name="sort">sort</string>
+    <string name="do_filter">filter</string>
+    <string name="sort_default">default</string>
 
     <!--    dropdowns-->
     <string-array name="continents">

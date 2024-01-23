@@ -18,6 +18,7 @@ public class Coffee implements Serializable {
     @SerializedName("origin")
     @Expose
     private String origin;
+
     @SerializedName("roaster")
     @Expose
     private String roaster;
