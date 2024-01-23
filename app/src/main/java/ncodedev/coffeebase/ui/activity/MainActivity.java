@@ -2,11 +2,8 @@ package ncodedev.coffeebase.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
@@ -26,6 +23,7 @@ import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
+import ncodedev.coffeebase.ui.utility.MainActivityTopBarHandler;
 import ncodedev.coffeebase.ui.utility.NavigationDrawerHandler;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
@@ -156,44 +154,14 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     //TOP BAR - START ------------------------------------------------------------------------------------------------\\
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_app_bar_my_coffeebase, menu);
-
-        MenuItem.OnActionExpandListener onActionExpandListener = new MenuItem.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(final MenuItem menuItem) {
-                Log.d(TAG, "onMenuItemActionExpand: Search mode activated");
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(final MenuItem menuItem) {
-                Log.d(TAG, "onMenuItemActionCollapse: Search mode deactivated");
-                return true;
-            }
-        };
-        menu.findItem(R.id.searchMenuItem).setOnActionExpandListener(onActionExpandListener);
-        SearchView searchView = (SearchView) menu.findItem(R.id.searchMenuItem).getActionView();
-        searchView.setQueryHint(getString(R.string.search_by_anything));
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(final String searchBy) {
-                coffeeApiProvider.search(searchBy, MainActivity.this);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(final String searchBy) {
-                new Handler(Looper.getMainLooper())
-                        .postDelayed(() -> coffeeApiProvider.search(searchBy, MainActivity.this), 2000);
-                return true;
-            }
-        });
-        return true;
+        var topBarHandler = new MainActivityTopBarHandler(this, menu, this);
+        return topBarHandler.setUpTopAppBarSearch();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        var topBarHandler = new MainActivityTopBarHandler(this, menu, this);
+        return topBarHandler.setUpTopAppBarSearch();
         if (item.getItemId() == R.id.sortMenuItem) {
             var sortMenu = new PopupMenu(this, findViewById(item.getItemId()));
             var menuInflater = sortMenu.getMenuInflater();

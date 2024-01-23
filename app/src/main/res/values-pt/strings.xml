@@ -141,4 +141,6 @@
     <string name="sort">sort</string>
     <string name="do_filter">filter</string>
     <string name="sort_default">default</string>
+    <string name="descending">descending</string>
+    <string name="ascending">ascending</string>
 </resources>

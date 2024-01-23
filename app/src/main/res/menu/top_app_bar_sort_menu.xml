@@ -15,71 +15,103 @@
             <item
                     android:id="@+id/sort_by_name_desc"
                     android:icon="@drawable/ic_sort_arrow_desc"
-                    android:title="descending"
+                    android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
                     android:id="@+id/sort_name_asc"
-                    android:title="ascending"
+                    android:title="@string/ascending"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     app:showAsAction="ifRoom"/>
         </menu>
     </item>
 
-<!--    <item-->
-<!--            android:id="@+id/sort_by_name_asc"-->
-<!--            android:icon="@drawable/ic_sort_arrow_asc"-->
-<!--            android:title="@string/coffee_name"-->
-<!--            app:showAsAction="always"-->
-<!--            android:actionLayout="@layout/sort_menu_item_layout">-->
-<!--    </item>-->
-
     <item
-            android:id="@+id/sort_by_roaster_desc"
+            android:id="@+id/sort_by_roaster"
             android:icon="@drawable/ic_sort_arrow_desc"
-            android:title="@string/coffee_name"
-            app:showAsAction="always">
+            android:title="@string/roaster">
+        <menu>
+            <item
+                    android:id="@+id/sort_by_roaster_desc"
+                    android:icon="@drawable/ic_sort_arrow_desc"
+                    android:title="@string/descending"
+                    app:showAsAction="ifRoom"/>
+            <item
+                    android:id="@+id/sort_roaster_asc"
+                    android:title="@string/ascending"
+                    android:icon="@drawable/ic_sort_arrow_asc"
+                    app:showAsAction="ifRoom"/>
+        </menu>
     </item>
 
     <item
-            android:id="@+id/sort_by_roaster_asc"
-            android:icon="@drawable/ic_sort_arrow_asc"
-            android:title="@string/coffee_name">
-    </item>
-
-    <item
-            android:id="@+id/sort_by_crop_height_desc"
+            android:id="@+id/sort_by_farm"
             android:icon="@drawable/ic_sort_arrow_desc"
-            android:title="@string/coffee_name">
+            android:title="@string/farm">
+        <menu>
+            <item
+                    android:id="@+id/sort_by_farm_desc"
+                    android:icon="@drawable/ic_sort_arrow_desc"
+                    android:title="@string/descending"
+                    app:showAsAction="ifRoom"/>
+            <item
+                    android:id="@+id/sort_farm_asc"
+                    android:title="@string/ascending"
+                    android:icon="@drawable/ic_sort_arrow_asc"
+                    app:showAsAction="ifRoom"/>
+        </menu>
     </item>
 
     <item
-            android:id="@+id/sort_by_crop_height_asc"
-            android:icon="@drawable/ic_sort_arrow_asc"
-            android:title="@string/coffee_name">
-    </item>
-
-    <item
-            android:id="@+id/sort_by_sca_rating_desc"
+            android:id="@+id/sort_by_crop_height"
             android:icon="@drawable/ic_sort_arrow_desc"
-            android:title="@string/coffee_name">
+            android:title="@string/crop_height">
+        <menu>
+            <item
+                    android:id="@+id/sort_by_crop_height_desc"
+                    android:icon="@drawable/ic_sort_arrow_desc"
+                    android:title="@string/descending"
+                    app:showAsAction="ifRoom"/>
+            <item
+                    android:id="@+id/sort_crop_height_asc"
+                    android:icon="@drawable/ic_sort_arrow_asc"
+                    android:title="@string/ascending"
+                    app:showAsAction="ifRoom"/>
+        </menu>
     </item>
 
     <item
-            android:id="@+id/sort_by_sca_rating_asc"
-            android:icon="@drawable/ic_sort_arrow_asc"
-            android:title="@string/coffee_name">
-    </item>
-
-    <item
-            android:id="@+id/sort_by_rating_desc"
+            android:id="@+id/sort_by_rating"
             android:icon="@drawable/ic_sort_arrow_desc"
-            android:title="@string/coffee_name">
+            android:title="@string/rating">
+        <menu>
+            <item
+                    android:id="@+id/sort_by_rating_desc"
+                    android:icon="@drawable/ic_sort_arrow_desc"
+                    android:title="@string/descending"
+                    app:showAsAction="ifRoom"/>
+            <item
+                    android:id="@+id/sort_rating_asc"
+                    android:icon="@drawable/ic_sort_arrow_asc"
+                    android:title="@string/ascending"
+                    app:showAsAction="ifRoom"/>
+        </menu>
     </item>
 
     <item
-            android:id="@+id/sort_by_rating_asc"
-            android:icon="@drawable/ic_sort_arrow_asc"
-            android:title="@string/coffee_name">
+            android:id="@+id/sort_by_sca_rating"
+            android:icon="@drawable/ic_sort_arrow_desc"
+            android:title="@string/sca_score">
+        <menu>
+            <item
+                    android:id="@+id/sort_by_sca_rating_desc"
+                    android:icon="@drawable/ic_sort_arrow_desc"
+                    android:title="@string/descending"
+                    app:showAsAction="ifRoom"/>
+            <item
+                    android:id="@+id/sort_sca_rating_asc"
+                    android:icon="@drawable/ic_sort_arrow_asc"
+                    android:title="@string/ascending"
+                    app:showAsAction="ifRoom"/>
+        </menu>
     </item>
-
 </menu>
