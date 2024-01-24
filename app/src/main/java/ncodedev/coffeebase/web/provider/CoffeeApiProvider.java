@@ -2,6 +2,7 @@ package ncodedev.coffeebase.web.provider;
 
 import android.util.Log;
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.api.CoffeeApi;
@@ -29,9 +30,9 @@ public class CoffeeApiProvider {
         return instance;
     }
 
-    public void getAllPaged(CoffeeListResponseListener listener, PageCoffeeRequest request) {
+    public void getAllPaged(CoffeeListResponseListener listener, PageCoffeeRequest request, RequestContext context) {
         Call<Page<Coffee>> call = createApi(CoffeeApi.class).getCoffeesPaged(request);
-        handleListResponse(call, listener, request);
+        handleListResponse(call, listener, request, context);
     }
 
     public void search(String content, CoffeeListResponseListener listener) {
@@ -64,12 +65,23 @@ public class CoffeeApiProvider {
         handleCoffeeResponse(call, listener);
     }
 
-    private void handleListResponse(Call<Page<Coffee>> call, CoffeeListResponseListener listener, PageCoffeeRequest request) {
+    private void handleListResponse(Call<Page<Coffee>> call,
+                                    CoffeeListResponseListener listener,
+                                    PageCoffeeRequest request,
+                                    RequestContext requestContext) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Page<Coffee>> call, final Response<Page<Coffee>> response) {
                 if (response.isSuccessful()) {
-                    listener.handleGetList(response.body());
+                    if (requestContext == RequestContext.GET_ALL) {
+                        listener.handleGetAll(response.body().getContent());
+                    }
+                    if (requestContext == RequestContext.SORT) {
+                        listener.handleSortPage(response.body());
+                    }
+                    if (requestContext == RequestContext.FILTER) {
+                        listener.handleFilterPage(response.body());
+                    }
                 } else {
                     listener.handleError();
                 }
@@ -79,7 +91,7 @@ public class CoffeeApiProvider {
             public void onFailure(final Call<Page<Coffee>> call, final Throwable t) {
                 listener.handleError();
                 Log.d(TAG, "Retrying call");
-                getAllPaged(listener, request);
+                getAllPaged(listener, request, requestContext);
             }
         });
     }
@@ -89,7 +101,7 @@ public class CoffeeApiProvider {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
                 if (response.isSuccessful()) {
-                    listener.handleGetList(response.body());
+                    listener.handleGetAll(response.body());
                 } else {
                     listener.handleError();
                 }

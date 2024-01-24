@@ -1,16 +1,16 @@
 package ncodedev.coffeebase.ui.utility;
 
-import ncodedev.coffeebase.model.enums.ContextName;
+import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 
 public class CoffeesRecyclerAdapterContext {
     private CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter;
     private int currentPage = 0;
     private boolean isLastPage = false;
-    private static ContextName contextName;
+    private static RequestContext requestContext;
 
-    private CoffeesRecyclerAdapterContext(ContextName contextName) {
-        CoffeesRecyclerAdapterContext.contextName = contextName;
+    private CoffeesRecyclerAdapterContext(RequestContext requestContext) {
+        CoffeesRecyclerAdapterContext.requestContext = requestContext;
     }
 
     //TODO: do wyrzucenia. W Interfejsie listReposnelistener dodać metody handleSort handle get all itd.
@@ -18,9 +18,9 @@ public class CoffeesRecyclerAdapterContext {
     // W main activity musi być curtrentocntext i sprawedzanie czy to pierszy strzal czy nastepny jak pierwszy to czyscimy liste
     // i zapelniamy wyuikami jak anstepny to dodajemy wyniki do obencyh
     // dodatkowo mozna to rozsz4erzy co search po wyrzuceniu getAlla
-    public static CoffeesRecyclerAdapterContext getCoffeesRecyclerAdapterContext(ContextName contextName) {
-        if (CoffeesRecyclerAdapterContext.contextName == null || CoffeesRecyclerAdapterContext.contextName != contextName) {
-            return new CoffeesRecyclerAdapterContext(contextName);
+    public static CoffeesRecyclerAdapterContext getCoffeesRecyclerAdapterContext(RequestContext requestContext) {
+        if (CoffeesRecyclerAdapterContext.requestContext == null || CoffeesRecyclerAdapterContext.requestContext != requestContext) {
+            return new CoffeesRecyclerAdapterContext(requestContext);
         }
         return this;
     }

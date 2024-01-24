@@ -1,6 +1,6 @@
 package ncodedev.coffeebase.model.enums;
 
-public enum ContextName {
+public enum RequestContext {
     GET_ALL,
     SORT,
     FILTER

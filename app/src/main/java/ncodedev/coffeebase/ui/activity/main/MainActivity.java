@@ -20,11 +20,11 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
-import ncodedev.coffeebase.ui.utility.CoffeesRecyclerAdapterContext;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
@@ -46,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
-    static Integer currentPage = 0;
-    boolean lastPage = false;
+    private Integer currentPage = 0;
+    private boolean lastPage = false;
+    private RequestContext currentRequestContext = RequestContext.GET_ALL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,28 +97,32 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
         int coffeesInRowPreference = PreferenceManager.getDefaultSharedPreferences(this).getInt(MY_COFFEEBASE_COFFEES_IN_ROW, 2);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, coffeesInRowPreference);
         recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !lastPage) {
-                    coffeeApiProvider.getAllPaged(MainActivity.this, new PageCoffeeRequest(currentPage + 1));
-                }
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-        });
     }
 
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
-        coffeeApiProvider.getAllPaged(this, new PageCoffeeRequest(currentPage));
+        coffeeApiProvider.getAllPaged(this, new PageCoffeeRequest(currentPage), RequestContext.GET_ALL);
     }
 
     @Override
-    public void handleGetList(Page<Coffee> coffeesPage) {
+    public void handleGetAllPage(Page<Coffee> coffeesPage) {
+        handleResponseBasedOnContext(coffeesPage, RequestContext.GET_ALL);
+    }
+
+    @Override
+    public void handleSortPage(Page<Coffee> coffeePage) {
+        handleResponseBasedOnContext(coffeePage, RequestContext.SORT);
+    }
+
+    @Override
+    public void handleFilterPage(Page<Coffee> coffeePage) {
+
+    }
+
+    private void handleResponseBasedOnContext(Page<Coffee> coffeesPage, RequestContext requestContext) {
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
-        CoffeesRecyclerAdapterContext.getCoffeesRecyclerAdapterContext()
-        if (coffeeRecyclerViewAdapter == null) {
+        if (coffeeRecyclerViewAdapter == null || currentRequestContext != requestContext) {
             coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffeesPage.getContent());
             recyclerView.setAdapter(coffeeRecyclerViewAdapter);
         } else {
@@ -126,11 +131,25 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
         }
         currentPage = coffeesPage.getNumber();
         lastPage = coffeesPage.isLast();
+        currentRequestContext = requestContext;
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !lastPage) {
+                    coffeeApiProvider.getAllPaged(
+                            MainActivity.this,
+                            new PageCoffeeRequest(currentPage + 1),
+                            requestContext);
+                }
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
         progressBar.setVisibility(View.INVISIBLE);
     }
 
     @Override
-    public void handleGetList(List<Coffee> coffees) {
+    public void handleGetAll(List<Coffee> coffees) {
         progressBar.setVisibility(View.INVISIBLE);
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
         CoffeeRecyclerViewAdapter coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffees);

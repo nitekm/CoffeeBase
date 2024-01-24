@@ -6,7 +6,9 @@ import ncodedev.coffeebase.model.utils.Page;
 import java.util.List;
 
 public interface CoffeeListResponseListener {
-    void handleGetList(List<Coffee> coffees);
-    void handleGetList(Page<Coffee> coffeesPage);
+    void handleGetAll(List<Coffee> coffees);
+    void handleGetAllPage(Page<Coffee> coffeesPage);
+    void handleSortPage(Page<Coffee> coffeePage);
+    void handleFilterPage(Page<Coffee> coffeePage);
     void handleError();
 }
