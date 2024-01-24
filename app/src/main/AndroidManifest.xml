@@ -77,7 +77,7 @@
                 android:name=".ui.view.card.CoffeeCardView"
                 android:exported="true"/>
         <activity
-                android:name=".ui.activity.MainActivity"
+                android:name=".ui.activity.main.MainActivity"
                 android:configChanges="orientation|keyboardHidden"
                 android:exported="true"
                 android:screenOrientation="portrait"/>

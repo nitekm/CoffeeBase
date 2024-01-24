@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui.utility;
+package ncodedev.coffeebase.ui.activity.main;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -15,9 +15,12 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
-import ncodedev.coffeebase.ui.activity.*;
+import ncodedev.coffeebase.ui.activity.AccountActivity;
+import ncodedev.coffeebase.ui.activity.AddBrewActivity;
+import ncodedev.coffeebase.ui.activity.EditCoffee;
+import ncodedev.coffeebase.ui.activity.SettingsActivity;
 
-public class NavigationDrawerHandler extends MainActivity {
+public class NavigationDrawerHandler {
 
     private final AppCompatActivity mainActivity;
     private GoogleSignInClientService googleSignInClientService;

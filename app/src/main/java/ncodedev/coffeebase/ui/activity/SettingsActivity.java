@@ -15,6 +15,7 @@ import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.enums.LanguageCode;
 import ncodedev.coffeebase.service.ChangeLanguageHandler;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.web.listener.UserSettingsResponseListener;
 import ncodedev.coffeebase.web.provider.UserSettingsApiProvider;
 

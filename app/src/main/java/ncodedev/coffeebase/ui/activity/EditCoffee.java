@@ -23,6 +23,7 @@ import ncodedev.coffeebase.model.domain.Tag;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.TagAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;

@@ -18,7 +18,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_name_asc"
+                    android:id="@+id/sort_by_name_asc"
                     android:title="@string/ascending"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     app:showAsAction="ifRoom"/>
@@ -36,7 +36,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_roaster_asc"
+                    android:id="@+id/sort_by_roaster_asc"
                     android:title="@string/ascending"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     app:showAsAction="ifRoom"/>
@@ -54,7 +54,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_farm_asc"
+                    android:id="@+id/sort_by_farm_asc"
                     android:title="@string/ascending"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     app:showAsAction="ifRoom"/>
@@ -72,7 +72,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_crop_height_asc"
+                    android:id="@+id/sort_by_crop_height_asc"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     android:title="@string/ascending"
                     app:showAsAction="ifRoom"/>
@@ -90,7 +90,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_rating_asc"
+                    android:id="@+id/sort_by_rating_asc"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     android:title="@string/ascending"
                     app:showAsAction="ifRoom"/>
@@ -108,7 +108,7 @@
                     android:title="@string/descending"
                     app:showAsAction="ifRoom"/>
             <item
-                    android:id="@+id/sort_sca_rating_asc"
+                    android:id="@+id/sort_by_sca_rating_asc"
                     android:icon="@drawable/ic_sort_arrow_asc"
                     android:title="@string/ascending"
                     app:showAsAction="ifRoom"/>

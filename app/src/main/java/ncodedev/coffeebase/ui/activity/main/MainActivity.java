@@ -1,4 +1,4 @@
-package ncodedev.coffeebase.ui.activity;
+package ncodedev.coffeebase.ui.activity.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,9 +24,8 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
+import ncodedev.coffeebase.ui.utility.CoffeesRecyclerAdapterContext;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
-import ncodedev.coffeebase.ui.utility.MainActivityTopBarHandler;
-import ncodedev.coffeebase.ui.utility.NavigationDrawerHandler;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -45,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
-    private Integer currentPage = 0;
-    private boolean lastPage = false;
+    static Integer currentPage = 0;
+    boolean lastPage = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     @Override
     public void handleGetList(Page<Coffee> coffeesPage) {
         Log.d(TAG, "Callback from " + coffeeApiProvider.getClass().getSimpleName() + " received");
+        CoffeesRecyclerAdapterContext.getCoffeesRecyclerAdapterContext()
         if (coffeeRecyclerViewAdapter == null) {
             coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffeesPage.getContent());
             recyclerView.setAdapter(coffeeRecyclerViewAdapter);
@@ -160,17 +162,8 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        var topBarHandler = new MainActivityTopBarHandler(this, menu, this);
-        return topBarHandler.setUpTopAppBarSearch();
-        if (item.getItemId() == R.id.sortMenuItem) {
-            var sortMenu = new PopupMenu(this, findViewById(item.getItemId()));
-            var menuInflater = sortMenu.getMenuInflater();
-            menuInflater.inflate(R.menu.top_app_bar_sort_menu, sortMenu.getMenu());
-//            sortMenu.setOnMenuItemClickListener();
-            sortMenu.show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        var topBarHandler = new MainActivityTopBarHandler(this, item, this);
+        return topBarHandler.setUpTopAppBarSort();
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
 

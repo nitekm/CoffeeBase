@@ -14,6 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.BrewsFragment;
 import ncodedev.coffeebase.ui.fragment.CoffeeInfo;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeTabPagerAdapter;

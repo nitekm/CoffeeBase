@@ -14,6 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.subscription.*;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.web.provider.SubscriptionApiProvider;
 

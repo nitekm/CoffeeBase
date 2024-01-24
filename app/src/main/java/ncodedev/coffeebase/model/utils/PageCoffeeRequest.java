@@ -37,6 +37,12 @@ public class PageCoffeeRequest {
         this.pageNumber = pageNumber;
     }
 
+    public PageCoffeeRequest(Integer pageNumber, String sortProperty, String sortDirection) {
+        this.pageNumber = pageNumber;
+        this.sortProperty = sortProperty;
+        this.sortDirection = sortDirection;
+    }
+
     public Integer getPageSize() {
         return pageSize;
     }

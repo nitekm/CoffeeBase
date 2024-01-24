@@ -12,7 +12,7 @@ import com.google.android.gms.tasks.Task;
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.ui.activity.LoginActivity;
-import ncodedev.coffeebase.ui.activity.MainActivity;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 
 import static ncodedev.coffeebase.R.string.*;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;

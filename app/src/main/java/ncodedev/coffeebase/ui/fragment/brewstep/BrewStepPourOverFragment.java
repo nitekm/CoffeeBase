@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.PourOver;
-import ncodedev.coffeebase.ui.activity.MainActivity;
+import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.AddPourOverDialogFragment;
 import ncodedev.coffeebase.ui.view.adapter.PourOverRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
