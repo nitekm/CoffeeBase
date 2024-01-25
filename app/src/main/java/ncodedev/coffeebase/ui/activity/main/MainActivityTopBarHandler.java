@@ -10,6 +10,7 @@ import android.widget.PopupMenu;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import ncodedev.coffeebase.R;
+import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -99,48 +100,55 @@ public class MainActivityTopBarHandler {
 
         var itemId = menuItem.getItemId();
         if (itemId == R.id.sort_by_name_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, name, descending));
+            clearContextAndCallEndpoint(name, descending);
             return;
         }
         if (itemId == R.id.sort_by_name_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, name, ascending));
+            clearContextAndCallEndpoint(name, ascending);
             return;
         }
         if (itemId == R.id.sort_by_roaster_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, roaster, descending));
+            clearContextAndCallEndpoint(roaster,descending);
             return;
         }
         if (itemId == R.id.sort_by_roaster_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, roaster, ascending));
+            clearContextAndCallEndpoint(roaster, ascending);
             return;
         }
         if (itemId == R.id.sort_by_farm_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, farm, descending));
+            clearContextAndCallEndpoint(farm, descending);
             return;
         }
         if (itemId == R.id.sort_by_farm_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, farm, ascending));
+            clearContextAndCallEndpoint(farm, ascending);
             return;
         }if (itemId == R.id.sort_by_crop_height_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, cropHeight, descending));
+            clearContextAndCallEndpoint(cropHeight, descending);
             return;
         }
         if (itemId == R.id.sort_by_crop_height_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, cropHeight, ascending));
+            clearContextAndCallEndpoint(cropHeight, ascending);
             return;
         }if (itemId == R.id.sort_by_rating_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, rating, descending));
+            clearContextAndCallEndpoint(rating, ascending);
             return;
         }
         if (itemId == R.id.sort_by_rating_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, rating, ascending));
+            clearContextAndCallEndpoint(rating, descending);
             return;
         }if (itemId == R.id.sort_by_sca_rating_desc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, scaRating, descending));
+            clearContextAndCallEndpoint(scaRating, descending);
             return;
         }
         if (itemId == R.id.sort_by_sca_rating_asc) {
-            coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(MainActivity.currentPage, scaRating, ascending));
+            clearContextAndCallEndpoint(scaRating, ascending);
+            return;
         }
+    }
+
+    private void clearContextAndCallEndpoint(String sortProperty, String sortDirection) {
+        final var mainActivity = (MainActivity) appCompatActivity;
+        mainActivity.clearRequestContext();
+        coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(sortProperty, sortDirection), RequestContext.SORT);
     }
 }

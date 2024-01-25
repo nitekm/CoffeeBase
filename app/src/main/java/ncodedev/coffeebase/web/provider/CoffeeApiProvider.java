@@ -74,7 +74,7 @@ public class CoffeeApiProvider {
             public void onResponse(final Call<Page<Coffee>> call, final Response<Page<Coffee>> response) {
                 if (response.isSuccessful()) {
                     if (requestContext == RequestContext.GET_ALL) {
-                        listener.handleGetAll(response.body().getContent());
+                        listener.handleGetAllPage(response.body());
                     }
                     if (requestContext == RequestContext.SORT) {
                         listener.handleSortPage(response.body());

@@ -186,6 +186,9 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
 
+    public void clearRequestContext() {
+        this.currentRequestContext = null;
+    }
     @Override
     public void handleError() { }
 }

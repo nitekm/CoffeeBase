@@ -37,8 +37,7 @@ public class PageCoffeeRequest {
         this.pageNumber = pageNumber;
     }
 
-    public PageCoffeeRequest(Integer pageNumber, String sortProperty, String sortDirection) {
-        this.pageNumber = pageNumber;
+    public PageCoffeeRequest(String sortProperty, String sortDirection) {
         this.sortProperty = sortProperty;
         this.sortDirection = sortDirection;
     }
