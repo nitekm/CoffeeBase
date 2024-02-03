@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
     private Integer currentPage = 0;
-    private boolean lastPage = false;
+    private boolean lastPage = false, currentlyLoadingData = false;
     private RequestContext currentRequestContext = RequestContext.GET_ALL;
 
     @Override
@@ -132,20 +132,29 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
         currentPage = coffeesPage.getNumber();
         lastPage = coffeesPage.isLast();
         currentRequestContext = requestContext;
+        currentlyLoadingData = false;
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull @NotNull RecyclerView recyclerView, int newState) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !lastPage) {
+                if (shouldFetchMore(newState)) {
                     coffeeApiProvider.getAllPaged(
                             MainActivity.this,
                             new PageCoffeeRequest(currentPage + 1),
                             requestContext);
+                    currentlyLoadingData = true;
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
         });
         progressBar.setVisibility(View.INVISIBLE);
+    }
+
+    private boolean shouldFetchMore(int newState) {
+        return !recyclerView.canScrollVertically(1) &&
+                newState == RecyclerView.SCROLL_STATE_IDLE &&
+                !lastPage &&
+                !currentlyLoadingData;
     }
 
     @Override

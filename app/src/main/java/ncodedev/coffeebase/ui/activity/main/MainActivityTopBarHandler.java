@@ -17,7 +17,7 @@ import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 public class MainActivityTopBarHandler {
     private final static String TAG = "MainActivityTopBarHandler";
-    private AppCompatActivity appCompatActivity;
+    private final AppCompatActivity appCompatActivity;
     private Menu menu;
     private MenuItem menuItem;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();

@@ -7,7 +7,7 @@ public class PageCoffeeRequest {
 
     @SerializedName("pageSize")
     @Expose
-    Integer pageSize = 20;
+    Integer pageSize = 3;
 
     @SerializedName("pageNumber")
     @Expose
