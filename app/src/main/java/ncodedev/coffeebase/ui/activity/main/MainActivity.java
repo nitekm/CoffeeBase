@@ -25,6 +25,7 @@ import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
+import ncodedev.coffeebase.service.PageCoffeeRequestContextHolder;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
@@ -46,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
-    private Integer currentPage = 0;
-    private boolean lastPage = false, currentlyLoadingData = false;
-    private RequestContext currentRequestContext = RequestContext.GET_ALL;
+    private PageCoffeeRequestContextHolder pageCoffeeRequestContextHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,11 +101,16 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
-        coffeeApiProvider.getAllPaged(this, new PageCoffeeRequest(currentPage), RequestContext.GET_ALL);
+        PageCoffeeRequestContextHolder getAllContextHolder =
+                PageCoffeeRequestContextHolder.createNewStandardRequestContext(RequestContext.GET_ALL);
+        coffeeApiProvider.getAllPaged(this,
+                new PageCoffeeRequest(getAllContextHolder.getCurrentPageNumber()),
+                RequestContext.GET_ALL);
     }
 
     @Override
     public void handleGetAllPage(Page<Coffee> coffeesPage) {
+
         handleResponseBasedOnContext(coffeesPage, RequestContext.GET_ALL);
     }
 
