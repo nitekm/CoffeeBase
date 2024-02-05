@@ -117,96 +117,48 @@ public class Coffee implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getOrigin() {
         return origin;
     }
 
-    public void setOrigin(String origin) {
-        this.origin = origin;
-    }
-
     public String getRoaster() {
         return roaster;
-    }
-
-    public void setRoaster(String roaster) {
-        this.roaster = roaster;
     }
 
     public String getProcessing() {
         return processing;
     }
 
-    public void setProcessing(final String processing) {
-        this.processing = processing;
-    }
-
     public String getRoastProfile() {
         return roastProfile;
-    }
-
-    public void setRoastProfile(final String roastProfile) {
-        this.roastProfile = roastProfile;
     }
 
     public String getRegion() {
         return region;
     }
 
-    public void setRegion(final String region) {
-        this.region = region;
-    }
-
     public String getContinent() {
         return continent;
-    }
-
-    public void setContinent(final String continent) {
-        this.continent = continent;
     }
 
     public String getFarm() {
         return farm;
     }
 
-    public void setFarm(final String farm) {
-        this.farm = farm;
-    }
-
     public Integer getCropHeight() {
         return cropHeight;
-    }
-
-    public void setCropHeight(final Integer cropHeight) {
-        this.cropHeight = cropHeight;
     }
 
     public Integer getScaRating() {
         return scaRating;
     }
 
-    public void setScaRating(final Integer scaRating) {
-        this.scaRating = scaRating;
-    }
-
     public Double getRating() {
         return rating;
-    }
-
-    public void setRating(Double rating) {
-        this.rating = rating;
     }
 
     public String getCoffeeImageName() {
@@ -221,32 +173,16 @@ public class Coffee implements Serializable {
         return favourite;
     }
 
-    public void setFavourite(boolean favourite) {
-        this.favourite = favourite;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(final String userId) {
-        this.userId = userId;
     }
 
     public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(final List<Tag> tags) {
-        this.tags = tags;
-    }
-
     public List<Brew> getBrews() {
         return brews;
-    }
-
-    public void setBrews(List<Brew> brews) {
-        this.brews = brews;
     }
 
     @Override

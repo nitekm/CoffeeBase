@@ -40,32 +40,16 @@ public class Tag implements Serializable {
         return id;
     }
 
-    public void setId(final Integer id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
     }
 
     public String getColor() {
         return color;
     }
 
-    public void setColor(final String color) {
-        this.color = color;
-    }
-
     public String getUserId() {
         return userId;
-    }
-
-    public void setUserId(final String userId) {
-        this.userId = userId;
     }
 
     @Override

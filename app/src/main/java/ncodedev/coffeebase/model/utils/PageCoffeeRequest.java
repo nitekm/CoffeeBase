@@ -7,94 +7,89 @@ public class PageCoffeeRequest {
 
     @SerializedName("pageSize")
     @Expose
-    Integer pageSize = 3;
+    private final Integer pageSize;
 
     @SerializedName("pageNumber")
     @Expose
-    Integer pageNumber = 0;
+    private final Integer pageNumber;
 
     @SerializedName("sortProperty")
     @Expose
-    String sortProperty = "id";
+    private final String sortProperty;
 
     @SerializedName("sortDirection")
     @Expose
-    String sortDirection = "ASC";
+    private final String sortDirection;
 
     @SerializedName("favourite")
     @Expose
-    Boolean favourite;
+    private Boolean favourite;
 
     @SerializedName("continent")
     @Expose
-    String continent;
+    private String continent;
 
     @SerializedName("roastProfile")
     @Expose
-    String roastProfile;
+    private String roastProfile;
 
-    public PageCoffeeRequest(Integer pageNumber) {
-        this.pageNumber = pageNumber;
+    private PageCoffeeRequest(Builder builder) {
+        this.pageNumber = (builder.pageNumber != null) ? builder.pageNumber : 0;
+        this.sortProperty = (builder.sortProperty != null) ? builder.sortProperty : "id";
+        this.sortDirection = (builder.sortDirection != null) ? builder.sortDirection : "ASC";
+        this.pageSize = (builder.pageSize != null) ? builder.pageSize : 3;
+        this.favourite = builder.favourite;
+        this.continent = builder.continent;
+        this.roastProfile = builder.roastProfile;
     }
 
-    public PageCoffeeRequest(String sortProperty, String sortDirection) {
-        this.sortProperty = sortProperty;
-        this.sortDirection = sortDirection;
-    }
+    public static class Builder {
 
-    public Integer getPageSize() {
-        return pageSize;
-    }
+        private Integer pageNumber;
+        private String sortProperty;
+        private String sortDirection;
+        private Integer pageSize;
+        private Boolean favourite;
+        private String continent;
+        private String roastProfile;
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
+        public Builder withPageNumber(Integer pageNumber) {
+            this.pageNumber = pageNumber;
+            return this;
+        }
 
-    public Integer getPageNumber() {
-        return pageNumber;
-    }
+        public Builder withSortProperty(String sortProperty) {
+            this.sortProperty = sortProperty;
+            return this;
+        }
 
-    public void setPageNumber(Integer pageNumber) {
-        this.pageNumber = pageNumber;
-    }
+        public Builder withSortDirection(String sortDirection) {
+            this.sortDirection = sortDirection;
+            return this;
+        }
 
-    public String getSortProperty() {
-        return sortProperty;
-    }
+        public Builder withPageSize(Integer pageSize) {
+            this.pageSize = pageSize;
+            return this;
+        }
 
-    public void setSortProperty(String sortProperty) {
-        this.sortProperty = sortProperty;
-    }
+        public Builder withFavourite(Boolean favourite) {
+            this.favourite = favourite;
+            return this;
+        }
 
-    public String getSortDirection() {
-        return sortDirection;
-    }
+        public Builder withContinent(String continent) {
+            this.continent = continent;
+            return this;
+        }
 
-    public void setSortDirection(String sortDirection) {
-        this.sortDirection = sortDirection;
-    }
+        public Builder withRoastProfile(String roastProfile) {
+            this.roastProfile = roastProfile;
+            return this;
+        }
 
-    public Boolean getFavourite() {
-        return favourite;
-    }
-
-    public void setFavourite(Boolean favourite) {
-        this.favourite = favourite;
-    }
-
-    public String getContinent() {
-        return continent;
-    }
-
-    public void setContinent(String continent) {
-        this.continent = continent;
-    }
-
-    public String getRoastProfile() {
-        return roastProfile;
-    }
-
-    public void setRoastProfile(String roastProfile) {
-        this.roastProfile = roastProfile;
+        public PageCoffeeRequest build() {
+            return new PageCoffeeRequest(this);
+        }
     }
 }

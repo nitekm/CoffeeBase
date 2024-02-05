@@ -31,33 +31,18 @@ public class Subscription {
         return productId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
     public String getPurchaseToken() {
         return purchaseToken;
-    }
-
-    public void setPurchaseToken(String purchaseToken) {
-        this.purchaseToken = purchaseToken;
     }
 
     public boolean isActive() {
         return active;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.active = isActive;
-    }
-
     public String getPurchasedDate() {
         return purchasedDate;
     }
 
-    public void setPurchasedDate(String purchasedDate) {
-        this.purchasedDate = purchasedDate;
-    }
 }
 
 

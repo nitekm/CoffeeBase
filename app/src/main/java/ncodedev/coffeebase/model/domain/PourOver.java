@@ -40,47 +40,23 @@ public class PourOver implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getTimeInSeconds() {
         return timeInSeconds;
-    }
-
-    public void setTimeInSeconds(Long timeInSeconds) {
-        this.timeInSeconds = timeInSeconds;
     }
 
     public Integer getWaterAmountInMl() {
         return waterAmountInMl;
     }
 
-    public void setWaterAmountInMl(Integer waterAmountInMl) {
-        this.waterAmountInMl = waterAmountInMl;
-    }
-
     public String getComment() {
         return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     public String getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public Brew getBrew() {
         return brew;
-    }
-
-    public void setBrew(Brew brew) {
-        this.brew = brew;
     }
 }

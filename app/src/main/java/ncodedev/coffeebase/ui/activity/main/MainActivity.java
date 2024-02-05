@@ -34,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static ncodedev.coffeebase.service.PageCoffeeRequestContextHolder.createNewSortRequestContext;
 import static ncodedev.coffeebase.service.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
 
 public class MainActivity extends AppCompatActivity implements CoffeeListResponseListener {
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final ImageHelper imageHelper = ImageHelper.getInstance();
     private GoogleSignInClientService googleSignInClientService;
-    private PageCoffeeRequestContextHolder pageCoffeeRequestContextHolder;
+    private PageCoffeeRequestContextHolder requestContextHolder;
+    private RequestContext currentRequestContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,16 +103,16 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
 
     private void getAllCoffees() {
         progressBar.setVisibility(View.VISIBLE);
-        PageCoffeeRequestContextHolder getAllContextHolder =
-                PageCoffeeRequestContextHolder.createNewStandardRequestContext(RequestContext.GET_ALL);
+        requestContextHolder = requestContextHolder.createNewStandardRequestContext(RequestContext.GET_ALL);
         coffeeApiProvider.getAllPaged(this,
-                new PageCoffeeRequest(getAllContextHolder.getCurrentPageNumber()),
+                new PageCoffeeRequest.Builder()
+                        .withPageNumber(requestContextHolder.getCurrentPageNumber())
+                        .build(),
                 RequestContext.GET_ALL);
     }
 
     @Override
     public void handleGetAllPage(Page<Coffee> coffeesPage) {
-
         handleResponseBasedOnContext(coffeesPage, RequestContext.GET_ALL);
     }
 
@@ -129,14 +131,12 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
         if (coffeeRecyclerViewAdapter == null || currentRequestContext != requestContext) {
             coffeeRecyclerViewAdapter = new CoffeeRecyclerViewAdapter(MainActivity.this, coffeesPage.getContent());
             recyclerView.setAdapter(coffeeRecyclerViewAdapter);
+            currentRequestContext = requestContext;
         } else {
             coffeeRecyclerViewAdapter.addItems(coffeesPage.getContent());
             coffeeRecyclerViewAdapter.notifyDataSetChanged();
         }
-        currentPage = coffeesPage.getNumber();
-        lastPage = coffeesPage.isLast();
-        currentRequestContext = requestContext;
-        currentlyLoadingData = false;
+        requestContextHolder.updateContextOnNewPage(coffeesPage);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -144,9 +144,9 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
                 if (shouldFetchMore(newState)) {
                     coffeeApiProvider.getAllPaged(
                             MainActivity.this,
-                            new PageCoffeeRequest(currentPage + 1),
+                            createPageCoffeeRequestBasedOnCurrentContext(),
                             requestContext);
-                    currentlyLoadingData = true;
+                    requestContextHolder.setCurrentlyLoadingData(true);
                 }
                 super.onScrollStateChanged(recyclerView, newState);
             }
@@ -157,8 +157,21 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private boolean shouldFetchMore(int newState) {
         return !recyclerView.canScrollVertically(1) &&
                 newState == RecyclerView.SCROLL_STATE_IDLE &&
-                !lastPage &&
-                !currentlyLoadingData;
+                requestContextHolder.canFetchMoreData();
+    }
+
+    private PageCoffeeRequest createPageCoffeeRequestBasedOnCurrentContext() {
+        if (requestContextHolder.getCurrentRequestContext() == RequestContext.SORT) {
+            return new PageCoffeeRequest.Builder()
+                    .withPageNumber(requestContextHolder.getNextPageNumber())
+                    .withSortProperty(requestContextHolder.getCurrentSortProperty())
+                    .withSortDirection(requestContextHolder.getCurrentSortDirection())
+                    .build();
+        } else {
+            return new PageCoffeeRequest.Builder()
+                    .withPageNumber(requestContextHolder.getNextPageNumber())
+                    .build();
+        }
     }
 
     @Override
@@ -195,13 +208,17 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         var topBarHandler = new MainActivityTopBarHandler(this, item, this);
-        return topBarHandler.setUpTopAppBarSort();
+        topBarHandler.setUpTopAppBarSort();
+        return true;
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
 
-    public void clearRequestContext() {
-        this.currentRequestContext = null;
+    public void clearContext(String sortProperty, String sortDirection) {
+        currentRequestContext = null;
+        requestContextHolder = createNewSortRequestContext(sortProperty, sortDirection);
     }
+
     @Override
-    public void handleError() { }
+    public void handleError() {
+    }
 }

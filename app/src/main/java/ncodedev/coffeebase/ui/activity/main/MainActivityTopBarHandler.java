@@ -89,6 +89,7 @@ public class MainActivityTopBarHandler {
     }
 
     private void assignSortApiCallsToMenuItem(MenuItem menuItem) {
+        final String id = "id";
         final String name = "name";
         final String roaster = "roaster";
         final String farm = "farm";
@@ -99,6 +100,10 @@ public class MainActivityTopBarHandler {
         final String descending = "DESC";
 
         var itemId = menuItem.getItemId();
+        if (itemId == R.id.sort_default) {
+            clearContextAndCallEndpoint(id, ascending);
+            return;
+        }
         if (itemId == R.id.sort_by_name_desc) {
             clearContextAndCallEndpoint(name, descending);
             return;
@@ -148,7 +153,11 @@ public class MainActivityTopBarHandler {
 
     private void clearContextAndCallEndpoint(String sortProperty, String sortDirection) {
         final var mainActivity = (MainActivity) appCompatActivity;
-        mainActivity.clearRequestContext();
-        coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest(sortProperty, sortDirection), RequestContext.SORT);
+        mainActivity.clearContext(sortProperty, sortDirection);
+        coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest.Builder()
+                .withSortProperty(sortProperty)
+                .withSortDirection(sortDirection)
+                .build(),
+                RequestContext.SORT);
     }
 }
