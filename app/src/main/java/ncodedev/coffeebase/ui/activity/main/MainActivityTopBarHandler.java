@@ -1,12 +1,12 @@
 package ncodedev.coffeebase.ui.activity.main;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.*;
 import android.widget.PopupMenu;
+import android.widget.PopupWindow;
 import android.widget.SearchView;
 import androidx.appcompat.app.AppCompatActivity;
 import ncodedev.coffeebase.R;
@@ -14,6 +14,8 @@ import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class MainActivityTopBarHandler {
     private final static String TAG = "MainActivityTopBarHandler";
@@ -159,5 +161,19 @@ public class MainActivityTopBarHandler {
                 .withSortDirection(sortDirection)
                 .build(),
                 RequestContext.SORT);
+    }
+
+    public boolean setUpTopBarFilter() {
+        if (menuItem.getItemId() == R.id.filterMenuItem) {
+            LayoutInflater inflater = (LayoutInflater) appCompatActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.top_app_bar_filter_menu, null);
+
+            PopupWindow popupWindow = new PopupWindow(popupView, WRAP_CONTENT, WRAP_CONTENT, true );
+            View anchorView = appCompatActivity.findViewById(R.id.topAppBarCoffeeActivity);
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.showAsDropDown(anchorView,  0, 0, Gravity.END);
+            return true;
+        }
+        return false;
     }
 }

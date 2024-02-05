@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:background="#FFFFFF">
+
+        <TextView
+                android:id="@+id/header_favourite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/favorite"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+                android:id="@+id/filter_favourite_true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/yes"
+                android:textSize="13sp"
+                android:layout_marginBottom="-15dp"/>
+
+        <CheckBox
+                android:id="@+id/filter_favourite_false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no"
+                android:textSize="13sp"/>
+
+        <!-- Continent -->
+        <TextView
+                android:id="@+id/header_continent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/continent"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+                android:id="@+id/filter_continent_africa"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/africa"
+                android:textSize="13sp"
+                android:layout_marginBottom="-15dp"/>
+
+        <CheckBox
+                android:id="@+id/filter_continent_asia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/asia"
+                android:textSize="13sp"
+                android:layout_marginBottom="-15dp"/>
+
+        <CheckBox
+                android:id="@+id/filter_continent_south_america"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/south_america"
+                android:textSize="13sp"/>
+
+        <!-- Roast Profile -->
+        <TextView
+                android:id="@+id/header_roast_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/roast_profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <CheckBox
+                android:id="@+id/filter_roast_profile_light"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/light"
+                android:textSize="13sp"
+                android:layout_marginBottom="-15dp"/>
+
+        <CheckBox
+                android:id="@+id/filter_roast_profile_dark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dark"
+                android:textSize="13sp"
+                android:layout_marginBottom="-15dp"/>
+
+        <CheckBox
+                android:id="@+id/filter_roast_profile_omniroast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/omniroast" />
+
+        <Button
+                android:id="@+id/apply_filters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/apply_filters"
+                android:textSize="15sp"/>
+    </LinearLayout>
+
+</ScrollView>

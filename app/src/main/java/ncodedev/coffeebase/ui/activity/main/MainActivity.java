@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     public boolean onOptionsItemSelected(MenuItem item) {
         var topBarHandler = new MainActivityTopBarHandler(this, item, this);
         topBarHandler.setUpTopAppBarSort();
+        topBarHandler.setUpTopBarFilter();
         return true;
     }
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\

@@ -164,6 +164,9 @@
     <string name="sort_default">default</string>
     <string name="descending">descending</string>
     <string name="ascending">ascending</string>
+    <string name="favorite">Favourite</string>
+    <string name="not_favourite">Not favourite</string>
+    <string name="apply_filters">Apply filters</string>
 
     <!--    dropdowns-->
     <string-array name="continents">
