@@ -3,6 +3,9 @@ package ncodedev.coffeebase.model.utils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+import java.util.Map;
+
 public class PageCoffeeRequest {
 
     @SerializedName("pageSize")
@@ -21,26 +24,16 @@ public class PageCoffeeRequest {
     @Expose
     private final String sortDirection;
 
-    @SerializedName("favourite")
+    @SerializedName("filters")
     @Expose
-    private Boolean favourite;
-
-    @SerializedName("continent")
-    @Expose
-    private String continent;
-
-    @SerializedName("roastProfile")
-    @Expose
-    private String roastProfile;
+    private Map<String, List<String>> filters;
 
     private PageCoffeeRequest(Builder builder) {
         this.pageNumber = (builder.pageNumber != null) ? builder.pageNumber : 0;
         this.sortProperty = (builder.sortProperty != null) ? builder.sortProperty : "id";
         this.sortDirection = (builder.sortDirection != null) ? builder.sortDirection : "ASC";
         this.pageSize = (builder.pageSize != null) ? builder.pageSize : 3;
-        this.favourite = builder.favourite;
-        this.continent = builder.continent;
-        this.roastProfile = builder.roastProfile;
+        this.filters = builder.filters;
     }
 
     public static class Builder {
@@ -49,9 +42,7 @@ public class PageCoffeeRequest {
         private String sortProperty;
         private String sortDirection;
         private Integer pageSize;
-        private Boolean favourite;
-        private String continent;
-        private String roastProfile;
+        private Map<String, List<String>> filters;
 
         public Builder withPageNumber(Integer pageNumber) {
             this.pageNumber = pageNumber;
@@ -73,18 +64,8 @@ public class PageCoffeeRequest {
             return this;
         }
 
-        public Builder withFavourite(Boolean favourite) {
-            this.favourite = favourite;
-            return this;
-        }
-
-        public Builder withContinent(String continent) {
-            this.continent = continent;
-            return this;
-        }
-
-        public Builder withRoastProfile(String roastProfile) {
-            this.roastProfile = roastProfile;
+        public Builder withFilters(Map<String, List<String>> filters) {
+            this.filters = filters;
             return this;
         }
 

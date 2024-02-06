@@ -5,15 +5,18 @@ import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.view.*;
-import android.widget.PopupMenu;
-import android.widget.PopupWindow;
-import android.widget.SearchView;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -74,7 +77,7 @@ public class MainActivityTopBarHandler {
         return true;
     }
 
-    public boolean setUpTopAppBarSort() {
+    public void setUpTopAppBarSort() {
         if (menuItem.getItemId() == R.id.sortMenuItem) {
             var sortMenu = new PopupMenu(appCompatActivity, appCompatActivity.findViewById(menuItem.getItemId()));
             var menuInflater = sortMenu.getMenuInflater();
@@ -85,9 +88,7 @@ public class MainActivityTopBarHandler {
                 assignSortApiCallsToMenuItem(item);
                 return true;
             });
-            return true;
         }
-        return false;
     }
 
     private void assignSortApiCallsToMenuItem(MenuItem menuItem) {
@@ -115,7 +116,7 @@ public class MainActivityTopBarHandler {
             return;
         }
         if (itemId == R.id.sort_by_roaster_desc) {
-            clearContextAndCallEndpoint(roaster,descending);
+            clearContextAndCallEndpoint(roaster, descending);
             return;
         }
         if (itemId == R.id.sort_by_roaster_asc) {
@@ -129,21 +130,24 @@ public class MainActivityTopBarHandler {
         if (itemId == R.id.sort_by_farm_asc) {
             clearContextAndCallEndpoint(farm, ascending);
             return;
-        }if (itemId == R.id.sort_by_crop_height_desc) {
+        }
+        if (itemId == R.id.sort_by_crop_height_desc) {
             clearContextAndCallEndpoint(cropHeight, descending);
             return;
         }
         if (itemId == R.id.sort_by_crop_height_asc) {
             clearContextAndCallEndpoint(cropHeight, ascending);
             return;
-        }if (itemId == R.id.sort_by_rating_asc) {
+        }
+        if (itemId == R.id.sort_by_rating_asc) {
             clearContextAndCallEndpoint(rating, ascending);
             return;
         }
         if (itemId == R.id.sort_by_rating_desc) {
             clearContextAndCallEndpoint(rating, descending);
             return;
-        }if (itemId == R.id.sort_by_sca_rating_desc) {
+        }
+        if (itemId == R.id.sort_by_sca_rating_desc) {
             clearContextAndCallEndpoint(scaRating, descending);
             return;
         }
@@ -157,23 +161,61 @@ public class MainActivityTopBarHandler {
         final var mainActivity = (MainActivity) appCompatActivity;
         mainActivity.clearContext(sortProperty, sortDirection);
         coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest.Builder()
-                .withSortProperty(sortProperty)
-                .withSortDirection(sortDirection)
-                .build(),
+                        .withSortProperty(sortProperty)
+                        .withSortDirection(sortDirection)
+                        .build(),
                 RequestContext.SORT);
     }
 
-    public boolean setUpTopBarFilter() {
+    public void setUpTopBarFilter() {
         if (menuItem.getItemId() == R.id.filterMenuItem) {
             LayoutInflater inflater = (LayoutInflater) appCompatActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.top_app_bar_filter_menu, null);
 
-            PopupWindow popupWindow = new PopupWindow(popupView, WRAP_CONTENT, WRAP_CONTENT, true );
+            PopupWindow popupWindow = new PopupWindow(popupView, WRAP_CONTENT, WRAP_CONTENT, true);
             View anchorView = appCompatActivity.findViewById(R.id.topAppBarCoffeeActivity);
             popupWindow.setOutsideTouchable(true);
-            popupWindow.showAsDropDown(anchorView,  0, 0, Gravity.END);
-            return true;
+            popupWindow.showAsDropDown(anchorView, 0, 0, Gravity.END);
         }
-        return false;
     }
+
+    private void setUpApplyFilters() {
+        Button applyFiltersButton = appCompatActivity.findViewById(R.id.applyFiltersBtn);
+        applyFiltersButton.setOnClickListener(view -> {
+            Map<String, List<String>> checkedFilters = getCheckedItems();
+            createAndSendFilterRequest(checkedFilters);
+        });
+    }
+
+    private Map<String, List<String>> getCheckedItems() {
+        LinearLayout favoriteLayout = appCompatActivity.findViewById(R.id.favouriteLayout);
+        LinearLayout continentLayout = appCompatActivity.findViewById(R.id.continentLayout);
+        LinearLayout roastProfileLayout = appCompatActivity.findViewById(R.id.roastProfileLayout);
+
+        Map<String, List<String>> filtersMap = new HashMap<>();
+
+        getCheckedItemsForLayout(favoriteLayout, "favourite", filtersMap);
+        getCheckedItemsForLayout(continentLayout, "continent", filtersMap);
+        getCheckedItemsForLayout(roastProfileLayout, "roastProfile", filtersMap);
+
+        return filtersMap;
+    }
+
+    private void getCheckedItemsForLayout(LinearLayout layout, String key, Map<String, List<String>> filtersMap) {
+        for (int childPosition = 0; childPosition < layout.getChildCount(); childPosition++) {
+            if (layout.getChildAt(childPosition) instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) layout.getChildAt(childPosition);
+                if (checkBox.isChecked()) {
+                    List<String> values = filtersMap.getOrDefault(key, new ArrayList<>());
+                    values.add(checkBox.getTag().toString());
+                    filtersMap.put(key, values);
+                }
+            }
+        }
+    }
+
+    private void createAndSendFilterRequest(Map<String, List<String>> checkedFilters) {
+
+    }
+
 }

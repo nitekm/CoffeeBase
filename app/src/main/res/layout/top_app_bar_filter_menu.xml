@@ -4,6 +4,7 @@
             android:layout_height="wrap_content">
 
     <LinearLayout
+            android:id="@+id/filterLinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -15,22 +16,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/favorite"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-        <CheckBox
-                android:id="@+id/filter_favourite_true"
+        <LinearLayout
+                android:id="@+id/favouriteLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/yes"
-                android:textSize="13sp"
-                android:layout_marginBottom="-15dp"/>
+                android:orientation="vertical">
 
-        <CheckBox
-                android:id="@+id/filter_favourite_false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/no"
-                android:textSize="13sp"/>
+            <CheckBox
+                    android:id="@+id/filter_favourite_true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/yes"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="-15dp"
+                    android:tag="yes"/>
+
+            <CheckBox
+                    android:id="@+id/filter_favourite_false"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no"
+                    android:textSize="13sp"
+                    android:tag="no"/>
+
+        </LinearLayout>
 
         <!-- Continent -->
         <TextView
@@ -38,30 +49,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/continent"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-        <CheckBox
-                android:id="@+id/filter_continent_africa"
+        <LinearLayout
+                android:id="@+id/continentLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/africa"
-                android:textSize="13sp"
-                android:layout_marginBottom="-15dp"/>
+                android:orientation="vertical">
 
-        <CheckBox
-                android:id="@+id/filter_continent_asia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/asia"
-                android:textSize="13sp"
-                android:layout_marginBottom="-15dp"/>
+            <CheckBox
+                    android:id="@+id/filter_continent_africa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/africa"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="-15dp"
+                    android:tag="africa"/>
 
-        <CheckBox
-                android:id="@+id/filter_continent_south_america"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/south_america"
-                android:textSize="13sp"/>
+            <CheckBox
+                    android:id="@+id/filter_continent_asia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/asia"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="-15dp"
+                    android:tag="asia"/>
+
+            <CheckBox
+                    android:id="@+id/filter_continent_south_america"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/south_america"
+                    android:textSize="13sp"
+                    android:tag="south_america"/>
+        </LinearLayout>
 
         <!-- Roast Profile -->
         <TextView
@@ -69,32 +90,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/roast_profile"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-        <CheckBox
-                android:id="@+id/filter_roast_profile_light"
+        <LinearLayout
+                android:id="@+id/roastProfileLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/light"
-                android:textSize="13sp"
-                android:layout_marginBottom="-15dp"/>
+                android:orientation="vertical">
 
-        <CheckBox
-                android:id="@+id/filter_roast_profile_dark"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dark"
-                android:textSize="13sp"
-                android:layout_marginBottom="-15dp"/>
+            <CheckBox
+                    android:id="@+id/filter_roast_profile_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/light"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="-15dp"
+                    android:tag="light"/>
 
-        <CheckBox
-                android:id="@+id/filter_roast_profile_omniroast"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/omniroast" />
+            <CheckBox
+                    android:id="@+id/filter_roast_profile_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dark"
+                    android:textSize="13sp"
+                    android:layout_marginBottom="-15dp"
+                    android:tag="dark"/>
+
+            <CheckBox
+                    android:id="@+id/filter_roast_profile_omniroast"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/omniroast"
+                    android:tag="omniroast"/>
+        </LinearLayout>
 
         <Button
-                android:id="@+id/apply_filters"
+                android:id="@+id/applyFiltersBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/apply_filters"
