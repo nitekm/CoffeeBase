@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
+import ncodedev.coffeebase.service.PageCoffeeRequestContextHolder;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
@@ -160,6 +161,7 @@ public class MainActivityTopBarHandler {
     }
 
     private void clearContextAndCallEndpoint(String sortProperty, String sortDirection) {
+        PageCoffeeRequestContextHolder.getInstance().clearRequestContext();
         final var mainActivity = (MainActivity) appCompatActivity;
         mainActivity.clearContext(sortProperty, sortDirection);
         coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest.Builder()
@@ -227,16 +229,19 @@ public class MainActivityTopBarHandler {
     private void getCheckedItemsForLayout(LinearLayout layout, String key, Map<String, List<String>> filtersMap) {
         for (int childPosition = 0; childPosition < layout.getChildCount(); childPosition++) {
             if (layout.getChildAt(childPosition) instanceof CheckBox checkBox) {
+                List<String> values = filtersMap.getOrDefault(key, new ArrayList<>());
                 if (checkBox.isChecked()) {
-                    List<String> values = filtersMap.getOrDefault(key, new ArrayList<>());
                     values.add(checkBox.getTag().toString());
                     filtersMap.put(key, values);
+                } else {
+                    values.remove(checkBox.getTag().toString());
                 }
             }
         }
     }
 
     private void createAndSendFilterRequest(Map<String, List<String>> checkedFilters) {
+        PageCoffeeRequestContextHolder.getInstance().clearRequestContext();
         var pageCoffeeRequest = new PageCoffeeRequest.Builder()
                 .withFilters(checkedFilters)
                 .build();

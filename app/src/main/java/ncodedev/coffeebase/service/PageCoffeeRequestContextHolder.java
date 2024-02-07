@@ -65,7 +65,8 @@ public class PageCoffeeRequestContextHolder {
 //        return new PageCoffeeRequestContextHolder(RequestContext.SORT, currentSortProperty, currentSortDirection);
 //    }
 
-    public void updateContextOnNewPage(Page page) {
+    public void updateContextOnNewPage(Page page, RequestContext requestContext) {
+        this.currentRequestContext = requestContext;
         this.lastPage = page.isLast();
         this.pageNumber = page.getNumber();
         this.currentlyLoadingData = false;
