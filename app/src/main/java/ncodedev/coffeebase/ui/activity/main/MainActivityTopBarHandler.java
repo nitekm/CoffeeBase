@@ -14,9 +14,9 @@ import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -27,6 +27,7 @@ public class MainActivityTopBarHandler {
     private MenuItem menuItem;
     private final CoffeeApiProvider coffeeApiProvider = CoffeeApiProvider.getInstance();
     private final CoffeeListResponseListener listener;
+    private Map<String, List<String>> currentFilters;
 
     public MainActivityTopBarHandler(AppCompatActivity appCompatActivity, Menu menu, CoffeeListResponseListener listener) {
         this.appCompatActivity = appCompatActivity;
@@ -34,10 +35,11 @@ public class MainActivityTopBarHandler {
         this.listener = listener;
     }
 
-    public MainActivityTopBarHandler(AppCompatActivity appCompatActivity, MenuItem menuItem, CoffeeListResponseListener listener) {
+    public MainActivityTopBarHandler(AppCompatActivity appCompatActivity, MenuItem menuItem, CoffeeListResponseListener listener, Map<String, List<String>> currentFilters) {
         this.appCompatActivity = appCompatActivity;
         this.menuItem = menuItem;
         this.listener = listener;
+        this.currentFilters = currentFilters;
     }
 
     public boolean setUpTopAppBarSearch() {
@@ -163,6 +165,7 @@ public class MainActivityTopBarHandler {
         coffeeApiProvider.getAllPaged(listener, new PageCoffeeRequest.Builder()
                         .withSortProperty(sortProperty)
                         .withSortDirection(sortDirection)
+                        .withFilters(currentFilters)
                         .build(),
                 RequestContext.SORT);
     }
@@ -176,35 +179,54 @@ public class MainActivityTopBarHandler {
             View anchorView = appCompatActivity.findViewById(R.id.topAppBarCoffeeActivity);
             popupWindow.setOutsideTouchable(true);
             popupWindow.showAsDropDown(anchorView, 0, 0, Gravity.END);
+
+            setUpActiveFilters(popupView);
+            setUpApplyFilters(popupView, popupWindow);
         }
     }
 
-    private void setUpApplyFilters() {
-        Button applyFiltersButton = appCompatActivity.findViewById(R.id.applyFiltersBtn);
-        applyFiltersButton.setOnClickListener(view -> {
-            Map<String, List<String>> checkedFilters = getCheckedItems();
-            createAndSendFilterRequest(checkedFilters);
+    private void setUpActiveFilters(View filterView) {
+        LinearLayout favoriteLayout = filterView.findViewById(R.id.favouriteLayout);
+        LinearLayout continentLayout = filterView.findViewById(R.id.continentLayout);
+        LinearLayout roastProfileLayout = filterView.findViewById(R.id.roastProfileLayout);
+
+        checkActiveFiltersCheckboxes(favoriteLayout, "favourite", currentFilters);
+        checkActiveFiltersCheckboxes(continentLayout, "continent", currentFilters);
+        checkActiveFiltersCheckboxes(roastProfileLayout, "roastProfile", currentFilters);
+    }
+
+    private void checkActiveFiltersCheckboxes(LinearLayout layout, String key, Map<String, List<String>> currentFilters) {
+        currentFilters.getOrDefault(key, new ArrayList<>()).forEach(value -> {
+            Optional<CheckBox> checkBox = Optional.ofNullable(layout.findViewWithTag(value));
+            checkBox.ifPresent(activeFilter -> activeFilter.setChecked(true));
         });
     }
 
-    private Map<String, List<String>> getCheckedItems() {
-        LinearLayout favoriteLayout = appCompatActivity.findViewById(R.id.favouriteLayout);
-        LinearLayout continentLayout = appCompatActivity.findViewById(R.id.continentLayout);
-        LinearLayout roastProfileLayout = appCompatActivity.findViewById(R.id.roastProfileLayout);
+    private void setUpApplyFilters(View filterView, PopupWindow filterWindow) {
+        Button applyFiltersButton = filterView.findViewById(R.id.applyFiltersBtn);
+        applyFiltersButton.setOnClickListener(view -> {
+            createAndSendFilterRequest(getCheckedItems(filterView));
+            filterWindow.dismiss();
+        });
+    }
 
-        Map<String, List<String>> filtersMap = new HashMap<>();
+    private Map<String, List<String>> getCheckedItems(View filterView) {
+        LinearLayout favoriteLayout = filterView.findViewById(R.id.favouriteLayout);
+        LinearLayout continentLayout = filterView.findViewById(R.id.continentLayout);
+        LinearLayout roastProfileLayout = filterView.findViewById(R.id.roastProfileLayout);
 
-        getCheckedItemsForLayout(favoriteLayout, "favourite", filtersMap);
-        getCheckedItemsForLayout(continentLayout, "continent", filtersMap);
-        getCheckedItemsForLayout(roastProfileLayout, "roastProfile", filtersMap);
+        getCheckedItemsForLayout(favoriteLayout, "favourite", currentFilters);
+        getCheckedItemsForLayout(continentLayout, "continent", currentFilters);
+        getCheckedItemsForLayout(roastProfileLayout, "roastProfile", currentFilters);
 
-        return filtersMap;
+        final var mainActivity = (MainActivity) appCompatActivity;
+        mainActivity.setCurrentFilters(currentFilters);
+        return currentFilters;
     }
 
     private void getCheckedItemsForLayout(LinearLayout layout, String key, Map<String, List<String>> filtersMap) {
         for (int childPosition = 0; childPosition < layout.getChildCount(); childPosition++) {
-            if (layout.getChildAt(childPosition) instanceof CheckBox) {
-                CheckBox checkBox = (CheckBox) layout.getChildAt(childPosition);
+            if (layout.getChildAt(childPosition) instanceof CheckBox checkBox) {
                 if (checkBox.isChecked()) {
                     List<String> values = filtersMap.getOrDefault(key, new ArrayList<>());
                     values.add(checkBox.getTag().toString());
@@ -215,7 +237,9 @@ public class MainActivityTopBarHandler {
     }
 
     private void createAndSendFilterRequest(Map<String, List<String>> checkedFilters) {
-
+        var pageCoffeeRequest = new PageCoffeeRequest.Builder()
+                .withFilters(checkedFilters)
+                .build();
+        coffeeApiProvider.getAllPaged(listener, pageCoffeeRequest, RequestContext.FILTER);
     }
-
 }

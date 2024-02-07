@@ -64,7 +64,7 @@
                     android:text="@string/africa"
                     android:textSize="13sp"
                     android:layout_marginBottom="-15dp"
-                    android:tag="africa"/>
+                    android:tag="Africa"/>
 
             <CheckBox
                     android:id="@+id/filter_continent_asia"
@@ -73,7 +73,7 @@
                     android:text="@string/asia"
                     android:textSize="13sp"
                     android:layout_marginBottom="-15dp"
-                    android:tag="asia"/>
+                    android:tag="Asia"/>
 
             <CheckBox
                     android:id="@+id/filter_continent_south_america"
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/south_america"
                     android:textSize="13sp"
-                    android:tag="south_america"/>
+                    android:tag="South_america"/>
         </LinearLayout>
 
         <!-- Roast Profile -->
@@ -105,7 +105,7 @@
                     android:text="@string/light"
                     android:textSize="13sp"
                     android:layout_marginBottom="-15dp"
-                    android:tag="light"/>
+                    android:tag="Light"/>
 
             <CheckBox
                     android:id="@+id/filter_roast_profile_dark"
@@ -114,14 +114,14 @@
                     android:text="@string/dark"
                     android:textSize="13sp"
                     android:layout_marginBottom="-15dp"
-                    android:tag="dark"/>
+                    android:tag="Dark"/>
 
             <CheckBox
                     android:id="@+id/filter_roast_profile_omniroast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/omniroast"
-                    android:tag="omniroast"/>
+                    android:tag="Omniroast"/>
         </LinearLayout>
 
         <Button

@@ -32,7 +32,9 @@ import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static ncodedev.coffeebase.service.PageCoffeeRequestContextHolder.createNewSortRequestContext;
 import static ncodedev.coffeebase.service.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     private GoogleSignInClientService googleSignInClientService;
     private PageCoffeeRequestContextHolder requestContextHolder;
     private RequestContext currentRequestContext;
+    private Map<String, List<String>> currentFilters = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
 
     @Override
     public void handleFilterPage(Page<Coffee> coffeePage) {
-
+        handleResponseBasedOnContext(coffeePage, RequestContext.FILTER);
     }
 
     private void handleResponseBasedOnContext(Page<Coffee> coffeesPage, RequestContext requestContext) {
@@ -207,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        var topBarHandler = new MainActivityTopBarHandler(this, item, this);
+        var topBarHandler = new MainActivityTopBarHandler(this, item, this, currentFilters);
         topBarHandler.setUpTopAppBarSort();
         topBarHandler.setUpTopBarFilter();
         return true;
@@ -217,6 +220,10 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     public void clearContext(String sortProperty, String sortDirection) {
         currentRequestContext = null;
         requestContextHolder = createNewSortRequestContext(sortProperty, sortDirection);
+    }
+
+    public void setCurrentFilters(Map<String, List<String>> currentFilters) {
+        this.currentFilters = currentFilters;
     }
 
     @Override
