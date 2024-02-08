@@ -32,7 +32,7 @@ public class PageCoffeeRequest {
         this.pageNumber = (builder.pageNumber != null) ? builder.pageNumber : 0;
         this.sortProperty = (builder.sortProperty != null) ? builder.sortProperty : "id";
         this.sortDirection = (builder.sortDirection != null) ? builder.sortDirection : "ASC";
-        this.pageSize = (builder.pageSize != null) ? builder.pageSize : 3;
+        this.pageSize = (builder.pageSize != null) ? builder.pageSize : 20;
         this.filters = builder.filters;
     }
 
