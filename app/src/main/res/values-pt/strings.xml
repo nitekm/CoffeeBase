@@ -145,4 +145,5 @@
     <string name="ascending">ascending</string>
     <string name="favorite">Favourite</string>
     <string name="apply_filters">Apply filters</string>
+    <string name="go_to_settings">Go to settings</string>
 </resources>

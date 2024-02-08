@@ -10,10 +10,6 @@ import androidx.core.content.ContextCompat;
 
 public class PermissionsUtils {
 
-    public static boolean checkCameraPermission(Context context) {
-        return ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-    }
-
     public static boolean checkWriteStoragePermission(Context context) {
         return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
     }

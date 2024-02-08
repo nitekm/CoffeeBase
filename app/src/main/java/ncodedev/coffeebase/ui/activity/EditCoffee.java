@@ -165,9 +165,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     private void handleImage() {
-        imageHelper.getPermissions(this);
-        imageHelper.getCoffeeGalleryImage(this, imgCoffee);
-        imageHelper.getCoffeePhotoImage(this, imgCoffee);
+        imageHelper.registerForRequestPermissionResult(this);
+        imageHelper.registerForImageSelection(this, imgCoffee);
+        imageHelper.registerForCameraImage(this, imgCoffee);
     }
 
     private void saveCoffee() {
@@ -288,7 +288,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     private MultipartBody.Part getImage() {
         if (imgCoffee.getTag() != null) {
-            String realPath = getRealPath(this, (Uri) imgCoffee.getTag());
             File file = new File(getRealPath(this, (Uri) imgCoffee.getTag()));
             return MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(file, MediaType.parse("multipart/form-data")));
         }
@@ -330,7 +329,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     private void addTagChip(String tag, int color) {
         Chip chip = new Chip(this);
 
-        if (tag.length() > 0 && tag.charAt(0) == '#') {
+        if (!tag.isEmpty() && tag.charAt(0) == '#') {
             chip.setText(tag);
         } else {
             chip.setText("#" + tag);

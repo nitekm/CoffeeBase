@@ -2,8 +2,12 @@ package ncodedev.coffeebase.ui.utility;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -11,12 +15,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import com.squareup.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 import ncodedev.coffeebase.R;
@@ -26,10 +32,13 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
 import java.io.OutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 import static ncodedev.coffeebase.R.string.image_not_saved;
-import static ncodedev.coffeebase.R.string.permission_not_granted;
+import static ncodedev.coffeebase.R.string.unable_to_process_image;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class ImageHelper {
@@ -64,44 +73,54 @@ public class ImageHelper {
                 .into(imageView);
     }
 
-    public void showAddImageDialog(Activity activity) {
-        imageDialog = new Dialog(activity);
-        imageDialog.setContentView(R.layout.imagedialog);
-        imageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
-        ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
-        btnPhotoLibrary.setOnClickListener(view -> {
-            mGetGalleryImage.launch(new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
-            imageDialog.hide();
-        });
-        btnPhotoCamera.setOnClickListener(view -> {
-            mGetPhotoImage.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
-            imageDialog.hide();
-        });
-        imageDialog.show();
+    public void showAddImageDialog(AppCompatActivity activity) {
+        if (arePermissionsGranted(activity)) {
+            imageDialog = new Dialog(activity);
+            imageDialog.setContentView(R.layout.imagedialog);
+            imageDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            ImageButton btnPhotoCamera = imageDialog.findViewById(R.id.btnPhotoCamera);
+            ImageButton btnPhotoLibrary = imageDialog.findViewById(R.id.btnPhotoLibrary);
+            btnPhotoLibrary.setOnClickListener(view -> {
+                mGetGalleryImage.launch(new Intent(Intent.ACTION_OPEN_DOCUMENT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI));
+                imageDialog.hide();
+            });
+            btnPhotoCamera.setOnClickListener(view -> {
+                mGetPhotoImage.launch(new Intent(MediaStore.ACTION_IMAGE_CAPTURE));
+                imageDialog.hide();
+            });
+            imageDialog.show();
+        } else {
+            requestPermissions(activity);
+        }
     }
 
-    public void getPermissions(AppCompatActivity activity) {
+    private boolean arePermissionsGranted(Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            isReadMediaImagesPermissionGranted = PermissionsUtils.checkReadMediaImagesPermission(activity);
+            return isReadMediaImagesPermissionGranted;
+        } else {
+            isReadPermissionGranted = PermissionsUtils.checkReadStoragePermission(activity);
+            isWritePermissionGranted = PermissionsUtils.checkWriteStoragePermission(activity);
+            return isReadPermissionGranted && isWritePermissionGranted;
+        }
+    }
+
+    public void registerForRequestPermissionResult(AppCompatActivity activity) {
         mPermissionResultLauncher = activity.registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(),
                 result -> {
-                    if (result.get(Manifest.permission.READ_EXTERNAL_STORAGE) != null) {
-                        isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
-                    }
-                    if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
-                        isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
-                    }
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         isReadMediaImagesPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_MEDIA_IMAGES));
                     } else {
-                        isReadMediaImagesPermissionGranted = true;
+                        isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
+                        isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
                     }
                 });
     }
 
-    public void getCoffeeGalleryImage(AppCompatActivity activity, ImageView imgCoffee) {
+    public void registerForImageSelection(AppCompatActivity activity, ImageView imgCoffee) {
         mGetGalleryImage = activity.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && isReadMediaImagesPermissionGranted) {
+                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         imageUri = result.getData().getData();
 
                         final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
@@ -110,62 +129,84 @@ public class ImageHelper {
                         imgCoffee.setTag(imageUri);
                         imageDialog.hide();
                     } else {
-                        showToast(activity, activity.getString(permission_not_granted));
+                        showToast(activity, activity.getString(unable_to_process_image));
+                        throw new IllegalStateException("Application is not able to process image!" +
+                                "\nActivityResultCode: " + result.getResultCode() +
+                                "\nResultData: " + result.getData());
                     }
                 });
     }
 
-    public void getCoffeePhotoImage(AppCompatActivity activity, ImageView imgCoffee) {
+    public void registerForCameraImage(AppCompatActivity activity, ImageView imgCoffee) {
         mGetPhotoImage = activity.registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         Bundle bundle = result.getData().getExtras();
                         Bitmap bitmap = (Bitmap) bundle.get("data");
 
-                        if (isWritePermissionGranted) {
-                            if (saveImageToExternalStorage(UUID.randomUUID().toString(), bitmap, activity)) {
-                                picassoSetImage(imageUri.toString(), imgCoffee);
-                                imgCoffee.setTag(imageUri);
-                                imageDialog.hide();
-                            }
-                        } else {
-                            showToast(activity, activity.getString(permission_not_granted));
+                        if (saveImageToExternalStorage(UUID.randomUUID().toString(), bitmap, activity)) {
+                            picassoSetImage(imageUri.toString(), imgCoffee);
+                            imgCoffee.setTag(imageUri);
+                            imageDialog.hide();
                         }
+                    } else {
+                        showToast(activity, activity.getString(unable_to_process_image));
+                        throw new IllegalStateException("Application is not able to process image!" +
+                                "\nActivityResultCode: " + result.getResultCode() +
+                                "\nResultData: " + result.getData());
                     }
                 });
-        requestPermission(activity);
     }
 
-    private void requestPermission(Activity activity) {
-        boolean minSDK = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
-
-        isReadPermissionGranted = PermissionsUtils.checkReadStoragePermission(activity);
-        isWritePermissionGranted = PermissionsUtils.checkWriteStoragePermission(activity);
-
-        isWritePermissionGranted = isWritePermissionGranted || minSDK;
-
+    private void requestPermissions(Activity activity) {
         List<String> permissionRequest = new ArrayList<>();
-        if (!isReadPermissionGranted) {
-            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (!isWritePermissionGranted) {
-            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
-
-        handleNewPermissionSKD33(activity, permissionRequest);
-
-        if (!permissionRequest.isEmpty()) {
-            mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
-        }
-    }
-
-    private void handleNewPermissionSKD33(Activity activity, List<String> permissionRequest) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             isReadMediaImagesPermissionGranted = PermissionsUtils.checkReadMediaImagesPermission(activity);
             if (!isReadMediaImagesPermissionGranted) {
                 permissionRequest.add(Manifest.permission.READ_MEDIA_IMAGES);
             }
+        } else {
+            isReadPermissionGranted = PermissionsUtils.checkReadStoragePermission(activity);
+            isWritePermissionGranted = PermissionsUtils.checkWriteStoragePermission(activity);
+
+            if (!isReadPermissionGranted) {
+                permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (!isWritePermissionGranted) {
+                permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
         }
+
+        if (!permissionRequest.isEmpty()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_MEDIA_IMAGES)) {
+                    mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+                } else {
+                    showGoToSettingsDialog(activity);
+                }
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_EXTERNAL_STORAGE) &&
+                        ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+                } else {
+                    showGoToSettingsDialog(activity);
+                }
+            }
+        }
+    }
+
+    private AlertDialog showGoToSettingsDialog(Activity activity) {
+        return new AlertDialog.Builder(activity)
+                .setMessage(R.string.access_to_images_not_granted_info)
+                .setPositiveButton(R.string.go_to_settings, (dialog, which) -> {
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", activity.getPackageName(), null);
+                    intent.setData(uri);
+                    activity.startActivity(intent);
+                })
+                .setNegativeButton(R.string.colorpicker_dialog_cancel, null)
+                .show();
     }
 
     private boolean saveImageToExternalStorage(String imgName, Bitmap bmp, Activity activity) {

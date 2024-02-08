@@ -81,7 +81,7 @@
     <string name="error">Error!</string>
     <string name="server_unavailable">Server is unavailable. Try again later</string>
     <string name="image_not_saved">Image not saved!</string>
-    <string name="permission_not_granted">Permission not granted!</string>
+    <string name="unable_to_process_image">Application is not able to process image</string>
     <string name="delete_coffee_question">Delete this coffee?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
@@ -167,6 +167,8 @@
     <string name="favorite">Favourite</string>
     <string name="not_favourite">Not favourite</string>
     <string name="apply_filters">Apply filters</string>
+    <string name="access_to_images_not_granted_info">This feature requires adequate premissions. Please grant it from app settings.</string>
+    <string name="go_to_settings">Go to settings</string>
 
     <!--    dropdowns-->
     <string-array name="continents">
