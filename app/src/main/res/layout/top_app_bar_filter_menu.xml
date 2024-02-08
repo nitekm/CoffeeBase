@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/south_america"
                     android:textSize="13sp"
-                    android:tag="South_america"/>
+                    android:tag="South America"/>
         </LinearLayout>
 
         <!-- Roast Profile -->

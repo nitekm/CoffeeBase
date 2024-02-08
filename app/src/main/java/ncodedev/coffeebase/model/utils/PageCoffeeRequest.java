@@ -3,8 +3,8 @@ package ncodedev.coffeebase.model.utils;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class PageCoffeeRequest {
 
@@ -26,7 +26,7 @@ public class PageCoffeeRequest {
 
     @SerializedName("filters")
     @Expose
-    private Map<String, List<String>> filters;
+    private Map<String, Set<String>> filters;
 
     private PageCoffeeRequest(Builder builder) {
         this.pageNumber = (builder.pageNumber != null) ? builder.pageNumber : 0;
@@ -42,7 +42,7 @@ public class PageCoffeeRequest {
         private String sortProperty;
         private String sortDirection;
         private Integer pageSize;
-        private Map<String, List<String>> filters;
+        private Map<String, Set<String>> filters;
 
         public Builder withPageNumber(Integer pageNumber) {
             this.pageNumber = pageNumber;
@@ -64,7 +64,7 @@ public class PageCoffeeRequest {
             return this;
         }
 
-        public Builder withFilters(Map<String, List<String>> filters) {
+        public Builder withFilters(Map<String, Set<String>> filters) {
             this.filters = filters;
             return this;
         }

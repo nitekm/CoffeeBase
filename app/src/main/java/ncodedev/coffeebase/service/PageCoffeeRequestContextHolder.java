@@ -3,23 +3,23 @@ package ncodedev.coffeebase.service;
 import ncodedev.coffeebase.model.enums.RequestContext;
 import ncodedev.coffeebase.model.utils.Page;
 
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class PageCoffeeRequestContextHolder {
     private RequestContext currentRequestContext;
-    private String currentSortProperty;
-    private String currentSortDirection;
+    private final String currentSortProperty;
+    private final String currentSortDirection;
     private boolean currentlyLoadingData;
     private boolean lastPage;
     private int pageNumber;
-    private Map<String, List<String>> filters;
+    private Map<String, Set<String>> filters;
 
     private static PageCoffeeRequestContextHolder instance;
 
     private PageCoffeeRequestContextHolder(String currentSortProperty,
                                            String currentSortDirection,
-                                           Map<String, List<String>> filters) {
+                                           Map<String, Set<String>> filters) {
         this.currentlyLoadingData = false;
         this.lastPage = false;
         this.pageNumber = 0;
@@ -30,7 +30,7 @@ public class PageCoffeeRequestContextHolder {
 
     public static PageCoffeeRequestContextHolder updateInstance(String currentSortProperty,
                                                                 String currentSortDirection,
-                                                                Map<String, List<String>> filters) {
+                                                                Map<String, Set<String>> filters) {
         instance = new PageCoffeeRequestContextHolder(currentSortProperty, currentSortDirection, filters);
         return instance;
     }
@@ -42,42 +42,11 @@ public class PageCoffeeRequestContextHolder {
         return instance;
     }
 
-//    private PageCoffeeRequestContextHolder(RequestContext currentRequestContext) {
-//        this.currentRequestContext = currentRequestContext;
-//        this.currentlyLoadingData = false;
-//        this.lastPage = false;
-//        pageNumber = 0;
-//    }
-//    private PageCoffeeRequestContextHolder(RequestContext currentRequestContext, String currentSortProperty, String currentSortDirection) {
-//        this.currentRequestContext = currentRequestContext;
-//        this.currentSortProperty = currentSortProperty;
-//        this.currentSortDirection =currentSortDirection;
-//        this.currentlyLoadingData = false;
-//        this.lastPage = false;
-//        pageNumber = 0;
-//    }
-//
-//    public static PageCoffeeRequestContextHolder createNewStandardRequestContext(RequestContext requestContext) {
-//        return new PageCoffeeRequestContextHolder(requestContext);
-//    }
-//    public static PageCoffeeRequestContextHolder createNewSortRequestContext(String currentSortProperty,
-//                                                                             String currentSortDirection) {
-//        return new PageCoffeeRequestContextHolder(RequestContext.SORT, currentSortProperty, currentSortDirection);
-//    }
-
     public void updateContextOnNewPage(Page page, RequestContext requestContext) {
         this.currentRequestContext = requestContext;
         this.lastPage = page.isLast();
         this.pageNumber = page.getNumber();
         this.currentlyLoadingData = false;
-    }
-
-    public void setCurrentRequestContext(RequestContext requestContext) {
-        this.currentRequestContext = requestContext;
-    }
-
-    public static void clearCurrentRequestContextHolder() {
-        instance = null;
     }
 
     public void clearRequestContext() {
@@ -86,10 +55,6 @@ public class PageCoffeeRequestContextHolder {
 
     public boolean canFetchMoreData() {
         return !lastPage && !currentlyLoadingData;
-    }
-
-    public int getCurrentPageNumber() {
-        return this.pageNumber;
     }
 
     public int getNextPageNumber() {
@@ -104,27 +69,20 @@ public class PageCoffeeRequestContextHolder {
         return currentSortProperty;
     }
 
-    public void setCurrentSortProperty(String currentSortProperty) {
-        this.currentSortProperty = currentSortProperty;
-    }
-
     public String getCurrentSortDirection() {
         return currentSortDirection;
-    }
-
-    public void setCurrentSortDirection(String currentSortDirection) {
-        this.currentSortDirection = currentSortDirection;
     }
 
     public RequestContext getCurrentRequestContext() {
         return this.currentRequestContext;
     }
 
-    public Map<String, List<String>> getFilters() {
+    public Map<String, Set<String>> getFilters() {
         return filters;
     }
 
-    public void setFilters(Map<String, List<String>> filters) {
+    public void setFilters(Map<String, Set<String>> filters) {
         this.filters = filters;
     }
+
 }

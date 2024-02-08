@@ -49,6 +49,8 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
         holder.coffeeNameTxt.setText(coffees.get(holder.getAdapterPosition()).getName());
         if (coffees.get(holder.getAdapterPosition()).isFavourite()) {
             holder.imgFavourite.setVisibility(View.VISIBLE);
+        } else {
+            holder.imgFavourite.setVisibility(View.INVISIBLE);
         }
 
         if (coffees.get(holder.getAdapterPosition()).getCoffeeImageName() != null) {
