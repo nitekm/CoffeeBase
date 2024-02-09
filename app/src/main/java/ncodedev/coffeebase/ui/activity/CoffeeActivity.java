@@ -15,14 +15,13 @@ import com.google.android.material.tabs.TabLayout;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.error.ErrorResponse;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.BrewsFragment;
 import ncodedev.coffeebase.ui.fragment.CoffeeInfo;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeTabPagerAdapter;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
-
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseListener {
     private static final String TAG = "CoffeeActivity";
@@ -133,7 +132,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     public void handleSaveResponse(Coffee coffee) {}
 
     @Override
-    public void handleError(ErrorResponse errorResponse) {
-        showToast(this, getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
     }
 }

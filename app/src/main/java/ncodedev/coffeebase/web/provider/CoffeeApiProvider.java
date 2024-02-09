@@ -20,7 +20,7 @@ import java.util.List;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
-public class CoffeeApiProvider {
+public class CoffeeApiProvider extends ApiProvider{
 
     public static final String TAG = "CoffeeApiProvider";
 
@@ -125,14 +125,14 @@ public class CoffeeApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleCoffeeResponse(response.body());
                 } else {
-                    listener.handleError(new ErrorResponse());
+                    listener.handleResponseError(handleErrorResponse(response));
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                listener.handleError(new ErrorResponse());
+                listener.handleResponseError(new ErrorResponse());
             }
         });
     }
@@ -145,19 +145,21 @@ public class CoffeeApiProvider {
                     listener.handleSaveResponse(response.body());
                 } else {
                     try {
-                        var gson = new Gson().fromJson(response.errorBody().string(), ErrorResponse.class);
-                        Log.d(TAG, "onResponse: gson");
+                        String errorBodyString = response.errorBody().string();
+                        Log.d(TAG, "Error body: " + errorBodyString);
+                        var gson = new Gson().fromJson(errorBodyString, ErrorResponse.class);
+                        Log.d(TAG, "onResponse: " + gson);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    listener.handleError(new ErrorResponse());
+                    listener.handleResponseError(new ErrorResponse());
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                listener.handleError(new ErrorResponse());
+                listener.handleResponseError(new ErrorResponse());
             }
         });
     }
@@ -170,14 +172,14 @@ public class CoffeeApiProvider {
                     listener.handleDeleteResponse();
                 } else {
 
-                    listener.handleError(new ErrorResponse());
+                    listener.handleResponseError(new ErrorResponse());
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 Log.i(TAG, t.toString());
-                listener.handleError(new ErrorResponse());
+                listener.handleResponseError(new ErrorResponse());
             }
         });
     }

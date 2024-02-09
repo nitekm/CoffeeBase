@@ -167,8 +167,12 @@
     <string name="favorite">Favourite</string>
     <string name="not_favourite">Not favourite</string>
     <string name="apply_filters">Apply filters</string>
-    <string name="access_to_images_not_granted_info">This feature requires adequate premissions. Please grant it from app settings.</string>
+    <string name="access_to_images_not_granted_info">This feature requires adequate premissions.Please grant it from app settings.</string>
     <string name="go_to_settings">Go to settings</string>
+
+    <!-- error messages -->
+    <string name="not_permitted_to_modify">User is not permitted to modify given item</string>
+    <string name="coffee_not_found">Coffee with given ID not found</string>
 
     <!--    dropdowns-->
     <string-array name="continents">

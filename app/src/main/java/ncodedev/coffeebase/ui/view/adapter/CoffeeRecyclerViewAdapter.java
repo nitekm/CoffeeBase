@@ -63,7 +63,7 @@ public class CoffeeRecyclerViewAdapter extends RecyclerView.Adapter<CoffeeRecycl
 
         holder.cardView.setOnClickListener(v -> {
             Intent intent = new Intent(context, CoffeeActivity.class);
-            intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId());
+            intent.putExtra(COFFEE_ID_KEY, coffees.get(holder.getAdapterPosition()).getId() + 9999);
             context.startActivity(intent);
         });
     }

@@ -37,7 +37,10 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
@@ -169,9 +172,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     private void saveCoffee() {
-//        if (!validateCoffee()) {
-//            return;
-//        }
+        if (!validateCoffee()) {
+            return;
+        }
 
         saveBtn.setEnabled(false);
         Coffee coffee = createCoffee();
@@ -363,7 +366,7 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     public void handleDeleteResponse() {}
 
     @Override
-    public void handleError(ErrorResponse errorResponse) {
+    public void handleResponseError(ErrorResponse errorResponse) {
         showToast(this, getString(R.string.error));
         saveBtn.setEnabled(true);
     }

@@ -2,7 +2,6 @@ package ncodedev.coffeebase.web.provider;
 
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
-import ncodedev.coffeebase.web.adapter.ErrorInterceptor;
 import ncodedev.coffeebase.web.api.Api;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,14 +15,13 @@ import java.util.concurrent.TimeUnit;
 public class RetrofitApiCreator {
     public static <A extends Api> A createApi(Class<A> api) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
         logging.redactHeader("Authorization");
 
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .callTimeout(60, TimeUnit.SECONDS)
-                .addInterceptor(new ErrorInterceptor())
                 .addInterceptor(logging)
                 .addInterceptor(chain -> {
                     Request request = chain.request()
