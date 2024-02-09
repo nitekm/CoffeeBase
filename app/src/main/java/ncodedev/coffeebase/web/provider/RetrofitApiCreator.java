@@ -2,6 +2,7 @@ package ncodedev.coffeebase.web.provider;
 
 import ncodedev.coffeebase.BuildConfig;
 import ncodedev.coffeebase.model.security.User;
+import ncodedev.coffeebase.web.adapter.ErrorInterceptor;
 import ncodedev.coffeebase.web.api.Api;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -22,6 +23,7 @@ public class RetrofitApiCreator {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
                 .callTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(new ErrorInterceptor())
                 .addInterceptor(logging)
                 .addInterceptor(chain -> {
                     Request request = chain.request()

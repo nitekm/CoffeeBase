@@ -1,8 +1,10 @@
 package ncodedev.coffeebase.web.provider;
 
 import android.util.Log;
+import com.google.gson.Gson;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.enums.RequestContext;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.api.CoffeeApi;
@@ -13,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.io.IOException;
 import java.util.List;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
@@ -122,14 +125,14 @@ public class CoffeeApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleCoffeeResponse(response.body());
                 } else {
-                    listener.handleError();
+                    listener.handleError(new ErrorResponse());
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                listener.handleError();
+                listener.handleError(new ErrorResponse());
             }
         });
     }
@@ -141,14 +144,20 @@ public class CoffeeApiProvider {
                 if (response.isSuccessful()) {
                     listener.handleSaveResponse(response.body());
                 } else {
-                    listener.handleError();
+                    try {
+                        var gson = new Gson().fromJson(response.errorBody().string(), ErrorResponse.class);
+                        Log.d(TAG, "onResponse: gson");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    listener.handleError(new ErrorResponse());
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                listener.handleError();
+                listener.handleError(new ErrorResponse());
             }
         });
     }
@@ -161,14 +170,14 @@ public class CoffeeApiProvider {
                     listener.handleDeleteResponse();
                 } else {
 
-                    listener.handleError();
+                    listener.handleError(new ErrorResponse());
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
                 Log.i(TAG, t.toString());
-                listener.handleError();
+                listener.handleError(new ErrorResponse());
             }
         });
     }

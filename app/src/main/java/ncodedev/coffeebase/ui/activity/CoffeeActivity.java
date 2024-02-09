@@ -14,6 +14,7 @@ import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.tabs.TabLayout;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.BrewsFragment;
 import ncodedev.coffeebase.ui.fragment.CoffeeInfo;
@@ -132,7 +133,7 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     public void handleSaveResponse(Coffee coffee) {}
 
     @Override
-    public void handleError() {
+    public void handleError(ErrorResponse errorResponse) {
         showToast(this, getString(R.string.error));
     }
 }

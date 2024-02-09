@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.domain.Tag;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
@@ -36,10 +37,7 @@ import okhttp3.RequestBody;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
 import static ncodedev.coffeebase.utils.ToastUtils.showToast;
@@ -171,9 +169,9 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     }
 
     private void saveCoffee() {
-        if (!validateCoffee()) {
-            return;
-        }
+//        if (!validateCoffee()) {
+//            return;
+//        }
 
         saveBtn.setEnabled(false);
         Coffee coffee = createCoffee();
@@ -365,8 +363,13 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
     public void handleDeleteResponse() {}
 
     @Override
-    public void handleError() {
+    public void handleError(ErrorResponse errorResponse) {
         showToast(this, getString(R.string.error));
         saveBtn.setEnabled(true);
+    }
+
+    @Override
+    public void handleError() {
+
     }
 }

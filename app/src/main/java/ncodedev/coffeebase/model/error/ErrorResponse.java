@@ -1,17 +1,56 @@
 package ncodedev.coffeebase.model.error;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
 
-public record ErrorResponse(
+public class ErrorResponse {
         @Expose
-        LocalDateTime timestamp,
+        @SerializedName("timestamp")
+        private LocalDateTime timestamp;
         @Expose
-        int httpStatus,
+        @SerializedName("httpStatus")
+        private int httpStatus;
         @Expose
-        String error,
+        @SerializedName("error")
+        private String error;
         @Expose
-        String message
-) {
+        @SerializedName("message")
+        private String message;
+
+        public ErrorResponse() {
+        }
+
+        public LocalDateTime getTimestamp() {
+                return timestamp;
+        }
+
+        public void setTimestamp(LocalDateTime timestamp) {
+                this.timestamp = timestamp;
+        }
+
+        public int getHttpStatus() {
+                return httpStatus;
+        }
+
+        public void setHttpStatus(int httpStatus) {
+                this.httpStatus = httpStatus;
+        }
+
+        public String getError() {
+                return error;
+        }
+
+        public void setError(String error) {
+                this.error = error;
+        }
+
+        public String getMessage() {
+                return message;
+        }
+
+        public void setMessage(String message) {
+                this.message = message;
+        }
 }
