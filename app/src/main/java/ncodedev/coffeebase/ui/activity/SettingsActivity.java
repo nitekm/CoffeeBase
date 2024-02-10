@@ -13,16 +13,18 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.enums.LanguageCode;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.service.ChangeLanguageHandler;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.UserSettingsResponseListener;
 import ncodedev.coffeebase.web.provider.UserSettingsApiProvider;
 
 import static ncodedev.coffeebase.model.enums.LanguageCode.*;
 import static ncodedev.coffeebase.service.SharedPreferencesNames.LANGUAGE;
 import static ncodedev.coffeebase.service.SharedPreferencesNames.MY_COFFEEBASE_COFFEES_IN_ROW;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class SettingsActivity extends AppCompatActivity implements UserSettingsResponseListener {
 
@@ -132,7 +134,12 @@ public class SettingsActivity extends AppCompatActivity implements UserSettingsR
     }
 
     @Override
-    public void handleError() {
-        showToast(this, getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
     }
 }

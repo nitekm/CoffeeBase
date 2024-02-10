@@ -24,9 +24,11 @@ import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.validator.TagValidator;
 import ncodedev.coffeebase.model.validator.Validator;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.TagAdapter;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.listener.TagListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -43,7 +45,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static ncodedev.coffeebase.utils.RealPathUtils.getRealPath;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 import static ncodedev.coffeebase.utils.Utils.imageDownloadUrl;
 
 public class EditCoffee extends AppCompatActivity implements CoffeeResponseListener, TagListResponseListener {
@@ -367,12 +368,12 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     @Override
     public void handleResponseError(ErrorResponse errorResponse) {
-        showToast(this, getString(R.string.error));
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
         saveBtn.setEnabled(true);
     }
 
     @Override
-    public void handleError() {
-
+    public void handleCallFailed() {
+        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
     }
 }

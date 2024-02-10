@@ -1,6 +1,5 @@
 package ncodedev.coffeebase.web.listener;
 
-public interface BrewResponseListener {
+public interface BrewResponseListener extends  ResponseListener{
     void handleExecuteActionResult();
-    void handleError();
 }

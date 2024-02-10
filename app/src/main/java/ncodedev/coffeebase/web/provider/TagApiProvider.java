@@ -11,7 +11,7 @@ import java.util.List;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
-public class TagApiProvider {
+public class TagApiProvider extends ApiProvider {
 
     public static final String TAG = "TagApiProvider";
 
@@ -26,46 +26,38 @@ public class TagApiProvider {
 
     public void getAll(TagListResponseListener listener) {
         Call<List<Tag>> call = createApi(TagApi.class).getTags();
-        handleListResponse(call, listener);
-    }
-
-    public void search(String content, TagListResponseListener listener) {
-        Call<List<Tag>> call = createApi(TagApi.class).searchTags(content);
-        handleSearchResponse(call, listener);
-    }
-
-    private void handleListResponse(Call<List<Tag>> call, TagListResponseListener listener) {
-        call.enqueue(new Callback<List<Tag>>() {
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
                 if (response.isSuccessful()) {
                     listener.handleGetList(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> getAll(listener));
             }
         });
     }
 
-    private void handleSearchResponse(Call<List<Tag>> call, TagListResponseListener listener) {
-        call.enqueue(new Callback<List<Tag>>() {
+    public void search(String content, TagListResponseListener listener) {
+        Call<List<Tag>> call = createApi(TagApi.class).searchTags(content);
+        call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Tag>> call, final Response<List<Tag>> response) {
                 if (response.isSuccessful()) {
                     listener.handleSearchResult(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> search(content, listener));
             }
         });
     }

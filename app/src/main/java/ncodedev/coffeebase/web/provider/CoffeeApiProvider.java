@@ -1,10 +1,7 @@
 package ncodedev.coffeebase.web.provider;
 
-import android.util.Log;
-import com.google.gson.Gson;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.enums.RequestContext;
-import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
 import ncodedev.coffeebase.web.api.CoffeeApi;
@@ -15,7 +12,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.io.IOException;
 import java.util.List;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
@@ -33,45 +29,8 @@ public class CoffeeApiProvider extends ApiProvider{
         return instance;
     }
 
-    public void getAllPaged(CoffeeListResponseListener listener, PageCoffeeRequest request, RequestContext context) {
+    public void getAllPaged(CoffeeListResponseListener listener, PageCoffeeRequest request, RequestContext requestContext) {
         Call<Page<Coffee>> call = createApi(CoffeeApi.class).getCoffeesPaged(request);
-        handleListResponse(call, listener, request, context);
-    }
-
-    public void search(String content, CoffeeListResponseListener listener) {
-        Call<List<Coffee>> call = createApi(CoffeeApi.class).searchCoffees(content);
-        handleListResponse(call, listener);
-    }
-
-    public void getOne(long id, CoffeeResponseListener listener) {
-        Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
-        handleCoffeeResponse(call, listener);
-    }
-
-    public void save(Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
-        Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee, image);
-        handleSaveResponse(call, listener);
-    }
-
-    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
-        Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
-        handleSaveResponse(call, listener);
-    }
-
-    public void delete(long id, CoffeeResponseListener listener) {
-        Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
-        handleDeleteResponse(call, listener);
-    }
-
-    public void switchFavourites(long coffeeId, CoffeeResponseListener listener) {
-        Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
-        handleCoffeeResponse(call, listener);
-    }
-
-    private void handleListResponse(Call<Page<Coffee>> call,
-                                    CoffeeListResponseListener listener,
-                                    PageCoffeeRequest request,
-                                    RequestContext requestContext) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Page<Coffee>> call, final Response<Page<Coffee>> response) {
@@ -86,100 +45,127 @@ public class CoffeeApiProvider extends ApiProvider{
                         listener.handleFilterPage(response.body());
                     }
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<Page<Coffee>> call, final Throwable t) {
-                listener.handleError();
-                Log.d(TAG, "Retrying call");
-                getAllPaged(listener, request, requestContext);
+                handleCallFailedAndRetry(listener, t, () -> getAllPaged(listener, request, requestContext));
             }
         });
     }
 
-    private void handleListResponse(Call<List<Coffee>> call, CoffeeListResponseListener listener) {
+    public void search(String content, CoffeeListResponseListener listener) {
+        Call<List<Coffee>> call = createApi(CoffeeApi.class).searchCoffees(content);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Coffee>> call, final Response<List<Coffee>> response) {
                 if (response.isSuccessful()) {
                     listener.handleGetAll(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Coffee>> call, final Throwable t) {
-                listener.handleError();
-                Log.d(TAG, "Retrying call");
+                handleCallFailedAndRetry(listener, t, () -> search(content, listener));
             }
         });
     }
 
-    private void handleCoffeeResponse(Call<Coffee> call, CoffeeResponseListener listener) {
+    public void getOne(long id, CoffeeResponseListener listener) {
+        Call<Coffee> call = createApi(CoffeeApi.class).getSingleCoffee(id);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
                     listener.handleCoffeeResponse(response.body());
                 } else {
-                    listener.handleResponseError(handleErrorResponse(response));
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                Log.d(TAG, t.toString());
-                listener.handleResponseError(new ErrorResponse());
+                handleCallFailedAndRetry(listener, t, () -> getOne(id, listener));
             }
         });
     }
 
-    void handleSaveResponse(Call<Coffee> call, CoffeeResponseListener listener) {
+    public void save(Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
+        Call<Coffee> call = createApi(CoffeeApi.class).createCoffee(coffee, image);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
                 if (response.isSuccessful()) {
                     listener.handleSaveResponse(response.body());
                 } else {
-                    try {
-                        String errorBodyString = response.errorBody().string();
-                        Log.d(TAG, "Error body: " + errorBodyString);
-                        var gson = new Gson().fromJson(errorBodyString, ErrorResponse.class);
-                        Log.d(TAG, "onResponse: " + gson);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    listener.handleResponseError(new ErrorResponse());
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                Log.d(TAG, t.toString());
-                listener.handleResponseError(new ErrorResponse());
+                handleCallFailedAndRetry(listener, t, () -> save(coffee, image, listener));
             }
         });
     }
 
-    private void handleDeleteResponse(Call<Void> call, CoffeeResponseListener listener) {
+    public void update(long id, Coffee coffee, MultipartBody.Part image, CoffeeResponseListener listener) {
+        Call<Coffee> call = createApi(CoffeeApi.class).updateCoffee(id, coffee, image);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
+                if (response.isSuccessful()) {
+                    listener.handleSaveResponse(response.body());
+                } else {
+                    handleErrorResponse(response, listener);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Coffee> call, final Throwable t) {
+                handleCallFailedAndRetry(listener, t, () -> update(id, coffee, image, listener));
+            }
+        });
+    }
+
+    public void delete(long id, CoffeeResponseListener listener) {
+        Call<Void> call = createApi(CoffeeApi.class).deleteCoffee(id);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 if (response.isSuccessful()) {
                     listener.handleDeleteResponse();
                 } else {
-
-                    listener.handleResponseError(new ErrorResponse());
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
-                Log.i(TAG, t.toString());
-                listener.handleResponseError(new ErrorResponse());
+                handleCallFailedAndRetry(listener, t, () -> delete(id, listener));
+            }
+        });
+    }
+
+    public void switchFavourites(long coffeeId, CoffeeResponseListener listener) {
+        Call<Coffee> call = createApi(CoffeeApi.class).switchFavourite(coffeeId);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(final Call<Coffee> call, final Response<Coffee> response) {
+                if (response.isSuccessful()) {
+                    listener.handleCoffeeResponse(response.body());
+                } else {
+                    handleErrorResponse(response, listener);
+                }
+            }
+
+            @Override
+            public void onFailure(final Call<Coffee> call, final Throwable t) {
+                handleCallFailedAndRetry(listener, t, () -> switchFavourites(coffeeId, listener));
             }
         });
     }

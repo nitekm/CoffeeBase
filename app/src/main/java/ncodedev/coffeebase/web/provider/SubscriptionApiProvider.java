@@ -9,7 +9,7 @@ import retrofit2.Response;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
-public class SubscriptionApiProvider {
+public class SubscriptionApiProvider extends ApiProvider {
 
     public static final String TAG = "SubscriptionApiProvider";
 
@@ -24,15 +24,9 @@ public class SubscriptionApiProvider {
 
     public void saveSubscription(Subscription subscription) {
         Call<Subscription> call = createApi(SubscriptionApi.class).saveSubscription(subscription);
-        handleSaveResponse(call);
-    }
-
-    void handleSaveResponse(Call<Subscription> call) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Subscription> call, final Response<Subscription> response) {
-                if (!response.isSuccessful()) {
-                }
             }
 
             @Override

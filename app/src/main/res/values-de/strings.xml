@@ -59,7 +59,7 @@
     <string name="successfully_logged_out">Erfolgreich abgemeldet!</string>
     <string name="login_failed">Anmeldung fehlgeschlagen</string>
     <string name="error">Fehler!</string>
-    <string name="server_unavailable">Server ist nicht verfügbar. Versuche es später erneut</string>
+    <string name="server_unavailable_retrying">Server ist nicht verfügbar. Versuche es später erneut</string>
     <string name="image_not_saved">Bild nicht gespeichert!</string>
     <string name="permission_not_granted">Berechtigung nicht erteilt!</string>
     <string name="delete_coffee_question">Diesen Kaffee löschen?</string>
@@ -147,5 +147,21 @@
     <string name="favorite">Favourite</string>
     <string name="apply_filters">Apply filters</string>
     <string name="go_to_settings">Go to settings</string>
+    <string name="unable_to_process_image">Die Anwendung kann das Bild nicht verarbeiten</string>
+    <string name="access_to_images_not_granted_info">Diese Funktion erfordert entsprechende Berechtigungen. Bitte erteilen Sie diese in den App-Einstellungen.</string>
+
+    <!-- error messages -->
+    <string name="not_permitted_to_modify">Der Benutzer hat keine Berechtigung zur Änderung des gegebenen Elements</string>
+    <string name="coffee_not_found">Kaffee mit der gegebenen ID nicht gefunden</string>
+    <string name="brew_not_found">Brühe mit der gegebenen ID nicht gefunden</string>
+    <string name="tag_not_found">Tag mit der gegebenen ID nicht gefunden</string>
+    <string name="no_matching_strategy_for_brew_action">Die gegebene Aktion konnte nicht verarbeitet werden</string>
+    <string name="user_not_found">Kein Benutzer mit der gegebenen Benutzer-ID gefunden</string>
+    <string name="file_unreadable">Datei ist nicht lesbar oder existiert nicht</string>
+    <string name="could_not_load_file">Konnte Datei nicht laden</string>
+    <string name="could_not_delete_file">Konnte Datei nicht löschen</string>
+    <string name="invalid_token">Token ist nicht gültig oder abgelaufen</string>
+    <string name="delete_failed">Löschen fehlgeschlagen</string>
+    <string name="something_went_wrong">Etwas ist schief gelaufen</string>
 
 </resources>

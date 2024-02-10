@@ -60,7 +60,7 @@
     <string name="successfully_logged_out">Wylogowano pomyślnie!</string>
     <string name="login_failed">Błąd logowania</string>
     <string name="error">Błąd!</string>
-    <string name="server_unavailable">Serwer jest niedostępny. Spróbuj ponownie później</string>
+    <string name="server_unavailable_retrying">Serwer jest niedostępny. Spróbuj ponownie później</string>
     <string name="image_not_saved">Obraz nie został zapisany</string>
     <string name="permission_not_granted">Nie udzielono uprawnień!</string>
     <string name="delete_coffee_question">Usunąć tą kawę?</string>
@@ -148,5 +148,21 @@
     <string name="favorite">Favourite</string>
     <string name="apply_filters">Apply filters</string>
     <string name="go_to_settings">Go to settings</string>
+    <string name="unable_to_process_image">Aplikacja nie jest w stanie przetworzyć obrazu</string>
+    <string name="access_to_images_not_granted_info">Ta funkcja wymaga odpowiednich uprawnień. Udziel ich z poziomu ustawień aplikacji.</string>
+
+    <!-- error messages -->
+    <string name="not_permitted_to_modify">Użytkownik nie ma uprawnień do modyfikacji danego elementu</string>
+    <string name="coffee_not_found">Nie znaleziono kawy o podanym ID</string>
+    <string name="brew_not_found">Nie znaleziono zaparzenia o podanym ID</string>
+    <string name="tag_not_found">Nie znaleziono tagu o podanym id</string>
+    <string name="no_matching_strategy_for_brew_action">Nie można przetworzyć danej akcji</string>
+    <string name="user_not_found">Nie znaleziono użytkownika o podanym ID użytkownika</string>
+    <string name="file_unreadable">Plik jest nieczytelny lub nie istnieje</string>
+    <string name="could_not_load_file">Nie udało się wczytać pliku</string>
+    <string name="could_not_delete_file">Nie udało się usunąć pliku</string>
+    <string name="invalid_token">Token jest nieprawidłowy lub wygasł</string>
+    <string name="delete_failed">Operacja usunięcia nie powiodła się</string>
+    <string name="something_went_wrong">Coś poszło nie tak</string>
 
 </resources>

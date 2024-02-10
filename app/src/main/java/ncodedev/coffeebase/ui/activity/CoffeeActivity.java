@@ -20,6 +20,7 @@ import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.BrewsFragment;
 import ncodedev.coffeebase.ui.fragment.CoffeeInfo;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeTabPagerAdapter;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 
@@ -134,5 +135,10 @@ public class CoffeeActivity extends AppCompatActivity implements CoffeeResponseL
     @Override
     public void handleResponseError(ErrorResponse errorResponse) {
         ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
     }
 }

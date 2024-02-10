@@ -16,6 +16,9 @@ import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.process.BrewActionDTO;
 import ncodedev.coffeebase.model.domain.process.BrewActionType;
 import ncodedev.coffeebase.model.enums.Unit;
+import ncodedev.coffeebase.model.error.ErrorResponse;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewResponseListener;
 import ncodedev.coffeebase.web.provider.BrewApiProvider;
 
@@ -23,7 +26,6 @@ import java.util.Optional;
 
 import static ncodedev.coffeebase.model.enums.Unit.*;
 import static ncodedev.coffeebase.ui.activity.CoffeeActivity.COFFEE_ID_KEY;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewActivity extends AppCompatActivity implements BrewResponseListener {
 
@@ -71,10 +73,11 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
         toolbar.setOnMenuItemClickListener(this::onMenuItemClick);
     }
 
+    //TODO: when min api will be 33 change to getSerializableExtra(BREW, Brew.class)
     private void showBrewInfo() {
         Intent intent = getIntent();
         if (null != intent) {
-            brew = intent.getSerializableExtra(BREW, Brew.class);
+            brew = (Brew) intent.getSerializableExtra(BREW);
             coffeeId = intent.getLongExtra(COFFEE_ID_KEY, -1L);
 
            if (brew != null) {
@@ -136,7 +139,12 @@ public class BrewActivity extends AppCompatActivity implements BrewResponseListe
     }
 
     @Override
-    public void handleError() {
-        showToast(this, getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
     }
 }

@@ -21,13 +21,16 @@ import com.google.android.material.navigation.NavigationView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Coffee;
 import ncodedev.coffeebase.model.enums.RequestContext;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.security.User;
 import ncodedev.coffeebase.model.utils.Page;
 import ncodedev.coffeebase.model.utils.PageCoffeeRequest;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.service.GoogleSignInClientService;
 import ncodedev.coffeebase.service.PageCoffeeRequestContextHolder;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.CoffeeRecyclerViewAdapter;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.CoffeeListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
 import org.jetbrains.annotations.NotNull;
@@ -220,6 +223,12 @@ public class MainActivity extends AppCompatActivity implements CoffeeListRespons
     //TOP BAR - END --------------------------------------------------------------------------------------------------\\
 
     @Override
-    public void handleError() {
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(this, errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
     }
 }

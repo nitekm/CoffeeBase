@@ -15,7 +15,7 @@ import java.util.List;
 
 import static ncodedev.coffeebase.web.provider.RetrofitApiCreator.createApi;
 
-public class BrewApiProvider {
+public class BrewApiProvider extends ApiProvider {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -30,96 +30,77 @@ public class BrewApiProvider {
 
     public void getAll(BrewListResponseListener listener) {
         Call<List<Brew>> call = createApi(BrewApi.class).getAll();
-        handleListResponse(call, listener);
-    }
-
-    public void init(Brew brew, BrewStepResponseListener listener) {
-        Call<Brew> call = createApi(BrewApi.class).init(brew);
-        handleInitBrewStepResponse(call, listener);
-    }
-
-    public void finish(Brew brew, BrewStepResponseListener listener) {
-        Call<Brew> call = createApi(BrewApi.class).finish(brew);
-        handleFinishBrewStepResponse(call, listener);
-    }
-
-    public void executeAction(BrewActionDTO brewActionDTO, BrewResponseListener listener) {
-        Call<Void> call = createApi(BrewApi.class).executeAction(brewActionDTO);
-        handleVoidResponse(call, listener);
-    }
-
-    private void handleListResponse(Call<List<Brew>> call, BrewListResponseListener listener) {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<List<Brew>> call, final Response<List<Brew>> response) {
                 if (response.isSuccessful()) {
                     listener.handleGetList(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<List<Brew>> call, final Throwable t) {
                 Log.d(TAG, t.toString());
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> getAll(listener));
             }
         });
     }
 
-    private void handleInitBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener) {
+    public void init(Brew brew, BrewStepResponseListener listener) {
+        Call<Brew> call = createApi(BrewApi.class).init(brew);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Brew> call, Response<Brew> response) {
                 if (response.isSuccessful()) {
                     listener.handleInitBrewStepResponse(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(Call<Brew> call, Throwable t) {
-                Log.i(TAG, t.toString());
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> init(brew, listener));
             }
         });
     }
 
-    private void handleFinishBrewStepResponse(Call<Brew> call, BrewStepResponseListener listener) {
+    public void finish(Brew brew, BrewStepResponseListener listener) {
+        Call<Brew> call = createApi(BrewApi.class).finish(brew);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<Brew> call, Response<Brew> response) {
                 if (response.isSuccessful()) {
                     listener.handleFinishBrewStepResponse(response.body());
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(Call<Brew> call, Throwable t) {
-                Log.i(TAG, t.toString());
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> finish(brew, listener));
             }
         });
     }
 
-    private void handleVoidResponse(Call<Void> call, BrewResponseListener listener) {
+    public void executeAction(BrewActionDTO brewActionDTO, BrewResponseListener listener) {
+        Call<Void> call = createApi(BrewApi.class).executeAction(brewActionDTO);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(final Call<Void> call, final Response<Void> response) {
                 if (response.isSuccessful()) {
                     listener.handleExecuteActionResult();
                 } else {
-                    listener.handleError();
+                    handleErrorResponse(response, listener);
                 }
             }
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
-                Log.i(TAG, t.toString());
-                listener.handleError();
+                handleCallFailedAndRetry(listener, t, () -> executeAction(brewActionDTO, listener));
             }
         });
     }

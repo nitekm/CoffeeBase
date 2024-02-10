@@ -79,9 +79,8 @@
     <string name="successfully_logged_out">Successfully logged out!</string>
     <string name="login_failed">Login failed</string>
     <string name="error">Error!</string>
-    <string name="server_unavailable">Server is unavailable. Try again later</string>
+    <string name="server_unavailable_retrying">Server is unavailable. Trying again…</string>
     <string name="image_not_saved">Image not saved!</string>
-    <string name="unable_to_process_image">Application is not able to process image</string>
     <string name="delete_coffee_question">Delete this coffee?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
@@ -165,14 +164,26 @@
     <string name="descending">descending</string>
     <string name="ascending">ascending</string>
     <string name="favorite">Favourite</string>
-    <string name="not_favourite">Not favourite</string>
     <string name="apply_filters">Apply filters</string>
-    <string name="access_to_images_not_granted_info">This feature requires adequate premissions.Please grant it from app settings.</string>
     <string name="go_to_settings">Go to settings</string>
+    <string name="permission_not_granted">Permission not granted!</string>
+    <string name="unable_to_process_image">Application is not able to process image</string>
+    <string name="access_to_images_not_granted_info">This feature requires adequate permissions.Please grant it from app settings.</string>
+
 
     <!-- error messages -->
     <string name="not_permitted_to_modify">User is not permitted to modify given item</string>
     <string name="coffee_not_found">Coffee with given ID not found</string>
+    <string name="brew_not_found">Brew with given ID not found</string>
+    <string name="tag_not_found">Tag with given id not found</string>
+    <string name="no_matching_strategy_for_brew_action">Couldn\'t process given action</string>
+    <string name="user_not_found">No user found with given user ID</string>
+    <string name="file_unreadable">File is unreadable or does not exists</string>
+    <string name="could_not_load_file">Could not load file</string>
+    <string name="could_not_delete_file">Could not delete file</string>
+    <string name="invalid_token">Token not valid or has expired</string>
+    <string name="delete_failed">Delete operation failed</string>
+    <string name="something_went_wrong">Something went wrong</string>
 
     <!--    dropdowns-->
     <string-array name="continents">
