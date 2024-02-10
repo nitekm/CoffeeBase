@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.error.ErrorResponse;
 import ncodedev.coffeebase.model.validator.Validator;
 import ncodedev.coffeebase.service.BrewMapper;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.Optional;
-
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewStepIngredientsFragment extends Fragment implements BrewStepResponseListener, BrewStep {
 
@@ -113,7 +114,12 @@ public class BrewStepIngredientsFragment extends Fragment implements BrewStepRes
     }
 
     @Override
-    public void handleError() {
-        showToast(getActivity(), getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(getActivity(), errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(getActivity(), getString(R.string.server_unavailable_retrying));
     }
 }

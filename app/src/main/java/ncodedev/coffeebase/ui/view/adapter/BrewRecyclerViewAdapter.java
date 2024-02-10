@@ -15,8 +15,11 @@ import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.process.BrewActionDTO;
 import ncodedev.coffeebase.model.domain.process.BrewActionType;
+import ncodedev.coffeebase.model.error.ErrorResponse;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.activity.BrewActivity;
 import ncodedev.coffeebase.ui.activity.CoffeeActivity;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewResponseListener;
 import ncodedev.coffeebase.web.provider.BrewApiProvider;
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +29,6 @@ import java.util.Optional;
 
 import static ncodedev.coffeebase.ui.activity.BrewActivity.BREW;
 import static ncodedev.coffeebase.ui.activity.CoffeeActivity.COFFEE_ID_KEY;
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerViewAdapter.ViewHolder> implements BrewResponseListener {
 
@@ -67,8 +69,13 @@ public class BrewRecyclerViewAdapter extends RecyclerView.Adapter<BrewRecyclerVi
     }
 
     @Override
-    public void handleError() {
-        showToast(context, context.getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(context, errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(context, context.getString(R.string.server_unavailable_retrying));
     }
 
     @Override

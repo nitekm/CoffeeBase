@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
+import ncodedev.coffeebase.model.error.ErrorResponse;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.view.adapter.BrewRecyclerViewAdapter;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewListResponseListener;
 import ncodedev.coffeebase.web.provider.BrewApiProvider;
 
 import java.util.List;
-
-import static ncodedev.coffeebase.utils.ToastUtils.showToast;
 
 public class BrewsFragment extends Fragment implements BrewListResponseListener {
 
@@ -63,7 +64,12 @@ public class BrewsFragment extends Fragment implements BrewListResponseListener 
     }
 
     @Override
-    public void handleError() {
-        showToast(getActivity(), getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(getActivity(), errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(getActivity(), getString(R.string.server_unavailable_retrying));
     }
 }

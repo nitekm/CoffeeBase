@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import ncodedev.coffeebase.R;
 import ncodedev.coffeebase.model.domain.Brew;
 import ncodedev.coffeebase.model.domain.PourOver;
+import ncodedev.coffeebase.model.error.ErrorResponse;
+import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.fragment.AddPourOverDialogFragment;
 import ncodedev.coffeebase.ui.view.adapter.PourOverRecyclerViewAdapter;
+import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.BrewStepResponseListener;
 
 import java.util.ArrayList;
@@ -96,7 +99,12 @@ public class BrewStepPourOverFragment extends Fragment implements BrewStepRespon
     }
 
     @Override
-    public void handleError() {
-        showToast(getActivity(), getString(R.string.error));
+    public void handleResponseError(ErrorResponse errorResponse) {
+        ErrorMessageTranslator.tranlateAndToastErrorMessage(getActivity(), errorResponse);
+    }
+
+    @Override
+    public void handleCallFailed() {
+        ToastUtils.showToast(getActivity(), getString(R.string.server_unavailable_retrying));
     }
 }
