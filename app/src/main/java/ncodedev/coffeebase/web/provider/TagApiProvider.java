@@ -38,7 +38,7 @@ public class TagApiProvider extends ApiProvider {
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                handleCallFailedAndRetry(listener, t, () -> getAll(listener));
+                listener.handleCallFailed();
             }
         });
     }
@@ -57,7 +57,7 @@ public class TagApiProvider extends ApiProvider {
 
             @Override
             public void onFailure(final Call<List<Tag>> call, final Throwable t) {
-                handleCallFailedAndRetry(listener, t, () -> search(content, listener));
+                listener.handleCallFailed();
             }
         });
     }

@@ -28,7 +28,6 @@ import ncodedev.coffeebase.service.ErrorMessageTranslator;
 import ncodedev.coffeebase.ui.activity.main.MainActivity;
 import ncodedev.coffeebase.ui.utility.ImageHelper;
 import ncodedev.coffeebase.ui.view.adapter.TagAdapter;
-import ncodedev.coffeebase.utils.ToastUtils;
 import ncodedev.coffeebase.web.listener.CoffeeResponseListener;
 import ncodedev.coffeebase.web.listener.TagListResponseListener;
 import ncodedev.coffeebase.web.provider.CoffeeApiProvider;
@@ -374,6 +373,6 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
 
     @Override
     public void handleCallFailed() {
-        ToastUtils.showToast(this, getString(R.string.server_unavailable_retrying));
+        saveBtn.setEnabled(true);
     }
 }
