@@ -35,7 +35,7 @@ public class UserSettingsApiProvider extends ApiProvider {
 
             @Override
             public void onFailure(final Call<Void> call, final Throwable t) {
-           handleCallFailedAndRetry(listener, t, () -> deleteAccount(listener));
+                listener.handleCallFailed();
             }
         });
     }

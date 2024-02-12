@@ -108,7 +108,7 @@ public class CoffeeApiProvider extends ApiProvider{
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                handleCallFailedAndRetry(listener, t, () -> save(coffee, image, listener));
+                listener.handleCallFailed();
             }
         });
     }
@@ -127,7 +127,7 @@ public class CoffeeApiProvider extends ApiProvider{
 
             @Override
             public void onFailure(final Call<Coffee> call, final Throwable t) {
-                handleCallFailedAndRetry(listener, t, () -> update(id, coffee, image, listener));
+                listener.handleCallFailed();
             }
         });
     }
