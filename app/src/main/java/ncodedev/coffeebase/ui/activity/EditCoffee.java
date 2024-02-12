@@ -253,8 +253,14 @@ public class EditCoffee extends AppCompatActivity implements CoffeeResponseListe
         String farm = Objects.requireNonNull(inputFarm.getText()).toString();
         String processing = Objects.requireNonNull(inputProcessing.getText()).toString();
         Double rating = (double) coffeeRatingBar.getRating();
-        String roastProfile = roastProfileSpinner.getSelectedItem().toString();
-        String continent = continentSpinner.getSelectedItem().toString();
+        String roastProfile = "Roast Profile";
+        if (roastProfileSpinner.getSelectedItemId() != 0) {
+            roastProfile = roastProfileSpinner.getSelectedItem().toString();
+        }
+        String continent = "Continent";
+        if (roastProfileSpinner.getSelectedItemId() != 0) {
+            continent = continentSpinner.getSelectedItem().toString();
+        }
 
         Integer cropHeight = null, scaRating = null;
         if (TextUtils.getTrimmedLength(inputCropHeight.getText()) > 0) {
