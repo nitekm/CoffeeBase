@@ -4,7 +4,7 @@ Written in Java in the old style based on Views. [(Check out the new Kotlin-base
 Currently, this is the production version available for download on Android devices from the [Google Play Store](https://play.google.com/store/apps/details?id=ncodedev.coffeebase).\
 It uses asynchronous communication with APIs with a couple of interesting solutions in the code.
 ## Technologies used in the project are:
- * Android SKD
+ * Android SDK
  * Material Design
  * Android Views defined in XML files
  * Retrofit2, OkHttpClient, Interceptors for communication with the backend
