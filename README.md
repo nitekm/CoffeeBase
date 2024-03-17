@@ -2,7 +2,7 @@
 This is the client or frontend side of the [CoffeeBase application](https://github.com/nitekm/CoffeeBaseApi).\
 Written in Java in the old style based on Views. [(Check out the new Kotlin-based version from Jetpack Compose)](https://github.com/nitekm/CoffeeBaseNew). \
 Currently, this is the production version available for download on Android devices from the [Google Play Store](https://play.google.com/store/apps/details?id=ncodedev.coffeebase).\
-It uses asynchronous communication with APIs with a couple of interesting solutions in the code. \
+It uses asynchronous communication with APIs with a couple of interesting solutions in the code.
 ## Technologies used in the project are:
  * Android SKD
  * Material Design
